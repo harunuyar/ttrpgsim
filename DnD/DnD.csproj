@@ -11,6 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Entities\Feats\" />
+    <Folder Include="Entities\Spells\" />
     <Folder Include="Entities\Traits\" />
   </ItemGroup>
 
