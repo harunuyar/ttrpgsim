@@ -44,17 +44,4 @@ internal class AttributeSet
             _ => throw new ArgumentOutOfRangeException(nameof(attributeType), attributeType, "Unknown attribute type")
         };
     }
-
-    public List<Attributes.Attribute> GetAttributes()
-    {
-        return new List<Attributes.Attribute>
-        {
-            Strength,
-            Dexterity,
-            Constitution,
-            Intelligence,
-            Wisdom,
-            Charisma
-        };
-    }
 }

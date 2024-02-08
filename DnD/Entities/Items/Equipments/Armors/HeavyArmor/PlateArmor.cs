@@ -1,0 +1,25 @@
+﻿namespace DnD.Entities.Items.Equipments.Armors.HeavyArmor;
+
+using DnD.Entities.Characters;
+using DnD.Entities.Items.Equipments.Armors;
+using DnD.Entities.Units;
+
+internal class PlateArmor : IArmor
+{
+    public PlateArmor()
+        : base(
+            EArmorType.Heavy,
+            "Plate Armor",
+            "Plate consists of shaped, interlocking metal plates to cover the entire body. A suit of plate includes gauntlets, heavy leather boots, a visored helmet, and thick layers of padding underneath the armor.",
+            Weight.OfPounds(65),
+            Worth.OfGold(1500),
+            15,
+            true)
+    {
+    }
+
+    public override int GetArmorClass(Character character)
+    {
+        return 18;
+    }
+}

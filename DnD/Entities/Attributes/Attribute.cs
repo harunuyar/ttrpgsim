@@ -23,9 +23,4 @@ internal class Attribute : IAttribute
     {
         return (Value - 10) / 2;
     }
-
-    public int GetSavingThrowModifier()
-    {
-        return GetModifier() + SavingThrowProficiencyLevel * 2;
-    }
 }
