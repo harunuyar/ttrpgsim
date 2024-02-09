@@ -1,6 +1,6 @@
 ﻿namespace DnD.Entities.Effects.Conditions;
 
-using DnD.Commands;
+using DnD.CommandSystem;
 using TableTopRpg.Commands;
 
 internal class Blinded : IEffect

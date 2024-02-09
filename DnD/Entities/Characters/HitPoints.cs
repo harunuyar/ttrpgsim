@@ -3,7 +3,16 @@ using System;
 
 internal class HitPoints
 {
-    public int MaxHitPoints { get; set; }
+    public HitPoints()
+    {
+        HitPointRolls = new List<int>();
+        MaxHitPoints = 0;
+        CurrentHitPoints = 0;
+        TemporaryHitPoints = 0;
+    }
+
+    public List<int> HitPointRolls { get; }
+    public int MaxHitPoints { get; private set; }
     public int CurrentHitPoints { get; set; }
     public int TemporaryHitPoints { get; set; }
 
@@ -29,11 +38,6 @@ internal class HitPoints
         TemporaryHitPoints = Math.Max(TemporaryHitPoints - amount, 0);
     }
 
-    public void SetMaxHitPoints(int amount)
-    {
-        MaxHitPoints = amount;
-    }
-
     public void SetCurrentHitPoints(int amount)
     {
         CurrentHitPoints = amount;
@@ -44,8 +48,9 @@ internal class HitPoints
         TemporaryHitPoints = amount;
     }
 
-    public void AddMaxHitPoints(int amount)
+    public void AddHitPointRoll(int roll, int constitutionBonus)
     {
-        MaxHitPoints += amount;
+        HitPointRolls.Add(roll);
+        MaxHitPoints = constitutionBonus + HitPointRolls.Sum();
     }
 }

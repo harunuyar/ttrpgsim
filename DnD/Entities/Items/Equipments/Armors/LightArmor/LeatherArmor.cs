@@ -11,6 +11,7 @@ internal class LeatherArmor : IArmor
             EArmorType.Light,
             "Leather Armor",
             "Leather armor is made of soft, supple leather.",
+            11,
             Weight.OfPounds(10),
             Worth.OfGold(10),
             0,
@@ -18,8 +19,8 @@ internal class LeatherArmor : IArmor
     {
     }
 
-    public override int GetArmorClass(Character character)
+    public override int GetDexterityBonus(Character character)
     {
-        return 11 + GetDexterityModifier(character);
+        return GetDexterityModifier(character);
     }
 }

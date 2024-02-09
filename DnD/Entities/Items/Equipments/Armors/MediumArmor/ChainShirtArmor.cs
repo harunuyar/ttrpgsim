@@ -11,6 +11,7 @@ internal class ChainShirtArmor : IArmor
             EArmorType.Medium,
             "Chain Shirt Armor",
             "A chain shirt is made of interlocking metal rings, which form a mesh.",
+            13,
             Weight.OfPounds(20),
             Worth.OfGold(50),
             0,
@@ -18,8 +19,8 @@ internal class ChainShirtArmor : IArmor
     {
     }
 
-    public override int GetArmorClass(Character character)
+    public override int GetDexterityBonus(Character character)
     {
-        return 13 + Math.Min(GetDexterityModifier(character), 2);
+        return Math.Min(GetDexterityModifier(character), 2);
     }
 }

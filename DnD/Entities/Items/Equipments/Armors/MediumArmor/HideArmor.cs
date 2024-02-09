@@ -11,6 +11,7 @@ internal class HideArmor : IArmor
             EArmorType.Medium,
             "Hide Armor",
             "Hide armor is made from thick and tough animal hides.",
+            12,
             Weight.OfPounds(12),
             Worth.OfGold(10),
             0,
@@ -18,8 +19,8 @@ internal class HideArmor : IArmor
     {
     }
 
-    public override int GetArmorClass(Character character)
+    public override int GetDexterityBonus(Character character)
     {
-        return 12 + Math.Min(GetDexterityModifier(character), 2);
+        return Math.Min(GetDexterityModifier(character), 2);
     }
 }

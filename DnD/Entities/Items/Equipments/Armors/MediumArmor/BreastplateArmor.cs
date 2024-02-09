@@ -11,6 +11,7 @@ internal class BreastplateArmor : IArmor
             EArmorType.Medium,
             "Breastplate Armor",
             "Breastplate consists of a fitted metal chest piece worn with supple leather. Although it leaves the legs and arms relatively unprotected, this armor provides good protection for the wearer's vital organs while leaving the wearer relatively unencumbered.",
+            14,
             Weight.OfPounds(20),
             Worth.OfGold(400),
             0,
@@ -18,8 +19,8 @@ internal class BreastplateArmor : IArmor
     {
     }
 
-    public override int GetArmorClass(Character character)
+    public override int GetDexterityBonus(Character character)
     {
-        return 14 + Math.Min(GetDexterityModifier(character), 2);
+        return Math.Min(GetDexterityModifier(character), 2);
     }
 }

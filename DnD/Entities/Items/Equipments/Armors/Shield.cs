@@ -1,10 +1,10 @@
 ﻿namespace DnD.Entities.Items.Equipments.Armors;
 
-using DnD.Commands;
+using DnD.CommandSystem.Commands;
+using DnD.CommandSystem.Commands.IntegerResultCommands;
 using DnD.Entities.Units;
-using TableTopRpg.Commands;
 
-internal class Shield : IItemDescription, ICommandInterrupter
+internal class Shield : IItemDescription, IBonusProvider
 {
     public Shield()
     {
@@ -31,13 +31,11 @@ internal class Shield : IItemDescription, ICommandInterrupter
 
     public int ArmorClass { get; set; }
 
-    public ICommandResult InterruptCommand(DndCommand command, ICommandResult currentResult)
+    public void HandleCommand(DndCommand command)
     {
-        if (command is GetArmorClassCommand && currentResult is IntegerResult integerResult && currentResult.IsSuccess)
+        if (command is GetArmorClass getArmorClass)
         {
-            integerResult.Value += ArmorClass;
+            getArmorClass.IntegerBonuses.AddBonus(this, ArmorClass);
         }
-
-        return currentResult;
     }
 }

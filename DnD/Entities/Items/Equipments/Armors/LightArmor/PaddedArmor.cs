@@ -11,6 +11,7 @@ internal class PaddedArmor : IArmor
             EArmorType.Light,
             "Padded Armor",
             "Padded armor consists of quilted layers of cloth and batting.",
+            11,
             Weight.OfPounds(8),
             Worth.OfGold(5),
             0,
@@ -18,8 +19,8 @@ internal class PaddedArmor : IArmor
     {
     }
 
-    public override int GetArmorClass(Character character)
+    public override int GetDexterityBonus(Character character)
     {
-        return 11 + GetDexterityModifier(character);
+        return GetDexterityModifier(character);
     }
 }

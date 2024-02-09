@@ -4,5 +4,5 @@ public interface ICommandResult
 {
     ICommand Command { get; }
     bool IsSuccess { get; }
-    string Message { get; }
+    string? ErrorMessage { get; }
 }

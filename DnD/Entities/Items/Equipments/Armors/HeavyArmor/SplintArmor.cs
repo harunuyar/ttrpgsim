@@ -11,6 +11,7 @@ internal class SplintArmor : IArmor
             EArmorType.Heavy,
             "Splint Armor",
             "Splint armor is made of narrow vertical strips of metal riveted to a backing of leather that is worn over cloth padding. Flexible chain mail protects the joints.",
+            17,
             Weight.OfPounds(60),
             Worth.OfGold(200),
             15,
@@ -18,8 +19,8 @@ internal class SplintArmor : IArmor
     {
     }
 
-    public override int GetArmorClass(Character character)
+    public override int GetDexterityBonus(Character character)
     {
-        return 17;
+        return 0;
     }
 }

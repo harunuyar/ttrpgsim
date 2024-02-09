@@ -11,6 +11,7 @@ internal class StuddedLeatherArmor : IArmor
             EArmorType.Light,
             "Studded Leather Armor",
             "Studded leather armor is made of tough but flexible leather, with close-set rivets to add additional protection.",
+            12,
             Weight.OfPounds(13),
             Worth.OfGold(45),
             0,
@@ -18,8 +19,8 @@ internal class StuddedLeatherArmor : IArmor
     {
     }
 
-    public override int GetArmorClass(Character character)
+    public override int GetDexterityBonus(Character character)
     {
-        return 12 + GetDexterityModifier(character);
+        return GetDexterityModifier(character);
     }
 }

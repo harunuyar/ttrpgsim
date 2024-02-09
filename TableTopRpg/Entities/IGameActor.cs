@@ -9,4 +9,5 @@ public interface IGameActor
     IRace Race { get; set; }
     IAlignment Alignment { get; set; }
     List<ITrait> Traits { get; }
+    List<IFeat> Feats { get; }
 }

@@ -1,14 +1,14 @@
 ﻿namespace DnD.Entities.Items.Equipments.Armors;
 
-using DnD.Commands;
+using DnD.CommandSystem.Commands;
+using DnD.CommandSystem.Commands.IntegerResultCommands;
 using DnD.Entities.Characters;
 using DnD.Entities.Skills.Predefined;
 using DnD.Entities.Units;
-using TableTopRpg.Commands;
 
-internal abstract class IArmor : IItemDescription, ICommandInterrupter
+internal abstract class IArmor : IItemDescription, IBonusProvider
 {
-    public IArmor(EArmorType armorType, string name, string desc, Weight weight, Worth value, int strReq, bool disadvStealth)
+    public IArmor(EArmorType armorType, string name, string desc, int baseAC, Weight weight, Worth value, int strReq, bool disadvStealth)
     {
         ArmorType = armorType;
         Name = name;
@@ -17,6 +17,7 @@ internal abstract class IArmor : IItemDescription, ICommandInterrupter
         Value = value;
         StrengthRequirement = strReq;
         DisadvantageToStealth = disadvStealth;
+        BaseArmorClass = baseAC;
     }
 
     public bool IsStackable => false;
@@ -39,32 +40,22 @@ internal abstract class IArmor : IItemDescription, ICommandInterrupter
 
     public bool DisadvantageToStealth { get; set; }
 
-    public abstract int GetArmorClass(Character character);
+    public int BaseArmorClass { get; set; }
 
-    public ICommandResult InterruptCommand(DndCommand command, ICommandResult currentResult)
-    {
-        if (command is CalculateSkillAdvantageCommand calculateSkillAdvantageCommand)
-        {
-            if (calculateSkillAdvantageCommand.Skill == Stealth.Instance && DisadvantageToStealth)
-            {
-                int value = currentResult is IntegerResult integerResult ? integerResult.Value : 0;
-                return IntegerResult.Success(calculateSkillAdvantageCommand, value & (int)EAdvantage.Disadvantage);
-            }
-        }
-
-        return currentResult;
-    }
+    public abstract int GetDexterityBonus(Character character);
 
     protected static int GetDexterityModifier(Character character)
     {
-        ICommand command = new GetAttributeModifierCommand(character, Attributes.EAttributeType.Dexterity);
-        ICommandResult result = command.Execute();
+        var command = new GetAttributeModifier(character, Attributes.EAttributeType.Dexterity);
+        var result = command.Execute();
+        return result.IsSuccess ? result.Value : 0;
+    }
 
-        if (result.IsSuccess && result is IntegerResult integerResult)
+    public virtual void HandleCommand(DndCommand command)
+    {
+        if (command is MakeSkillCheckRoll makeSkillCheckRoll && DisadvantageToStealth && makeSkillCheckRoll.Skill == Stealth.Instance)
         {
-            return integerResult.Value;
+            makeSkillCheckRoll.IntegerBonuses.AddAdvantage(this, EAdvantage.Disadvantage);
         }
-
-        return 0;
     }
 }

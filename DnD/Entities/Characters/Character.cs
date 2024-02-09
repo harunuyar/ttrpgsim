@@ -20,6 +20,7 @@ internal class Character : IGameActor
         this.SkillProficiencies = new Dictionary<IDndSkill, int>();
         this.ArmorProficiencies = EArmorType.None;
         this.Traits = new List<ITrait>();
+        this.Feats = new List<IFeat>();
         this.Levels = new List<Level>();
         this.Inventory = new Inventory();
         this.Effects = new List<IEffect>();
@@ -31,6 +32,7 @@ internal class Character : IGameActor
     public Dictionary<IDndSkill, int> SkillProficiencies { get; }
     public EArmorType ArmorProficiencies { get; set; }  
     public List<ITrait> Traits { get; }
+    public List<IFeat> Feats { get; }
     public List<Level> Levels { get; }
     public int Level => Levels.Sum(l => l.LevelNum);
     public AttributeSet AttributeSet { get; }
@@ -38,6 +40,7 @@ internal class Character : IGameActor
     public Inventory Inventory { get; }
     public List<IEffect> Effects { get; }
     public bool HasInspiration { get; set; }
+
 
     public void SetSkillProficiency(IDndSkill skill, int proficiencyLevel)
     {
@@ -61,7 +64,7 @@ internal class Character : IGameActor
         }
     }
 
-    public bool GetArmorProficiency(EArmorType armorType)
+    public bool HasArmorProficiency(EArmorType armorType)
     {
         return ArmorProficiencies.HasFlag(armorType) || Levels.Any(l => l.Class.ArmorProficiencies.HasFlag(armorType));
     }

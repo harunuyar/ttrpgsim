@@ -11,6 +11,7 @@ internal class PlateArmor : IArmor
             EArmorType.Heavy,
             "Plate Armor",
             "Plate consists of shaped, interlocking metal plates to cover the entire body. A suit of plate includes gauntlets, heavy leather boots, a visored helmet, and thick layers of padding underneath the armor.",
+            18,
             Weight.OfPounds(65),
             Worth.OfGold(1500),
             15,
@@ -18,8 +19,8 @@ internal class PlateArmor : IArmor
     {
     }
 
-    public override int GetArmorClass(Character character)
+    public override int GetDexterityBonus(Character character)
     {
-        return 18;
+        return 0;
     }
 }

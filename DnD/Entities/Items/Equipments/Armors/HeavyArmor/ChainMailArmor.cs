@@ -11,6 +11,7 @@ internal class ChainMailArmor : IArmor
             EArmorType.Heavy,
             "Chain Mail Armor",
             "Chain mail is made of interlocking metal rings. It includes a layer of quilted fabric underneath the mail to prevent chafing and to cushion the impact of blows. The suit includes gauntlets.",
+            16,
             Weight.OfPounds(55),
             Worth.OfGold(75),
             13,
@@ -18,8 +19,8 @@ internal class ChainMailArmor : IArmor
     {
     }
 
-    public override int GetArmorClass(Character character)
+    public override int GetDexterityBonus(Character character)
     {
-        return 16;
+        return 0;
     }
 }

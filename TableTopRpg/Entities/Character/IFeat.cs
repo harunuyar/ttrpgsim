@@ -1,6 +1,6 @@
 ﻿namespace TableTopRpg.Entities.Character;
 
-internal interface IFeat
+public interface IFeat
 {
     string Name { get; }
     string Description { get; }
