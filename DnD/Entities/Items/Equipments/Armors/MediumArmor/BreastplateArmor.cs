@@ -4,7 +4,7 @@ using DnD.Entities.Characters;
 using DnD.Entities.Items.Equipments.Armors;
 using DnD.Entities.Units;
 
-internal class BreastplateArmor : IArmor
+internal class BreastplateArmor : AArmor
 {
     public BreastplateArmor()
         : base(
@@ -13,7 +13,7 @@ internal class BreastplateArmor : IArmor
             "Breastplate consists of a fitted metal chest piece worn with supple leather. Although it leaves the legs and arms relatively unprotected, this armor provides good protection for the wearer's vital organs while leaving the wearer relatively unencumbered.",
             14,
             Weight.OfPounds(20),
-            Worth.OfGold(400),
+            Value.OfGold(400),
             0,
             false)
     {

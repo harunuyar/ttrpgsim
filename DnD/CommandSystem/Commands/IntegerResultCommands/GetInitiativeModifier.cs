@@ -1,6 +1,5 @@
 ﻿namespace DnD.CommandSystem.Commands.IntegerResultCommands;
 
-using DnD.CommandSystem.Results;
 using DnD.Entities.Attributes;
 using DnD.Entities.Characters;
 
@@ -10,17 +9,18 @@ internal class GetInitiativeModifier : DndScoreCommand
     {
     }
 
-    public override IntegerResultWithBonuses Execute()
+    public override void InitializeResult()
     {
         var getDexterityModifierCommand = new GetAttributeModifier(Character, EAttributeType.Dexterity);
-        getDexterityModifierCommand.CollectBonuses();
         var dexterityModifierResult = getDexterityModifierCommand.Execute();
 
         if (dexterityModifierResult.IsSuccess)
         {
-            return IntegerResultWithBonuses.Success(this, "Dexterity", dexterityModifierResult.Value, IntegerBonuses);
+            Result.SetBaseValue(Character.AttributeSet.Dexterity, dexterityModifierResult.Value);
         }
-
-        return IntegerResultWithBonuses.Failure(this, "Dexterity modifier not found");
+        else
+        {
+            Result.SetError(dexterityModifierResult.ErrorMessage ?? "Unknown");
+        }
     }
 }

@@ -4,7 +4,7 @@ using DnD.Entities.Characters;
 using DnD.Entities.Items.Equipments.Armors;
 using DnD.Entities.Units;
 
-internal class PlateArmor : IArmor
+internal class PlateArmor : AArmor
 {
     public PlateArmor()
         : base(
@@ -13,7 +13,7 @@ internal class PlateArmor : IArmor
             "Plate consists of shaped, interlocking metal plates to cover the entire body. A suit of plate includes gauntlets, heavy leather boots, a visored helmet, and thick layers of padding underneath the armor.",
             18,
             Weight.OfPounds(65),
-            Worth.OfGold(1500),
+            Value.OfGold(1500),
             15,
             true)
     {

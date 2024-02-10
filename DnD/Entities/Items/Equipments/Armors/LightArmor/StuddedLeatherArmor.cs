@@ -4,7 +4,7 @@ using DnD.Entities.Characters;
 using DnD.Entities.Items.Equipments.Armors;
 using DnD.Entities.Units;
 
-internal class StuddedLeatherArmor : IArmor
+internal class StuddedLeatherArmor : AArmor
 {
     public StuddedLeatherArmor()
         : base(
@@ -13,7 +13,7 @@ internal class StuddedLeatherArmor : IArmor
             "Studded leather armor is made of tough but flexible leather, with close-set rivets to add additional protection.",
             12,
             Weight.OfPounds(13),
-            Worth.OfGold(45),
+            Value.OfGold(45),
             0,
             false)
     {

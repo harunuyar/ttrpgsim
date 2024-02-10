@@ -1,7 +1,5 @@
 ﻿namespace DnD.Entities.Races;
 
-using TableTopRpg.Entities.Character;
-
 internal class Size : ISize
 {
     public static readonly Size Tiny = new Size("Tiny", "Tiny");

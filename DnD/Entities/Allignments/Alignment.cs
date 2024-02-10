@@ -1,7 +1,5 @@
 ﻿namespace DnD.Entities.Allignments;
 
-using TableTopRpg.Entities.Character;
-
 internal class Alignment : IAlignment
 {
     public static readonly Alignment None = new Alignment("No Alignment");

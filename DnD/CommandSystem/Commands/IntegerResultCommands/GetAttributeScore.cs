@@ -1,6 +1,5 @@
 ﻿namespace DnD.CommandSystem.Commands.IntegerResultCommands;
 
-using DnD.CommandSystem.Results;
 using DnD.Entities.Attributes;
 using DnD.Entities.Characters;
 
@@ -13,9 +12,9 @@ internal class GetAttributeScore : DndScoreCommand
 
     public EAttributeType AttributeType { get; }
 
-    public override IntegerResultWithBonuses Execute()
+    public override void InitializeResult()
     {
         var attribute = Character.AttributeSet.GetAttribute(AttributeType);
-        return IntegerResultWithBonuses.Success(this, attribute.Name, attribute.Value, IntegerBonuses);
+        Result.SetBaseValue(attribute, attribute.Score);
     }
 }

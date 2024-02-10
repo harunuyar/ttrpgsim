@@ -1,7 +1,7 @@
 ﻿namespace DnD.Entities.Races;
 
+using DnD.Entities.Traits;
 using System.Collections.Generic;
-using TableTopRpg.Entities.Character;
 
 internal class Race : IRace
 {
@@ -54,7 +54,7 @@ internal class Race : IRace
         Description = description;
         CreatureType = creatureType;
         Size = size;
-        RaceTraits = new List<ITrait>();
+        RaceTraits = new List<ATrait>();
     }
 
     public string Name { get; }
@@ -65,5 +65,5 @@ internal class Race : IRace
 
     public ISize Size { get; }
 
-    public List<ITrait> RaceTraits { get; }
+    public List<ATrait> RaceTraits { get; }
 }

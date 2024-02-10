@@ -1,8 +1,9 @@
 ﻿namespace DnD.Entities.Effects.Conditions;
 
-internal class Grappled : IEffect
+internal class Grappled : AEffect
 {
-    public string Name => "Grappled";
-
-    public string Description => "A grappled creature's speed becomes 0, and it can't benefit from any bonus to its speed.";
+    public Grappled()
+        : base("Grappled", "A grappled creature's speed becomes 0, and it can't benefit from any bonus to its speed.")
+    {
+    }
 }

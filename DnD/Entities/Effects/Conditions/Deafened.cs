@@ -1,8 +1,9 @@
 ﻿namespace DnD.Entities.Effects.Conditions;
 
-internal class Deafened : IEffect
+internal class Deafened : AEffect
 {
-    public string Name => "Deafened";
-
-    public string Description => "A deafened creature can't hear and automatically fails any ability check that requires hearing.";
+    public Deafened() 
+        : base("Deafened", "A deafened creature can't hear and automatically fails any ability check that requires hearing.")
+    {
+    }
 }

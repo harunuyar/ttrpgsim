@@ -4,7 +4,7 @@ using DnD.Entities.Characters;
 using DnD.Entities.Items.Equipments.Armors;
 using DnD.Entities.Units;
 
-internal class PaddedArmor : IArmor
+internal class PaddedArmor : AArmor
 {
     public PaddedArmor()
         : base(
@@ -13,7 +13,7 @@ internal class PaddedArmor : IArmor
             "Padded armor consists of quilted layers of cloth and batting.",
             11,
             Weight.OfPounds(8),
-            Worth.OfGold(5),
+            Value.OfGold(5),
             0,
             true)
     {

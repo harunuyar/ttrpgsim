@@ -2,13 +2,12 @@
 
 using DnD.Entities.Units;
 
-internal interface IItemDescription
+internal interface IItemDescription : IBonusProvider
 {
     bool IsStackable { get; }
     bool IsConsumable { get; }
     bool IsEquippable { get; }
-    string Name { get; }
     string Description { get; }
     Weight Weight { get; }
-    Worth Value { get; }
+    Value Value { get; }
 }

@@ -4,7 +4,7 @@ using DnD.Entities.Characters;
 using DnD.Entities.Items.Equipments.Armors;
 using DnD.Entities.Units;
 
-internal class ChainMailArmor : IArmor
+internal class ChainMailArmor : AArmor
 {
     public ChainMailArmor()
         : base(
@@ -13,7 +13,7 @@ internal class ChainMailArmor : IArmor
             "Chain mail is made of interlocking metal rings. It includes a layer of quilted fabric underneath the mail to prevent chafing and to cushion the impact of blows. The suit includes gauntlets.",
             16,
             Weight.OfPounds(55),
-            Worth.OfGold(75),
+            Value.OfGold(75),
             13,
             true)
     {

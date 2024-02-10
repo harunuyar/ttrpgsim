@@ -7,12 +7,22 @@ internal abstract class DndScoreCommand : DndCommand
 {
     public DndScoreCommand(Character character) : base(character)
     {
-        IntegerBonuses = new IntegerBonuses(this);
+        Result = IntegerResultWithBonus.Empty(this);
     }
 
-    public IntegerBonuses IntegerBonuses { get; }
+    public IntegerResultWithBonus Result { get; }
 
-    public override EventResult IsValid() => EventResult.Success(this);
+    public override IntegerResultWithBonus Execute()
+    {
+        InitializeResult();
 
-    public abstract override IntegerResult Execute();
+        if (Result.IsSuccess)
+        {
+            CollectBonuses();
+        }
+
+        return Result;
+    }
+
+    public abstract void InitializeResult();
 }

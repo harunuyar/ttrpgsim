@@ -1,6 +1,5 @@
 ﻿namespace DnD.CommandSystem.Commands.IntegerResultCommands;
 
-using DnD.CommandSystem.Results;
 using DnD.Entities.Characters;
 
 internal class GetProficiencyBonus : DndScoreCommand
@@ -11,17 +10,17 @@ internal class GetProficiencyBonus : DndScoreCommand
     {
     }
 
-    public override IntegerResultWithBonuses Execute()
+    public override void InitializeResult()
     {
         int level = Character.Level;
 
         if (level < 1 || level > 20)
         {
-            return IntegerResultWithBonuses.Failure(this, "Level must be between 1 and 20");
+            Result.SetError("Level must be between 1 and 20");
         }
         else
         {
-            return IntegerResultWithBonuses.Success(this, "Base", ProficiencyBonusArr[level - 1], IntegerBonuses);
+            Result.SetBaseValue("Base", ProficiencyBonusArr[level - 1]);
         }
     }
 }

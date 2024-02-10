@@ -1,6 +1,5 @@
 ﻿namespace DnD.CommandSystem.Commands.IntegerResultCommands;
 
-using DnD.CommandSystem.Results;
 using DnD.Entities.Attributes;
 using DnD.Entities.Characters;
 
@@ -13,17 +12,18 @@ internal class GetAttributeModifier : DndScoreCommand
 
     public EAttributeType AttributeType { get; }
 
-    public override IntegerResultWithBonuses Execute()
+    public override void InitializeResult()
     {
         var getAttributeScoreCommand = new GetAttributeScore(Character, AttributeType);
-        getAttributeScoreCommand.CollectBonuses();
         var attributeScoreResult = getAttributeScoreCommand.Execute();
 
         if (attributeScoreResult.IsSuccess)
         {
-            return IntegerResultWithBonuses.Success(this, AttributeType.ToString(), (attributeScoreResult.Value - 10) / 2, IntegerBonuses);
+            Result.SetBaseValue(Character.AttributeSet.GetAttribute(AttributeType), (attributeScoreResult.Value - 10) / 2);
         }
-
-        return IntegerResultWithBonuses.Failure(this, "Attribute score not found");
+        else
+        {
+            Result.SetError(attributeScoreResult.ErrorMessage ?? "Unknown");
+        }
     }
 }

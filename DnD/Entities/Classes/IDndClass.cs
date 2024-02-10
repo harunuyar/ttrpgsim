@@ -5,10 +5,10 @@ using DnD.Entities.Items.Equipments.Armors;
 using DnD.Entities.Items.Equipments.Weapons;
 using DnD.Entities.Skills;
 using DnD.GameManagers.Dice;
-using TableTopRpg.Entities.Character;
 
-internal interface IDndClass : IClass
+internal interface IDndClass : IDndEntity
 {
+    string Description { get; }
     EDiceType HitDie { get; }
     EAttributeType SavingThrowProficiencies { get; }
     EArmorType ArmorProficiencies { get; }

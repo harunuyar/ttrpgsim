@@ -2,9 +2,7 @@
 
 using DnD.CommandSystem.Commands;
 
-internal interface IBonusProvider
+internal interface IBonusProvider : IDndEntity
 {
-    public string Name { get; }
-
     void HandleCommand(DndCommand command);
 }

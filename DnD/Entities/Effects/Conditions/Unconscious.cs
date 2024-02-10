@@ -1,8 +1,9 @@
 ﻿namespace DnD.Entities.Effects.Conditions;
 
-internal class Unconscious : IEffect
+internal class Unconscious : AEffect
 {
-    public string Name => "Unconscious";
-
-    public string Description => "An unconscious creature is incapacitated, can't move or speak, and is unaware of its surroundings.";
+    public Unconscious()
+        : base("Unconscious", "An unconscious creature is incapacitated, can't move or speak, and is unaware of its surroundings.")
+    {
+    }
 }

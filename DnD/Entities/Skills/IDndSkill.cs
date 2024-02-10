@@ -1,9 +1,9 @@
 ﻿namespace DnD.Entities.Skills;
 
 using DnD.Entities.Attributes;
-using TableTopRpg.Entities.Character;
 
-internal interface IDndSkill : ISkill
+internal interface IDndSkill : IDndEntity
 {
+    string Description { get; }
     public EAttributeType AttributeType { get; }
 }

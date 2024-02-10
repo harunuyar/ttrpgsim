@@ -1,15 +1,12 @@
 ﻿namespace DnD.Entities.Effects.Conditions;
 
-internal class Exhaustion : IEffect
+internal class Exhaustion : AEffect
 {
-    public Exhaustion(int level)
+    public Exhaustion(int level = 1)
+        : base("Exhaustion", "Exhaustion is measured in six levels. An effect can give a creature one or more levels of exhaustion, as specified in the effect's description.")
     {
         Level = level;
     }
-
-    public string Name => "Exhaustion";
-
-    public string Description => "Exhaustion is measured in six levels. An effect can give a creature one or more levels of exhaustion, as specified in the effect's description.";
 
     public int Level { get; set; }
 }

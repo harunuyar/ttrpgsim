@@ -11,5 +11,6 @@ internal class Level
     }
 
     public IDndClass Class { get; set; }
+
     public int LevelNum { get; set; }
 }

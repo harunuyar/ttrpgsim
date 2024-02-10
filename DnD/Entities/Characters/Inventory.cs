@@ -8,13 +8,16 @@ internal class Inventory
 {
     public Inventory()
     {
-        this.Wealth = new Worth();
-        this.Items = new List<IItem>();
+        this.Equipments = new Equipments();
+        this.Wealth = new Value();
+        this.Items = new HashSet<IItem>();
     }
 
-    public Worth Wealth { get; set; }
+    public Equipments Equipments { get; set; }
 
-    public List<IItem> Items { get; }
+    public Value Wealth { get; set; }
+
+    public HashSet<IItem> Items { get; }
 
     public void AddItem(IItem item)
     {
@@ -25,39 +28,41 @@ internal class Inventory
     {
         if (itemDescription.IsStackable)
         {
-            IItem? item = this.Items.Find(i => i.ItemDescription == itemDescription);
+            IItem? item = this.Items.FirstOrDefault(i => i.ItemDescription == itemDescription);
             if (item != null)
             {
-                item.Quantity += amount;
+                item.AddQuantity(amount);
                 return;
             }
+            else
+            {
+                IItem newItem = new Item(itemDescription, amount);
+                this.Items.Add(newItem);
+            }
         }
-            
-        IItem newItem = new Item(itemDescription);
-        newItem.Quantity = amount;
-        this.Items.Add(newItem);
+        else
+        {
+            for (int i = 0; i < amount; i++)
+            {
+                IItem newItem = new Item(itemDescription);
+                this.Items.Add(newItem);
+            }
+        }
     }
 
     public void RemoveItem(IItem item, int amount)
     {
         if (Items.Contains(item))
         {
-            int toRemove = Math.Min(item.Quantity, amount);
-            
-            item.Quantity -= toRemove;
-            amount -= toRemove;
+            amount = item.RemoveQuantityAndGetRemaining(amount);
 
             if (item.Quantity == 0)
             {
                 this.Items.Remove(item);
             }
-
-            if (amount > 0) 
-            { 
-                RemoveItem(item.ItemDescription, amount);
-            }
         }
-        else
+
+        if (amount > 0)
         {
             RemoveItem(item.ItemDescription, amount);
         }
@@ -67,13 +72,10 @@ internal class Inventory
     {
         while (amount > 0)
         {
-            IItem? item = this.Items.Find(i => i.ItemDescription == itemDescription);
+            IItem? item = this.Items.FirstOrDefault(i => i.ItemDescription == itemDescription);
             if (item != null)
             {
-                int toRemove = Math.Min(item.Quantity, amount);
-                
-                item.Quantity -= toRemove;
-                amount -= toRemove;
+                amount = item.RemoveQuantityAndGetRemaining(amount);
 
                 if (item.Quantity == 0)
                 {
@@ -85,5 +87,28 @@ internal class Inventory
                 amount = 0;
             }
         }
+    }
+
+    public int GetQuantity(IItemDescription itemDescription)
+    {
+        return this.Items
+            .Where(i => i.ItemDescription == itemDescription)
+            .Select(i => i.Quantity)
+            .Sum();
+    }
+
+    public void EquipItem(IItem item)
+    {
+        if (item.TryEquip())
+        {
+            Items.Add(item);
+            Equipments.EquipedItems.Add(item);
+        }
+    }
+
+    public void UnequipItem(IItem item)
+    {
+        item.Unequip();
+        Equipments.EquipedItems.Remove(item);
     }
 }

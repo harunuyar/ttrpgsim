@@ -1,6 +1,5 @@
 ﻿namespace DnD.CommandSystem.Commands.IntegerResultCommands;
 
-using DnD.CommandSystem.Results;
 using DnD.Entities.Attributes;
 using DnD.Entities.Characters;
 
@@ -13,8 +12,9 @@ internal class GetSavingThrowProficiencyLevel : DndScoreCommand
 
     public EAttributeType AttributeType { get; }
 
-    public override IntegerResultWithBonuses Execute()
+    public override void InitializeResult()
     {
-        return IntegerResultWithBonuses.Success(this, "Base", Character.AttributeSet.GetAttribute(AttributeType).SavingThrowProficiencyLevel, IntegerBonuses);
+        var attribute = Character.AttributeSet.GetAttribute(AttributeType);
+        Result.SetBaseValue(attribute, attribute.SavingThrowProficiencyLevel);
     }
 }

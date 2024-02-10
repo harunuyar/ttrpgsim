@@ -1,8 +1,9 @@
 ﻿namespace DnD.Entities.Effects.Conditions;
 
-internal class Poisoned : IEffect
+internal class Poisoned : AEffect
 {
-    public string Name => "Poisoned";
-
-    public string Description => "A poisoned creature has disadvantage on attack rolls and ability checks.";
+    public Poisoned()
+        : base("Poisoned", "A poisoned creature has disadvantage on attack rolls and ability checks.")
+    {
+    }
 }

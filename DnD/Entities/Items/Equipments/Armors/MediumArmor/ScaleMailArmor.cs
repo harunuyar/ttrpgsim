@@ -4,7 +4,7 @@ using DnD.Entities.Characters;
 using DnD.Entities.Items.Equipments.Armors;
 using DnD.Entities.Units;
 
-internal class ScaleMailArmor : IArmor
+internal class ScaleMailArmor : AArmor
 {
     public ScaleMailArmor()
         : base(
@@ -13,7 +13,7 @@ internal class ScaleMailArmor : IArmor
             "Scale mail consists of a shirt and leggings made of small metal scales affixed to a leather backing. The shirt includes a layer of quilted fabric underneath the scales.",
             14,
             Weight.OfPounds(45),
-            Worth.OfGold(50),
+            Value.OfGold(50),
             0,
             true)
     {

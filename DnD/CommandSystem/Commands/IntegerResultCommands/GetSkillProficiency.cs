@@ -1,6 +1,5 @@
 ﻿namespace DnD.CommandSystem.Commands.IntegerResultCommands;
 
-using DnD.CommandSystem.Results;
 using DnD.Entities.Characters;
 using DnD.Entities.Skills;
 
@@ -13,8 +12,8 @@ internal class GetSkillProficiency : DndScoreCommand
 
     public IDndSkill Skill { get; }
 
-    public override IntegerResultWithBonuses Execute()
+    public override void InitializeResult()
     {
-        return IntegerResultWithBonuses.Success(this, Skill.Name, Character.GetSkillProficiency(Skill), IntegerBonuses);
+        Result.SetBaseValue(Skill, Character.GetSkillProficiency(Skill));
     }
 }

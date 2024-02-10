@@ -1,9 +1,7 @@
 ﻿namespace DnD.CommandSystem.Commands.IntegerResultCommands;
 
-using DnD.CommandSystem.Results;
 using DnD.Entities.Attributes;
 using DnD.Entities.Characters;
-using DnD.Entities.Items.Equipments.Armors;
 
 internal class GetArmorClass : DndScoreCommand
 {
@@ -11,34 +9,16 @@ internal class GetArmorClass : DndScoreCommand
     {
     }
 
-    public override void CollectBonuses()
+    public override void InitializeResult()
     {
-        if (Character.Inventory.Items.Find(i => i.IsEquipped && i is IArmor) is IArmor armor)
+        Result.SetBaseValue("Base Armor Class", 10);
+
+        var getDexterityModifier = new GetAttributeModifier(Character, EAttributeType.Dexterity);
+        var dexterityModifierResult = getDexterityModifier.Execute();
+
+        if (dexterityModifierResult.IsSuccess)
         {
-            IntegerBonuses.AddBonus("Dexterity", armor.GetDexterityBonus(Character));
+            Result.BonusCollection.AddBonus(Character.AttributeSet.Dexterity, dexterityModifierResult.Value);
         }
-        else
-        {
-            var command = new GetAttributeModifier(Character, EAttributeType.Dexterity);
-            command.CollectBonuses();
-            var result = command.Execute();
-
-            if (result.IsSuccess)
-            {
-                IntegerBonuses.AddBonus("Dexterity", result.Value);
-            }
-        }
-
-        base.CollectBonuses();
-    }
-
-    public override IntegerResultWithBonuses Execute()
-    {
-        if (Character.Inventory.Items.Find(i => i.IsEquipped && i is IArmor) is IArmor armor)
-        {
-            return IntegerResultWithBonuses.Success(this, armor.Name, armor.BaseArmorClass, IntegerBonuses);
-        }
-
-        return IntegerResultWithBonuses.Success(this, "Base Armor Class", 10, IntegerBonuses);
     }
 }

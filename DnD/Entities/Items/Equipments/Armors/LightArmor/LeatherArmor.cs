@@ -4,7 +4,7 @@ using DnD.Entities.Characters;
 using DnD.Entities.Items.Equipments.Armors;
 using DnD.Entities.Units;
 
-internal class LeatherArmor : IArmor
+internal class LeatherArmor : AArmor
 {
     public LeatherArmor()
         : base(
@@ -13,7 +13,7 @@ internal class LeatherArmor : IArmor
             "Leather armor is made of soft, supple leather.",
             11,
             Weight.OfPounds(10),
-            Worth.OfGold(10),
+            Value.OfGold(10),
             0,
             false)
     {

@@ -1,6 +1,5 @@
 ﻿namespace DnD.CommandSystem.Commands.IntegerResultCommands;
 
-using DnD.CommandSystem.Results;
 using DnD.Entities.Characters;
 using DnD.Entities.Skills;
 
@@ -13,22 +12,16 @@ internal class GetPassiveSkillValue : DndScoreCommand
 
     public IDndSkill Skill { get; }
 
-    override public void CollectBonuses()
+    public override void InitializeResult()
     {
+        Result.SetBaseValue("Base", 10);
+
         var getSkillModifierCommand = new GetSkillModifier(Character, Skill);
-        getSkillModifierCommand.CollectBonuses();
         var skillModifierResult = getSkillModifierCommand.Execute();
 
         if (skillModifierResult.IsSuccess)
         {
-            IntegerBonuses.AddBonus(Skill.Name, skillModifierResult.Value);
+            Result.BonusCollection.AddBonus(Skill, skillModifierResult.Value);
         }
-
-        base.CollectBonuses();
-    }
-
-    public override IntegerResultWithBonuses Execute()
-    {
-        return IntegerResultWithBonuses.Success(this, "Base", 10, IntegerBonuses);
     }
 }

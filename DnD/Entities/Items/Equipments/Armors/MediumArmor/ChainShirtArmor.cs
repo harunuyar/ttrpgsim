@@ -4,7 +4,7 @@ using DnD.Entities.Characters;
 using DnD.Entities.Items.Equipments.Armors;
 using DnD.Entities.Units;
 
-internal class ChainShirtArmor : IArmor
+internal class ChainShirtArmor : AArmor
 {
     public ChainShirtArmor()
         : base(
@@ -13,7 +13,7 @@ internal class ChainShirtArmor : IArmor
             "A chain shirt is made of interlocking metal rings, which form a mesh.",
             13,
             Weight.OfPounds(20),
-            Worth.OfGold(50),
+            Value.OfGold(50),
             0,
             false)
     {

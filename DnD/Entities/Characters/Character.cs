@@ -1,13 +1,14 @@
 ﻿namespace DnD.Entities.Characters;
 
+using DnD.Entities.Allignments;
 using DnD.Entities.Effects;
+using DnD.Entities.Feats;
 using DnD.Entities.Items.Equipments.Armors;
 using DnD.Entities.Races;
 using DnD.Entities.Skills;
-using TableTopRpg.Entities;
-using TableTopRpg.Entities.Character;
+using DnD.Entities.Traits;
 
-internal class Character : IGameActor
+internal class Character
 {
     public Character(string name, Race race)
     {
@@ -19,28 +20,40 @@ internal class Character : IGameActor
         this.HitPoints = new HitPoints();
         this.SkillProficiencies = new Dictionary<IDndSkill, int>();
         this.ArmorProficiencies = EArmorType.None;
-        this.Traits = new List<ITrait>();
-        this.Feats = new List<IFeat>();
+        this.Traits = new List<ATrait>();
+        this.Feats = new List<AFeat>();
         this.Levels = new List<Level>();
         this.Inventory = new Inventory();
-        this.Effects = new List<IEffect>();
+        this.Effects = new List<AEffect>();
     }
 
     public string Name { get; set; }
-    public IRace Race { get; set; }
-    public IAlignment Alignment { get; set; }
-    public Dictionary<IDndSkill, int> SkillProficiencies { get; }
-    public EArmorType ArmorProficiencies { get; set; }  
-    public List<ITrait> Traits { get; }
-    public List<IFeat> Feats { get; }
-    public List<Level> Levels { get; }
-    public int Level => Levels.Sum(l => l.LevelNum);
-    public AttributeSet AttributeSet { get; }
-    public HitPoints HitPoints { get; }
-    public Inventory Inventory { get; }
-    public List<IEffect> Effects { get; }
-    public bool HasInspiration { get; set; }
 
+    public IRace Race { get; set; }
+
+    public IAlignment Alignment { get; set; }
+
+    public Dictionary<IDndSkill, int> SkillProficiencies { get; }
+
+    public EArmorType ArmorProficiencies { get; set; }
+
+    public List<ATrait> Traits { get; }
+
+    public List<AFeat> Feats { get; }
+
+    public List<Level> Levels { get; }
+
+    public int Level => Levels.Sum(l => l.LevelNum);
+
+    public AttributeSet AttributeSet { get; }
+
+    public HitPoints HitPoints { get; }
+
+    public Inventory Inventory { get; }
+
+    public List<AEffect> Effects { get; }
+
+    public bool HasInspiration { get; set; }
 
     public void SetSkillProficiency(IDndSkill skill, int proficiencyLevel)
     {

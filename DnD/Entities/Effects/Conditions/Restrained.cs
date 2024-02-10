@@ -1,8 +1,9 @@
 ﻿namespace DnD.Entities.Effects.Conditions;
 
-internal class Restrained : IEffect
+internal class Restrained : AEffect
 {
-    public string Name => "Restrained";
-
-    public string Description => "A restrained creature's speed becomes 0, and it can't benefit from any bonus to its speed.";
+    public Restrained()
+        : base("Restrained", "A restrained creature's speed becomes 0, and it can't benefit from any bonus to its speed.")
+    {
+    }
 }

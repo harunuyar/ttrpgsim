@@ -1,18 +1,24 @@
 ﻿namespace DnD.CommandSystem.Commands;
 
 using DnD.CommandSystem.Results;
+using DnD.Entities;
 using DnD.Entities.Characters;
 
 internal abstract class DndBooleanCommand : DndCommand
 {
-    public DndBooleanCommand(Character character) : base(character)
+    public DndBooleanCommand(Character character, bool defaultValue = false) : base(character)
     {
-        BooleanBonuses = new BooleanBonuses(this);
+        Result = BooleanResult.Success(this, new CustomDndEntity("Default"), defaultValue);
     }
 
-    public BooleanBonuses BooleanBonuses { get; }
+    public BooleanResult Result { get; }
 
-    public abstract override BooleanResult Execute();
+    public override BooleanResult Execute()
+    {
+        InitializeResult();
+        CollectBonuses();
+        return Result;
+    }
 
-    public override EventResult IsValid() => EventResult.Success(this);
+    public abstract void InitializeResult();
 }

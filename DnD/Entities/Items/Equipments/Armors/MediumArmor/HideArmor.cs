@@ -4,7 +4,7 @@ using DnD.Entities.Characters;
 using DnD.Entities.Items.Equipments.Armors;
 using DnD.Entities.Units;
 
-internal class HideArmor : IArmor
+internal class HideArmor : AArmor
 {
     public HideArmor()
         : base(
@@ -13,7 +13,7 @@ internal class HideArmor : IArmor
             "Hide armor is made from thick and tough animal hides.",
             12,
             Weight.OfPounds(12),
-            Worth.OfGold(10),
+            Value.OfGold(10),
             0,
             false)
     {

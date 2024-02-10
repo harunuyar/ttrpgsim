@@ -1,13 +1,11 @@
 ﻿namespace DnD.Entities.Attributes;
 
-using TableTopRpg.Entities.Character;
-
 internal class Attribute : IAttribute
 {
-    public Attribute(EAttributeType attributeType, int value)
+    public Attribute(EAttributeType attributeType, int score)
     {
         AttributeType = attributeType;
-        Value = value;
+        Score = score;
         SavingThrowProficiencyLevel = 0;
     }
 
@@ -15,7 +13,7 @@ internal class Attribute : IAttribute
 
     public string Name => AttributeType.ToString();
 
-    public int Value { get; set; }
+    public int Score { get; set; }
 
     public int SavingThrowProficiencyLevel { get; set; }
 }
