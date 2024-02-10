@@ -1,6 +1,7 @@
 ﻿namespace Dnd.Entities.Races.Predefined;
 
 using Dnd.Entities.Traits;
+using Dnd.Entities.Traits.Dwarf;
 
 public class Dwarf : IRace
 {
@@ -18,5 +19,10 @@ public class Dwarf : IRace
 
     public ISize Size => Races.Size.Medium;
 
-    public List<ATrait> RaceTraits { get; } = new List<ATrait>();
+    public List<ATrait> RaceTraits { get; } = new List<ATrait>() 
+    { 
+        AbilityScoreIncrease.Instance, 
+        DwarvenResilience.Instance, 
+        DwarvenCombatTraining.Instance 
+    };
 }

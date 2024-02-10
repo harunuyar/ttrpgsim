@@ -1,12 +1,11 @@
 ﻿namespace Dnd.CommandSystem.Commands;
 
 using Dnd.CommandSystem.Results;
-using Dnd.Entities;
 using Dnd.Entities.Characters;
 
 public abstract class DndBooleanCommand : DndCommand
 {
-    public DndBooleanCommand(Character character, bool defaultValue = false) : base(character)
+    public DndBooleanCommand(Character character) : base(character)
     {
         Result = BooleanResult.Empty(this);
         ShouldCollectBonuses = true;

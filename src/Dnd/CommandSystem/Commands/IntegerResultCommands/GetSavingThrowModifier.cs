@@ -3,13 +3,17 @@
 using Dnd.CommandSystem.Commands.BooleanResultCommands;
 using Dnd.Entities.Attributes;
 using Dnd.Entities.Characters;
+using Dnd.Entities.Items.Equipments.Weapons;
 
 public class GetSavingThrowModifier : DndScoreCommand
 {
-    public GetSavingThrowModifier(Character character, EAttributeType attributeType) : base(character)
+    public GetSavingThrowModifier(Character character, EDamageType damageType, EAttributeType attributeType) : base(character)
     {
+        DamageType = damageType;
         AttributeType = attributeType;
     }
+
+    public EDamageType DamageType { get; }
 
     public EAttributeType AttributeType { get; }
 
