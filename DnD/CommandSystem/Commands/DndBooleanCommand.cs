@@ -9,14 +9,22 @@ internal abstract class DndBooleanCommand : DndCommand
     public DndBooleanCommand(Character character, bool defaultValue = false) : base(character)
     {
         Result = BooleanResult.Success(this, new CustomDndEntity("Default"), defaultValue);
+        ShouldCollectBonuses = true;
     }
 
     public BooleanResult Result { get; }
 
+    protected bool ShouldCollectBonuses { get; set; }
+
     public override BooleanResult Execute()
     {
         InitializeResult();
-        CollectBonuses();
+
+        if (ShouldCollectBonuses && Result.IsSuccess)
+        {
+            CollectBonuses();
+        }
+        
         return Result;
     }
 

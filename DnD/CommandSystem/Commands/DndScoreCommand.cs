@@ -8,15 +8,18 @@ internal abstract class DndScoreCommand : DndCommand
     public DndScoreCommand(Character character) : base(character)
     {
         Result = IntegerResultWithBonus.Empty(this);
+        ShouldCollectBonuses = true;
     }
 
     public IntegerResultWithBonus Result { get; }
+
+    protected bool ShouldCollectBonuses { get; set; }
 
     public override IntegerResultWithBonus Execute()
     {
         InitializeResult();
 
-        if (Result.IsSuccess)
+        if (ShouldCollectBonuses && Result.IsSuccess)
         {
             CollectBonuses();
         }

@@ -6,12 +6,13 @@ using DnD.GameManagers.Dice;
 
 internal abstract class AWeapon : IItemDescription
 {
-    public AWeapon(string name, string desc, Weight weight, Value value, EDiceType damageDie, EDamageType damageType, EWeaponProperty weaponProperties)
+    public AWeapon(string name, string desc, Weight weight, Value value, EWeaponType weaponType, EDiceType damageDie, EDamageType damageType, EWeaponProperty weaponProperties)
     {
         Name = name;
         Description = desc;
         Weight = weight;
         Value = value;
+        WeaponType = weaponType;
         DamageDie = damageDie;
         DamageType = damageType;
         WeaponProperties = weaponProperties;
@@ -30,6 +31,8 @@ internal abstract class AWeapon : IItemDescription
     public Weight Weight { get; set;}
 
     public Value Value { get; set; }
+
+    public EWeaponType WeaponType { get; set; }
 
     public EDiceType DamageDie { get; set; }
 

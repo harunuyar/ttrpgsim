@@ -1,9 +1,9 @@
-﻿namespace DnD.CommandSystem.Commands.IntegerResultCommands;
+﻿namespace DnD.CommandSystem.Commands.BooleanResultCommands;
 
 using DnD.Entities.Characters;
 using DnD.Entities.Skills;
 
-internal class GetSkillProficiency : DndScoreCommand
+internal class GetSkillProficiency : DndBooleanCommand
 {
     public GetSkillProficiency(Character character, IDndSkill skill) : base(character)
     {
@@ -14,6 +14,6 @@ internal class GetSkillProficiency : DndScoreCommand
 
     public override void InitializeResult()
     {
-        Result.SetBaseValue(Skill, Character.GetSkillProficiency(Skill));
+        Result.SetValue("Base", Character.GetSkillProficiency(Skill));
     }
 }

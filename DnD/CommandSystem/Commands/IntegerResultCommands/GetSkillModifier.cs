@@ -1,5 +1,6 @@
 ﻿namespace DnD.CommandSystem.Commands.IntegerResultCommands;
 
+using DnD.CommandSystem.Commands.BooleanResultCommands;
 using DnD.Entities.Characters;
 using DnD.Entities.Skills;
 
@@ -24,14 +25,14 @@ internal class GetSkillModifier : DndScoreCommand
             var getSkillProficiencyCommand = new GetSkillProficiency(Character, Skill);
             var skillProficiencyResult = getSkillProficiencyCommand.Execute();
 
-            if (skillProficiencyResult.IsSuccess && skillProficiencyResult.Value > 0)
+            if (skillProficiencyResult.IsSuccess && skillProficiencyResult.Value)
             {
                 var getProficiencyBonusCommand = new GetProficiencyBonus(Character);
                 var proficiencyBonusResult = getProficiencyBonusCommand.Execute();
 
                 if (proficiencyBonusResult.IsSuccess)
                 {
-                    Result.BonusCollection.AddBonus("Proficiency Bonus", skillProficiencyResult.Value * proficiencyBonusResult.Value);
+                    Result.BonusCollection.AddBonus("Proficiency Bonus", proficiencyBonusResult.Value);
                 }
             }
         }

@@ -6,7 +6,7 @@ internal class Attribute : IAttribute
     {
         AttributeType = attributeType;
         Score = score;
-        SavingThrowProficiencyLevel = 0;
+        SavingThrowProficiency = false;
     }
 
     public EAttributeType AttributeType { get; }
@@ -15,5 +15,5 @@ internal class Attribute : IAttribute
 
     public int Score { get; set; }
 
-    public int SavingThrowProficiencyLevel { get; set; }
+    public bool SavingThrowProficiency { get; set; }
 }

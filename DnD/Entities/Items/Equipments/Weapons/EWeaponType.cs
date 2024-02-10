@@ -2,6 +2,7 @@
 
 internal enum EWeaponType : long
 {
+    None                = 0x0000000000000000,
     // Simple Melee Weapons
     Club                = 0x0000000000000001,
     Dagger              = 0x0000000000000002,

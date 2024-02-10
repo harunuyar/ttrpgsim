@@ -4,6 +4,7 @@ using DnD.Entities.Allignments;
 using DnD.Entities.Effects;
 using DnD.Entities.Feats;
 using DnD.Entities.Items.Equipments.Armors;
+using DnD.Entities.Items.Equipments.Weapons;
 using DnD.Entities.Races;
 using DnD.Entities.Skills;
 using DnD.Entities.Traits;
@@ -18,8 +19,9 @@ internal class Character
         this.Alignment = Allignments.Alignment.None;
         this.AttributeSet = new AttributeSet();
         this.HitPoints = new HitPoints();
-        this.SkillProficiencies = new Dictionary<IDndSkill, int>();
+        this.SkillsWithProficiency = new HashSet<IDndSkill>();
         this.ArmorProficiencies = EArmorType.None;
+        this.WeaponProficiencies = EWeaponType.None;
         this.Traits = new List<ATrait>();
         this.Feats = new List<AFeat>();
         this.Levels = new List<Level>();
@@ -33,9 +35,11 @@ internal class Character
 
     public IAlignment Alignment { get; set; }
 
-    public Dictionary<IDndSkill, int> SkillProficiencies { get; }
+    public HashSet<IDndSkill> SkillsWithProficiency { get; }
 
     public EArmorType ArmorProficiencies { get; set; }
+
+    public EWeaponType WeaponProficiencies { get; set; }
 
     public List<ATrait> Traits { get; }
 
@@ -55,14 +59,21 @@ internal class Character
 
     public bool HasInspiration { get; set; }
 
-    public void SetSkillProficiency(IDndSkill skill, int proficiencyLevel)
+    public void SetSkillProficiency(IDndSkill skill, bool isProficient)
     {
-        SkillProficiencies[skill] = proficiencyLevel;
+        if (isProficient)
+        {
+            SkillsWithProficiency.Add(skill);
+        }
+        else
+        {
+            SkillsWithProficiency.Remove(skill);
+        }
     }
 
-    public int GetSkillProficiency(IDndSkill skill)
+    public bool GetSkillProficiency(IDndSkill skill)
     {
-        return SkillProficiencies.GetValueOrDefault(skill, 0);
+        return SkillsWithProficiency.Contains(skill);
     }
 
     public void SetArmorProficiency(EArmorType armorType, bool isProficient)
@@ -80,5 +91,22 @@ internal class Character
     public bool HasArmorProficiency(EArmorType armorType)
     {
         return ArmorProficiencies.HasFlag(armorType) || Levels.Any(l => l.Class.ArmorProficiencies.HasFlag(armorType));
+    }
+
+    public void SetWeaponProficiency(EWeaponType weaponType, bool isProficient)
+    {
+        if (isProficient)
+        {
+            WeaponProficiencies |= weaponType;
+        }
+        else
+        {
+            WeaponProficiencies &= ~weaponType;
+        }
+    }
+
+    public bool HasWeaponProficiency(EWeaponType weaponType)
+    {
+        return WeaponProficiencies.HasFlag(weaponType) || Levels.Any(l => l.Class.WeaponProficiencies.HasFlag(weaponType));
     }
 }
