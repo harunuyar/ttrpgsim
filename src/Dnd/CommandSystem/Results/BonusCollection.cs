@@ -52,6 +52,12 @@ public class BonusCollection
         return AddAdvantage(new CustomDndEntity(source), advantage);
     }
 
+    public void Reset()
+    {
+        Values.Clear();
+        Advantages.Clear();
+    }
+
     public override string ToString()
     {
         return string.Join(Environment.NewLine, Values.Select(e => e.Key.Name + ": " + e.Value)) 

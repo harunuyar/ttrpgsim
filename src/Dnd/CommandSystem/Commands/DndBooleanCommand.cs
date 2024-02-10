@@ -8,7 +8,7 @@ public abstract class DndBooleanCommand : DndCommand
 {
     public DndBooleanCommand(Character character, bool defaultValue = false) : base(character)
     {
-        Result = BooleanResult.Success(this, new CustomDndEntity("Default"), defaultValue);
+        Result = BooleanResult.Empty(this);
         ShouldCollectBonuses = true;
     }
 
@@ -18,6 +18,8 @@ public abstract class DndBooleanCommand : DndCommand
 
     public override BooleanResult Execute()
     {
+        Result.Reset();
+
         InitializeResult();
 
         if (ShouldCollectBonuses && Result.IsSuccess)

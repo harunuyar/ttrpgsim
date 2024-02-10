@@ -17,6 +17,8 @@ public abstract class DndScoreCommand : DndCommand
 
     public override IntegerResultWithBonus Execute()
     {
+        Result.Reset();
+
         InitializeResult();
 
         if (ShouldCollectBonuses && Result.IsSuccess)

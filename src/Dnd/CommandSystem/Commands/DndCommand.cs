@@ -16,6 +16,11 @@ public abstract class DndCommand : ICommand
     
     protected void CollectBonuses()
     {
+        foreach (var trait in Character.Race.RaceTraits)
+        {
+            trait.HandleCommand(this);
+        }
+
         foreach (var trait in Character.Traits)
         {
             trait.HandleCommand(this);

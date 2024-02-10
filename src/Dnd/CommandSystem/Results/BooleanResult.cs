@@ -5,7 +5,9 @@ using Dnd.Entities;
 
 public class BooleanResult : ICommandResult
 {
-    public static BooleanResult Success(ICommand command, IDndEntity? source, bool value = false) => new BooleanResult(command, true, null, source, value);
+    public static BooleanResult Empty(ICommand command) => new BooleanResult(command, true, null, null, false);
+
+    public static BooleanResult Success(ICommand command, IDndEntity source, bool value) => new BooleanResult(command, true, null, source, value);
 
     public static BooleanResult Failure(ICommand command, string errorMessage) => new BooleanResult(command, false, errorMessage, null, false);
 
@@ -43,6 +45,14 @@ public class BooleanResult : ICommandResult
     public void SetValue(string source, bool value)
     {
         SetValue(new CustomDndEntity(source), value);
+    }
+
+    public void Reset()
+    {
+        IsSuccess = true;
+        ErrorMessage = null;
+        Source = null;
+        Value = false;
     }
 
     public override string ToString()

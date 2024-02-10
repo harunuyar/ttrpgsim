@@ -11,7 +11,7 @@ using Dnd.Entities.Traits;
 
 public class Character
 {
-    public Character(string name, Race race)
+    public Character(string name, IRace race)
     {
         this.Race = race;
         this.Name = name;

@@ -52,6 +52,15 @@ public class IntegerResultWithBonus : ICommandResult
         SetBaseValue(new CustomDndEntity(source), value);
     }
 
+    public void Reset()
+    {
+        IsSuccess = true;
+        ErrorMessage = null;
+        Source = null;
+        BaseValue = 0;
+        BonusCollection.Reset();
+    }
+
     public override string ToString()
     {
         return IsSuccess ? $"{Source}: {Value}" + Environment.NewLine + BonusCollection.ToString() : ErrorMessage ?? "Unknown error";
