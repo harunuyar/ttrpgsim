@@ -40,6 +40,5 @@ public abstract class DndCommand : ICommand
         Character.Inventory.Equipments.Shield?.ItemDescription.HandleCommand(this);
         Character.Inventory.Equipments.MainHandWeapon?.ItemDescription.HandleCommand(this);
         Character.Inventory.Equipments.OffHandWeapon?.ItemDescription.HandleCommand(this);
-        Character.Inventory.Equipments.RangedWeapon?.ItemDescription.HandleCommand(this);
     }
 }

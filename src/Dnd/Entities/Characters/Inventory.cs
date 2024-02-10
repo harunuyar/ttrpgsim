@@ -1,6 +1,8 @@
 ﻿namespace Dnd.Entities.Characters;
 
 using Dnd.Entities.Items;
+using Dnd.Entities.Items.Equipments.Armors;
+using Dnd.Entities.Items.Equipments.Weapons;
 using Dnd.Entities.Units;
 using System.Collections.Generic;
 
@@ -99,16 +101,135 @@ public class Inventory
 
     public void EquipItem(IItem item)
     {
-        if (item.TryEquip())
+        if (item.ItemDescription is AArmor)
         {
-            Items.Add(item);
-            Equipments.EquipedItems.Add(item);
+            EquipArmor(item);
+        }
+        else if (item.ItemDescription is AWeapon)
+        {
+            EquipWeapon(item, true);
+        }
+        else if (item.ItemDescription is Shield)
+        {
+            EquipShield(item);
+        }
+        else
+        {
+            if (item.TryEquip())
+            {
+                Items.Add(item);
+                Equipments.EquipedItems.Add(item);
+            }
         }
     }
 
     public void UnequipItem(IItem item)
     {
-        item.Unequip();
-        Equipments.EquipedItems.Remove(item);
+        if (item.ItemDescription is AArmor)
+        {
+            UnequipArmor();
+        }
+        else if (item.ItemDescription is AWeapon)
+        {
+            UnequipWeapon(true);
+        }
+        else if (item.ItemDescription is Shield)
+        {
+            UnequipShield();
+        }
+        else
+        {
+            item.Unequip();
+            Equipments.EquipedItems.Remove(item);
+        }
+    }
+
+    public void EquipArmor(IItem item)
+    {
+        UnequipArmor();
+        if (item.TryEquip())
+        {
+            Items.Add(item);
+            Equipments.Armor = item;
+        }
+    }
+
+    public void UnequipArmor()
+    {
+        if (Equipments.Armor != null)
+        {
+            Equipments.Armor.Unequip();
+            Equipments.Armor = null;
+        }
+    }
+
+    public void EquipShield(IItem item)
+    {
+        UnequipShield();
+        if (item.TryEquip())
+        {
+            Items.Add(item);
+            Equipments.Shield = item;
+        }
+    }
+
+    public void UnequipShield()
+    {
+        if (Equipments.Shield != null)
+        {
+            Equipments.Shield.Unequip();
+            Equipments.Shield = null;
+        }
+    }
+
+    public void EquipWeapon(IItem item, bool mainHand)
+    {
+        UnequipWeapon(mainHand);
+
+        if (item.ItemDescription is AWeapon weapon && weapon.WeaponProperties.HasFlag(EWeaponProperty.TwoHanded)) // If the weapon is two-handed
+        {
+            UnequipWeapon(!mainHand); // Unequip the other-hand weapon
+            mainHand = true; // Equip the two-handed weapon in the main hand
+        }
+        else if (Equipments.MainHandWeapon?.ItemDescription is AWeapon mainHandWeapon && mainHandWeapon.WeaponProperties.HasFlag(EWeaponProperty.TwoHanded)) // If the main hand weapon is two-handed
+        {
+            UnequipWeapon(true); // Unequip the two-handed weapon
+        }
+        
+        if (item.TryEquip())
+        {
+            Items.Add(item);
+
+            if (mainHand)
+            {
+                Equipments.MainHandWeapon = item;
+            }
+            else
+            {
+                Equipments.OffHandWeapon = item;
+            }
+            
+            Equipments.MainHandWeapon = item;
+        }
+    }
+
+    public void UnequipWeapon(bool mainHand)
+    {
+        if (mainHand)
+        {
+            if (Equipments.MainHandWeapon != null)
+            {
+                Equipments.MainHandWeapon.Unequip();
+                Equipments.MainHandWeapon = null;
+            }
+        }
+        else
+        {
+            if (Equipments.OffHandWeapon != null)
+            {
+                Equipments.OffHandWeapon.Unequip();
+                Equipments.OffHandWeapon = null;
+            }
+        }
     }
 }

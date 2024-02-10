@@ -17,7 +17,5 @@ public class Equipments
 
     public IItem? OffHandWeapon { get; set; }
 
-    public IItem? RangedWeapon { get; set; }
-
     public HashSet<IItem> EquipedItems { get; }
 }
