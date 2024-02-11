@@ -1,6 +1,7 @@
 ﻿namespace Dnd.Entities.Items.Equipments.Armors;
 
 using Dnd.CommandSystem.Commands;
+using Dnd.CommandSystem.Commands.BooleanResultCommands;
 using Dnd.CommandSystem.Commands.IntegerResultCommands;
 using Dnd.Entities.Advantage;
 using Dnd.Entities.Characters;
@@ -72,6 +73,16 @@ public abstract class AArmor : IItemDescription
             if (dexterityBonusDifference != 0)
             {
                 getArmorClass.Result.BonusCollection.AddBonus(this, dexterityBonusDifference);
+            }
+        }
+        else if (command is CanEquipItem canEquipItem && canEquipItem.Item.ItemDescription == this)
+        {
+            var getStrengthModifier = new GetAttributeModifier(canEquipItem.Character, Attributes.EAttributeType.Strength);
+            var strengthModifier = getStrengthModifier.Execute();
+
+            if (strengthModifier.IsSuccess && strengthModifier.Value < StrengthRequirement)
+            {
+                canEquipItem.Result.SetValue("Not enough strength", false);
             }
         }
     }

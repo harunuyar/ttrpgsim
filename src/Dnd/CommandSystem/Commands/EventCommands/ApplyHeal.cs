@@ -4,12 +4,13 @@ using Dnd.CommandSystem.Commands.IntegerResultCommands;
 using Dnd.CommandSystem.Results;
 using Dnd.Entities.Characters;
 
-public class Heal : DndCommand
+public class ApplyHeal : DndCommand
 {
-    public Heal(Character character, int amount) : base(character)
+    public ApplyHeal(Character character, int amount) : base(character)
     {
         Amount = amount;
     }
+
     public int Amount { get; }
 
     public override ICommandResult Execute()

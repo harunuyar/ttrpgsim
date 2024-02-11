@@ -4,9 +4,9 @@ using Dnd.Entities.Attributes;
 using Dnd.Entities.Characters;
 using Dnd.Entities.Items.Equipments.Weapons;
 
-public class CalculateDamageModifier : DndScoreCommand
+public class CalculateWeaponDamageModifier : DndScoreCommand
 {
-    public CalculateDamageModifier(Character character, AWeapon weapon) : base(character)
+    public CalculateWeaponDamageModifier(Character character, AWeapon weapon) : base(character)
     {
         Weapon = weapon;
     }
@@ -35,7 +35,15 @@ public class CalculateDamageModifier : DndScoreCommand
                 }
             }
 
-            Result.SetBaseValue(usedAttribute, attributeModifier);
+            if (Weapon == Character.Inventory.Equipments.MainHandWeapon || attributeModifier < 0)
+            {
+                Result.SetBaseValue(usedAttribute, attributeModifier);
+            }
+            else
+            {
+                // don't add the attribute modifier if it is an off-hand weapon attack and the modifier a positive value
+                Result.SetBaseValue("Base", 0);
+            }
         }
         else
         {

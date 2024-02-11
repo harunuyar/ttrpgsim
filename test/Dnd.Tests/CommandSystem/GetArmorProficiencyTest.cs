@@ -26,7 +26,7 @@ public class GetArmorProficiencyTest
     [DataRow(EArmorType.All, true)]
     public void TestGetArmorProficiency(EArmorType armorType, bool proficiency)
     {
-        var getArmorProficiencyCommand = new GetArmorProficiency(character!, armorType);
+        var getArmorProficiencyCommand = new HasArmorProficiency(character!, armorType);
         var result = getArmorProficiencyCommand.Execute();
 
         Assert.IsTrue(result.IsSuccess);

@@ -11,7 +11,7 @@ public abstract class DndScoreCommand : DndCommand
         ShouldCollectBonuses = true;
     }
 
-    public IntegerResultWithBonus Result { get; }
+    internal IntegerResultWithBonus Result { get; }
 
     protected bool ShouldCollectBonuses { get; set; }
 

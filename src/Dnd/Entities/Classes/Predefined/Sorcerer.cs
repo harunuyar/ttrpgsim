@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 public class Sorcerer : IDndClass
 {
-    public EDiceType HitDie => EDiceType.D6;
+    public EDiceType HitDie => EDiceType.d6;
 
     public EAttributeType SavingThrowProficiencies => EAttributeType.Constitution | EAttributeType.Charisma;
 

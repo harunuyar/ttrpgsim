@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 public class Wizard : IDndClass
 {
-    public EDiceType HitDie => EDiceType.D6;
+    public EDiceType HitDie => EDiceType.d6;
 
     public EAttributeType SavingThrowProficiencies => EAttributeType.Intelligence | EAttributeType.Wisdom;
 

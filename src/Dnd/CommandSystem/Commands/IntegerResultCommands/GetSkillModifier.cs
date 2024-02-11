@@ -22,7 +22,7 @@ public class GetSkillModifier : DndScoreCommand
         {
             Result.SetBaseValue(Character.AttributeSet.GetAttribute(Skill.AttributeType), attributeModifierResult.Value);
 
-            var getSkillProficiencyCommand = new GetSkillProficiency(Character, Skill);
+            var getSkillProficiencyCommand = new HasSkillProficiency(Character, Skill);
             var skillProficiencyResult = getSkillProficiencyCommand.Execute();
 
             if (skillProficiencyResult.IsSuccess && skillProficiencyResult.Value)

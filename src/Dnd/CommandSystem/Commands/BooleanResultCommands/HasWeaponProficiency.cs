@@ -3,9 +3,9 @@
 using Dnd.Entities.Characters;
 using Dnd.Entities.Items.Equipments.Weapons;
 
-public class GetWeaponProficiency : DndBooleanCommand
+public class HasWeaponProficiency : DndBooleanCommand
 {
-    public GetWeaponProficiency(Character character, EWeaponType weaponType) : base(character)
+    public HasWeaponProficiency(Character character, EWeaponType weaponType) : base(character)
     {
         this.WeaponType = weaponType;
     }

@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 public class Barbarian : IDndClass
 {
-    public EDiceType HitDie => EDiceType.D12;
+    public EDiceType HitDie => EDiceType.d12;
 
     public EAttributeType SavingThrowProficiencies => EAttributeType.Strength | EAttributeType.Constitution;
 

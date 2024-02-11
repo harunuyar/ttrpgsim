@@ -22,7 +22,7 @@ public class GetSkillProficiencyTest
     [TestMethod]
     public void TestGetSkillProficiencyTrue()
     {
-        var getSkillProficiencyCommand = new GetSkillProficiency(character!, Intimidation.Instance);
+        var getSkillProficiencyCommand = new HasSkillProficiency(character!, Intimidation.Instance);
         var result = getSkillProficiencyCommand.Execute();
 
         Assert.IsTrue(result.IsSuccess);
@@ -32,7 +32,7 @@ public class GetSkillProficiencyTest
     [TestMethod]
     public void TestGetSkillProficiencyFalse()
     {
-        var getSkillProficiencyCommand = new GetSkillProficiency(character!, Perception.Instance);
+        var getSkillProficiencyCommand = new HasSkillProficiency(character!, Perception.Instance);
         var result = getSkillProficiencyCommand.Execute();
 
         Assert.IsTrue(result.IsSuccess);

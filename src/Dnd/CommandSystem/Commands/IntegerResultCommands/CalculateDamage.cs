@@ -21,7 +21,7 @@ public class CalculateDamage : DndScoreCommand
     {
         Result.SetBaseValue("Damage", Damage);
 
-        var getDamageResistance = new GetDamageResistance(Character, DamageType);
+        var getDamageResistance = new HasDamageResistance(Character, DamageType);
         var damageResistanceResult = getDamageResistance.Execute();
 
         if (damageResistanceResult.IsSuccess && damageResistanceResult.Value)

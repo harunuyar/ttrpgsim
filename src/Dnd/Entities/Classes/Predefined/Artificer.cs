@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 public class Artificer : IDndClass
 {
-    public EDiceType HitDie => EDiceType.D8;
+    public EDiceType HitDie => EDiceType.d8;
 
     public EAttributeType SavingThrowProficiencies => EAttributeType.Constitution | EAttributeType.Intelligence;
 

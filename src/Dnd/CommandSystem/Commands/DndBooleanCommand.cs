@@ -11,7 +11,7 @@ public abstract class DndBooleanCommand : DndCommand
         ShouldCollectBonuses = true;
     }
 
-    public BooleanResult Result { get; }
+    internal BooleanResult Result { get; }
 
     protected bool ShouldCollectBonuses { get; set; }
 

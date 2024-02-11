@@ -3,9 +3,9 @@
 using Dnd.Entities.Characters;
 using Dnd.Entities.Items.Equipments.Armors;
 
-public class GetArmorProficiency : DndBooleanCommand
+public class HasArmorProficiency : DndBooleanCommand
 {
-    public GetArmorProficiency(Character character, EArmorType armorType) : base(character)
+    public HasArmorProficiency(Character character, EArmorType armorType) : base(character)
     {
         ArmorType = armorType;
     }

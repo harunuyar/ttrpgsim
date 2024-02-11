@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 public class Fighter : IDndClass
 {
-    public EDiceType HitDie => EDiceType.D10;
+    public EDiceType HitDie => EDiceType.d10;
 
     public EAttributeType SavingThrowProficiencies => EAttributeType.Strength | EAttributeType.Constitution;
 

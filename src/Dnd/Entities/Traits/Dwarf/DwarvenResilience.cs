@@ -24,7 +24,7 @@ public class DwarvenResilience : ATrait
             }
         }
 
-        if (command is GetDamageResistance getDamageResistance)
+        if (command is HasDamageResistance getDamageResistance)
         {
             if (getDamageResistance.DamageType == EDamageType.Poison)
             {

@@ -6,7 +6,7 @@ using Dnd.GameManagers.Dice;
 
 public abstract class AWeapon : IItemDescription
 {
-    public AWeapon(string name, string desc, Weight weight, Value value, EWeaponType weaponType, EDiceType damageDie, EDamageType damageType, EWeaponProperty weaponProperties)
+    public AWeapon(string name, string desc, Weight weight, Value value, EWeaponType weaponType, EDamageCalculationType damageCalculationType, EDamageType damageType, EWeaponProperty weaponProperties, ESuccessMeasuringType actionType, int constantDamage = 0, DiceRoll? damageDie = null)
     {
         Name = name;
         Description = desc;
@@ -17,6 +17,9 @@ public abstract class AWeapon : IItemDescription
         DamageType = damageType;
         WeaponProperties = weaponProperties;
         IsIdentified = true;
+        SuccessMeasuringType = actionType;
+        ConstantDamage = constantDamage;
+        DamageCalculationType = damageCalculationType;
     }
 
     public bool IsIdentified { get; set; }
@@ -37,13 +40,19 @@ public abstract class AWeapon : IItemDescription
 
     public EWeaponType WeaponType { get; set; }
 
-    public EDiceType DamageDie { get; set; }
+    public EDamageCalculationType DamageCalculationType { get; set; }
+
+    public int ConstantDamage { get; set; }
+
+    public DiceRoll? DamageDie { get; set; }
 
     public EDiceType VersatileDamageDie { get; set; }
 
     public EDamageType DamageType { get; set; }
 
     public EWeaponProperty WeaponProperties { get; set; }
+
+    public ESuccessMeasuringType SuccessMeasuringType { get; set; }
 
     public virtual void HandleCommand(DndCommand command)
     {

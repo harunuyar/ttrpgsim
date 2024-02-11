@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 public class Druid : IDndClass
 {
-    public EDiceType HitDie => EDiceType.D8;
+    public EDiceType HitDie => EDiceType.d8;
 
     public EAttributeType SavingThrowProficiencies => EAttributeType.Intelligence | EAttributeType.Wisdom;
 

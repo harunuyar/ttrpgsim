@@ -3,9 +3,9 @@
 using Dnd.Entities.Attributes;
 using Dnd.Entities.Characters;
 
-public class GetSavingThrowProficiency : DndBooleanCommand
+public class HasSavingThrowProficiency : DndBooleanCommand
 {
-    public GetSavingThrowProficiency(Character character, EAttributeType attributeType) : base(character)
+    public HasSavingThrowProficiency(Character character, EAttributeType attributeType) : base(character)
     {
         AttributeType = attributeType;
     }

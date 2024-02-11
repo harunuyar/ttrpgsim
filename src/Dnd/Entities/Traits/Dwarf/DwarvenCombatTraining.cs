@@ -16,7 +16,7 @@ public class DwarvenCombatTraining : ATrait
 
     public override void HandleCommand(DndCommand command)
     {
-        if (command is GetWeaponProficiency getWeaponProficiency)
+        if (command is HasWeaponProficiency getWeaponProficiency)
         {
             if (WeaponProficiency.HasFlag(getWeaponProficiency.WeaponType))
             {

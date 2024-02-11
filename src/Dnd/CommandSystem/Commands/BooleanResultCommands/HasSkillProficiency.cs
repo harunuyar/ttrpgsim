@@ -3,9 +3,9 @@
 using Dnd.Entities.Characters;
 using Dnd.Entities.Skills;
 
-public class GetSkillProficiency : DndBooleanCommand
+public class HasSkillProficiency : DndBooleanCommand
 {
-    public GetSkillProficiency(Character character, IDndSkill skill) : base(character)
+    public HasSkillProficiency(Character character, IDndSkill skill) : base(character)
     {
         Skill = skill;
     }

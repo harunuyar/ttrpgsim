@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 public class Monk : IDndClass
 {
-    public EDiceType HitDie => EDiceType.D8;
+    public EDiceType HitDie => EDiceType.d8;
 
     public EAttributeType SavingThrowProficiencies => EAttributeType.Strength | EAttributeType.Dexterity;
 

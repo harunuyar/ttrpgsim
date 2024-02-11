@@ -26,7 +26,7 @@ public class GetSavingThrowModifier : DndScoreCommand
         {
             Result.SetBaseValue(Character.AttributeSet.GetAttribute(AttributeType), attributeModifierResult.Value);
 
-            var getSavingThrowProficiencyLevel = new GetSavingThrowProficiency(Character, AttributeType);
+            var getSavingThrowProficiencyLevel = new HasSavingThrowProficiency(Character, AttributeType);
             var savingThrowProficiencyLevelResult = getSavingThrowProficiencyLevel.Execute();
 
             if (savingThrowProficiencyLevelResult.IsSuccess && savingThrowProficiencyLevelResult.Value)
