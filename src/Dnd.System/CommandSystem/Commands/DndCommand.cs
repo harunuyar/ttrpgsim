@@ -21,16 +21,6 @@ public abstract class DndCommand : ICommand
             trait.HandleCommand(this);
         }
 
-        foreach (var trait in Character.Traits)
-        {
-            trait.HandleCommand(this);
-        }
-
-        foreach (var feat in Character.Feats)
-        {
-            feat.HandleCommand(this);
-        }
-
         foreach (var effect in Character.Effects)
         {
             effect.HandleCommand(this);

@@ -7,6 +7,7 @@ using Dnd.System.Entities.Skills;
 using Dnd.GameManagers.Dice;
 using Dnd.System.Entities.Classes;
 using Dnd.Predefined.Skills;
+using Dnd.System.Entities.Characters;
 
 public class Fighter : IClass
 {
@@ -36,7 +37,18 @@ public class Fighter : IClass
 
     public int NumberOfSkillProficiencies => 2;
 
+    public EArmorType MulticlassArmorProficiencies => EArmorType.Light | EArmorType.Medium | EArmorType.Shield;
+
+    public EWeaponType MulticlassWeaponProficiencies => EWeaponType.All;
+
+    public int MulticlassNumberOfSkillProficiencies => 0;
+
     private Fighter() { }
 
     public static readonly Fighter Instance = new Fighter();
+
+    public bool MeetsPrerequisites(AttributeSet attributeSet)
+    {
+        return attributeSet.Strength.Score >= 13 || attributeSet.Dexterity.Score >= 13;
+    }
 }

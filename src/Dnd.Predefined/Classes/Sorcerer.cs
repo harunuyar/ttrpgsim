@@ -7,6 +7,7 @@ using Dnd.System.Entities.Skills;
 using Dnd.GameManagers.Dice;
 using Dnd.System.Entities.Classes;
 using Dnd.Predefined.Skills;
+using Dnd.System.Entities.Characters;
 
 public class Sorcerer : IClass
 {
@@ -34,7 +35,18 @@ public class Sorcerer : IClass
 
     public int NumberOfSkillProficiencies => 2;
 
+    public EArmorType MulticlassArmorProficiencies => EArmorType.None;
+
+    public EWeaponType MulticlassWeaponProficiencies => EWeaponType.None;
+
+    public int MulticlassNumberOfSkillProficiencies => 0;
+
     private Sorcerer() { }
 
     public static readonly Sorcerer Instance = new Sorcerer();
+
+    public bool MeetsPrerequisites(AttributeSet attributeSet)
+    {
+        return attributeSet.Charisma.Score >= 13;
+    }
 }

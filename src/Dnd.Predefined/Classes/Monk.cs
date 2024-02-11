@@ -7,6 +7,7 @@ using Dnd.System.Entities.Skills;
 using Dnd.GameManagers.Dice;
 using Dnd.System.Entities.Classes;
 using Dnd.Predefined.Skills;
+using Dnd.System.Entities.Characters;
 
 public class Monk : IClass
 {
@@ -34,7 +35,18 @@ public class Monk : IClass
 
     public int NumberOfSkillProficiencies => 2;
 
+    public EArmorType MulticlassArmorProficiencies => EArmorType.None;
+
+    public EWeaponType MulticlassWeaponProficiencies => EWeaponType.SimpleWeapon | EWeaponType.Shortsword;
+
+    public int MulticlassNumberOfSkillProficiencies => 0;
+
     private Monk() { }
 
     public static readonly Monk Instance = new Monk();
+
+    public bool MeetsPrerequisites(AttributeSet attributeSet)
+    {
+        return attributeSet.Dexterity.Score >= 13 && attributeSet.Wisdom.Score >= 13;
+    }
 }

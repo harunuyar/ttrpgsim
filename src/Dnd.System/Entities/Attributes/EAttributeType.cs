@@ -2,6 +2,7 @@
 
 public enum EAttributeType : byte
 {
+    None = 0,
     Strength = 1,
     Dexterity = 2,
     Constitution = 4,

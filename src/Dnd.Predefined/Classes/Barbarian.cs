@@ -7,6 +7,7 @@ using Dnd.System.Entities.Skills;
 using Dnd.GameManagers.Dice;
 using Dnd.System.Entities.Classes;
 using Dnd.Predefined.Skills;
+using Dnd.System.Entities.Characters;
 
 public class Barbarian : IClass
 {
@@ -34,7 +35,18 @@ public class Barbarian : IClass
 
     public int NumberOfSkillProficiencies => 2;
 
+    public EArmorType MulticlassArmorProficiencies => EArmorType.Shield;
+
+    public EWeaponType MulticlassWeaponProficiencies => EWeaponType.All;
+
+    public int MulticlassNumberOfSkillProficiencies => 0;
+
     private Barbarian() { }
 
     public static readonly Barbarian Instance = new Barbarian();
+
+    public bool MeetsPrerequisites(AttributeSet attributeSet)
+    {
+        return attributeSet.Strength.Score >= 13;
+    }
 }

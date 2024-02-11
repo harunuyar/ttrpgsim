@@ -7,6 +7,7 @@ using Dnd.System.Entities.Skills;
 using Dnd.GameManagers.Dice;
 using Dnd.System.Entities.Classes;
 using Dnd.Predefined.Skills;
+using Dnd.System.Entities.Characters;
 
 public class Rogue : IClass
 {
@@ -39,7 +40,18 @@ public class Rogue : IClass
 
     public int NumberOfSkillProficiencies => 4;
 
+    public EArmorType MulticlassArmorProficiencies => EArmorType.Light;
+
+    public EWeaponType MulticlassWeaponProficiencies => EWeaponType.None;
+
+    public int MulticlassNumberOfSkillProficiencies => 1;
+
     private Rogue() { }
 
     public static readonly Rogue Instance = new Rogue();
+
+    public bool MeetsPrerequisites(AttributeSet attributeSet)
+    {
+        return attributeSet.Dexterity.Score >= 13;
+    }
 }

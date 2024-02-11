@@ -4,9 +4,7 @@ using Dnd.Predefined.Alignments;
 using Dnd.System.Entities.Allignments;
 using Dnd.System.Entities.Characters;
 using Dnd.System.Entities.Effects;
-using Dnd.System.Entities.Feats;
 using Dnd.System.Entities.Races;
-using Dnd.System.Entities.Traits;
 
 public class CustomCharacter : ICharacter
 {
@@ -16,9 +14,7 @@ public class CustomCharacter : ICharacter
         Race = race;
         Alignment = alignment ?? None.Instance;
         AttributeSet = new AttributeSet();
-        Traits = new List<ITrait>();
-        Feats = new List<IFeat>();
-        Levels = new List<Level>();
+        LevelInfo = new LevelInfo();
         HitPoints = new HitPoints();
         Inventory = new Inventory();
         Effects = new List<IEffect>();
@@ -30,11 +26,7 @@ public class CustomCharacter : ICharacter
 
     public AttributeSet AttributeSet { get; }
 
-    public List<ITrait> Traits { get; }
-
-    public List<IFeat> Feats { get; }
-
-    public List<Level> Levels { get; }
+    public LevelInfo LevelInfo { get; }
 
     public HitPoints HitPoints { get; }
 

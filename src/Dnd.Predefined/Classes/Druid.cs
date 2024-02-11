@@ -7,6 +7,7 @@ using Dnd.System.Entities.Skills;
 using Dnd.GameManagers.Dice;
 using Dnd.System.Entities.Classes;
 using Dnd.Predefined.Skills;
+using Dnd.System.Entities.Characters;
 
 public class Druid : IClass
 {
@@ -36,7 +37,18 @@ public class Druid : IClass
 
     public int NumberOfSkillProficiencies => 2;
 
+    public EArmorType MulticlassArmorProficiencies => EArmorType.Light | EArmorType.Medium | EArmorType.Shield;
+
+    public EWeaponType MulticlassWeaponProficiencies => EWeaponType.None;
+
+    public int MulticlassNumberOfSkillProficiencies => 0;
+
     private Druid() { }
 
     public static readonly Druid Instance = new Druid();
+
+    public bool MeetsPrerequisites(AttributeSet attributeSet)
+    {
+        return attributeSet.Wisdom.Score >= 13;
+    }
 }

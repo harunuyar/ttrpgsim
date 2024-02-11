@@ -5,9 +5,9 @@ using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 using Dnd.System.Entities.Attributes;
 
-public abstract class ASpellCastingAbility : AFeat
+public class SpellCastingAbility : AFeat
 {
-    public ASpellCastingAbility(string name, string description, EAttributeType spellCastingAttribute) : base(name, description)
+    public SpellCastingAbility(string name, string description, EAttributeType spellCastingAttribute) : base(name, description)
     {
         SpellCastingAttribute = spellCastingAttribute;
     }
@@ -27,7 +27,10 @@ public abstract class ASpellCastingAbility : AFeat
 
             if (attributeModifier.IsSuccess)
             {
-                calculateSpellAttackModifier.Result.SetBaseValue(command.Character.AttributeSet.GetAttribute(SpellCastingAttribute), attributeModifier.Value);
+                if (calculateSpellAttackModifier.Result.BaseValue <= attributeModifier.Value)
+                {
+                    calculateSpellAttackModifier.Result.SetBaseValue(command.Character.AttributeSet.GetAttribute(SpellCastingAttribute), attributeModifier.Value);
+                }
             }
             else
             {
@@ -41,7 +44,10 @@ public abstract class ASpellCastingAbility : AFeat
 
             if (attributeModifier.IsSuccess)
             {
-                calculateSpellSavingDifficultyClass.Result.SetBaseValue(command.Character.AttributeSet.GetAttribute(SpellCastingAttribute), attributeModifier.Value);
+                if (calculateSpellSavingDifficultyClass.Result.BaseValue <= attributeModifier.Value)
+                {
+                    calculateSpellSavingDifficultyClass.Result.SetBaseValue(command.Character.AttributeSet.GetAttribute(SpellCastingAttribute), attributeModifier.Value);
+                }
             }
             else
             {

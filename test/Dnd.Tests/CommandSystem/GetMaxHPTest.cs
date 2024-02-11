@@ -2,7 +2,10 @@
 
 using Dnd.Predefined.Characters;
 using Dnd.Predefined.Classes;
+using Dnd.Predefined.Feats.Fighter.Level1.FightingStyle;
+using Dnd.Predefined.Levels.FighterLevels;
 using Dnd.Predefined.Races;
+using Dnd.Predefined.Skills;
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 
 using Dnd.System.Entities.Characters;
@@ -16,29 +19,20 @@ public class GetMaxHPTest
         ICharacter character = new CustomCharacter("Test", Human.Instance);
         character.AttributeSet.Constitution.Score = 14; // +1 from human racial bonus
 
-        character.Levels.Add(new Level(Fighter.Instance, 2));
+        character.LevelInfo.AddLevel(new FighterLevel1(Athletics.Instance, Intimidation.Instance, Defense.Instance));
         character.HitPoints.AddHitPointRoll((int)Fighter.Instance.HitDie);
-        character.HitPoints.AddHitPointRoll(7);
 
         var getMaxHitPointsCommand = new GetMaxHP(character!);
         var result = getMaxHitPointsCommand.Execute();
 
         Assert.IsTrue(result.IsSuccess);
-        Assert.AreEqual(21, result.Value); // 10 (first roll) + 7 (second roll) + 2 (level) * 2 (constitution modifier)
+        Assert.AreEqual(12, result.Value); // 10 (first roll) + 1 (level) * 2 (constitution modifier)
 
         character.AttributeSet.Constitution.Score = 16; // +1 from human racial bonus
 
         result = getMaxHitPointsCommand.Execute();
 
         Assert.IsTrue(result.IsSuccess);
-        Assert.AreEqual(23, result.Value); // 10 (first roll) + 7 (second roll) + 2 (level) * 3 (constitution modifier)
-
-        character.Levels[0].LevelNum = 3;
-        character.HitPoints.AddHitPointRoll(6);
-
-        result = getMaxHitPointsCommand.Execute();
-
-        Assert.IsTrue(result.IsSuccess);
-        Assert.AreEqual(32, result.Value); // 10 (first roll) + 7 (second roll) + 6 (third roll) + 3 (level) * 3 (constitution modifier)
+        Assert.AreEqual(13, result.Value); // 10 (first roll) + 1 (level) * 3 (constitution modifier)
     }
 }

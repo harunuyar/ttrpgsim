@@ -12,7 +12,7 @@ public class GetProficiencyBonus : DndScoreCommand
 
     public override void InitializeResult()
     {
-        int level = Character.Level;
+        int level = Character.LevelInfo.Level;
 
         if (level < 1 || level > 20)
         {

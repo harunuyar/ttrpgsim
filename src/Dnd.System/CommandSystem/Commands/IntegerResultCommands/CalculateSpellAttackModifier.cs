@@ -6,36 +6,55 @@ using Dnd.System.Entities.Spells;
 
 public class CalculateSpellAttackModifier : DndScoreCommand
 {
-    public CalculateSpellAttackModifier(ICharacter character, ISpell spell) : base(character)
+    public CalculateSpellAttackModifier(ICharacter character, ISpell spell, ICharacter target) : base(character)
     {
         Spell = spell;
+        Target = target;
     }
 
     public ISpell Spell { get; }
 
+    public ICharacter Target { get; }
+
     public override void InitializeResult()
     {
-        if (Spell.SuccessMeasuringType == ESuccessMeasuringType.AttackRoll)
+        if (Spell.SuccessMeasuringType != ESuccessMeasuringType.AttackRoll)
         {
-            Result.SetBaseValue("Base", 0);
+            Result.SetError("Spell doesn't use attack roll");
+            return;
+        }
 
-            // Real base value for spell attack modifier will be provided by spell casting ability feature
+        Result.SetBaseValue("Base", 0);
 
-            var getProficiencyBonus = new GetProficiencyBonus(this.Character);
-            var proficiencyBonus = getProficiencyBonus.Execute();
+        // Real base value for spell attack modifier will be provided by spell casting ability feature
 
-            if (proficiencyBonus.IsSuccess)
-            {
-                Result.BonusCollection.AddBonus("Proficiency Bonus", proficiencyBonus.Value);
-            }
-            else
-            {
-                Result.SetError(proficiencyBonus.ErrorMessage ?? "Couldn't get proficiency bonus");
-            }
+        var getProficiencyBonus = new GetProficiencyBonus(this.Character);
+        var proficiencyBonus = getProficiencyBonus.Execute();
+
+        if (proficiencyBonus.IsSuccess)
+        {
+            Result.BonusCollection.AddBonus("Proficiency Bonus", proficiencyBonus.Value);
         }
         else
         {
-            Result.SetError("Spell doesn't use attack roll");
+            Result.SetError(proficiencyBonus.ErrorMessage ?? "Couldn't get proficiency bonus");
+            return;
+        }
+
+        var calculateSpellAttackModifierAgainstCharacter = new CalculateSpellAttackModifierAgainstCharacter(this.Target);
+        var attackModifierAgainstCharacter = calculateSpellAttackModifierAgainstCharacter.Execute();
+
+        if (attackModifierAgainstCharacter.IsSuccess)
+        {
+            if (attackModifierAgainstCharacter.BaseValue != 0)
+            {
+                Result.BonusCollection.AddBonus(attackModifierAgainstCharacter.BaseSource ?? new CustomDndEntity("Attack Modifier Base Against Character"), attackModifierAgainstCharacter.Value);
+            }
+
+            foreach (var bonus in attackModifierAgainstCharacter.BonusCollection.Values)
+            {
+                Result.BonusCollection.AddBonus(bonus.Key, bonus.Value);
+            }
         }
     }
 }

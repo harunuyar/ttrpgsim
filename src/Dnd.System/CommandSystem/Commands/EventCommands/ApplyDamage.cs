@@ -5,7 +5,7 @@ using Dnd.System.CommandSystem.Results;
 using Dnd.System.Entities.Characters;
 using Dnd.System.Entities.Items.Equipments.Weapons;
 
-public class ApplyDamage : DndCommand
+public class ApplyDamage : DndEventCommand
 {
     public ApplyDamage(ICharacter character, int damage, EDamageType damageType) : base(character)
     {

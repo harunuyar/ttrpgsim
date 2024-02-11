@@ -7,6 +7,7 @@ using Dnd.System.Entities.Skills;
 using Dnd.GameManagers.Dice;
 using Dnd.System.Entities.Classes;
 using Dnd.Predefined.Skills;
+using Dnd.System.Entities.Characters;
 
 public class Wizard : IClass
 {
@@ -34,7 +35,18 @@ public class Wizard : IClass
 
     public int NumberOfSkillProficiencies => 2;
 
+    public EArmorType MulticlassArmorProficiencies => EArmorType.None;
+
+    public EWeaponType MulticlassWeaponProficiencies => EWeaponType.None;
+
+    public int MulticlassNumberOfSkillProficiencies => 0;
+
     private Wizard() { }
 
     public static readonly Wizard Instance = new Wizard();
+
+    public bool MeetsPrerequisites(AttributeSet attributeSet)
+    {
+        return attributeSet.Intelligence.Score >= 13;
+    }
 }

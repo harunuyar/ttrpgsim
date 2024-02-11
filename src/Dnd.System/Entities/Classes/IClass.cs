@@ -5,6 +5,7 @@ using Dnd.System.Entities.Items.Equipments.Armors;
 using Dnd.System.Entities.Items.Equipments.Weapons;
 using Dnd.System.Entities.Skills;
 using Dnd.GameManagers.Dice;
+using Dnd.System.Entities.Characters;
 
 public interface IClass : IDndEntity
 {
@@ -18,7 +19,15 @@ public interface IClass : IDndEntity
 
     EWeaponType WeaponProficiencies { get; }
 
+    EArmorType MulticlassArmorProficiencies { get; }
+
+    EWeaponType MulticlassWeaponProficiencies { get; }
+
     List<ISkill> ChoosableSkillProficiencies { get; }
 
     int NumberOfSkillProficiencies { get; }
+
+    int MulticlassNumberOfSkillProficiencies { get; }
+
+    bool MeetsPrerequisites(AttributeSet attributeSet);
 }

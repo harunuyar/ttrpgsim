@@ -4,7 +4,7 @@ using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 using Dnd.System.CommandSystem.Results;
 using Dnd.System.Entities.Characters;
 
-public class ApplyHeal : DndCommand
+public class ApplyHeal : DndEventCommand
 {
     public ApplyHeal(ICharacter character, int amount) : base(character)
     {

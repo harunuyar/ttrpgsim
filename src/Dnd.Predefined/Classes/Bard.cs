@@ -7,6 +7,7 @@ using Dnd.System.Entities.Skills;
 using Dnd.GameManagers.Dice;
 using Dnd.System.Entities.Classes;
 using Dnd.Predefined.Skills;
+using Dnd.System.Entities.Characters;
 
 public class Bard : IClass
 {
@@ -46,7 +47,18 @@ public class Bard : IClass
 
     public int NumberOfSkillProficiencies => 3;
 
+    public EArmorType MulticlassArmorProficiencies => EArmorType.Light;
+
+    public EWeaponType MulticlassWeaponProficiencies => EWeaponType.None;
+
+    public int MulticlassNumberOfSkillProficiencies => 1;
+
     private Bard() { }
 
     public static readonly Bard Instance = new Bard();
+
+    public bool MeetsPrerequisites(AttributeSet attributeSet)
+    {
+        return attributeSet.Charisma.Score >= 13;
+    }
 }

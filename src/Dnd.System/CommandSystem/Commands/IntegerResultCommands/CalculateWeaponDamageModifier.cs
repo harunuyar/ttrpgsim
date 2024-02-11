@@ -2,19 +2,27 @@
 
 using Dnd.System.Entities.Attributes;
 using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.Items;
 using Dnd.System.Entities.Items.Equipments.Weapons;
 
 public class CalculateWeaponDamageModifier : DndScoreCommand
 {
-    public CalculateWeaponDamageModifier(ICharacter character, IWeapon weapon) : base(character)
+    public CalculateWeaponDamageModifier(ICharacter character, IItem weaponItem) : base(character)
     {
-        Weapon = weapon;
+        WeaponItem = weaponItem;
     }
 
-    public IWeapon Weapon { get; }
+    public IItem WeaponItem { get; }
 
     public override void InitializeResult()
     {
+        IWeapon? weapon = WeaponItem.ItemDescription as IWeapon;
+        if (weapon == null)
+        {
+            Result.SetError("Item is not a weapon");
+            return;
+        }
+
         var getStrengthModifier = new GetAttributeModifier(this.Character, EAttributeType.Strength);
         var strengthModifier = getStrengthModifier.Execute();
 
@@ -23,7 +31,7 @@ public class CalculateWeaponDamageModifier : DndScoreCommand
             IAttribute usedAttribute = this.Character.AttributeSet.GetAttribute(EAttributeType.Strength);
             int attributeModifier = strengthModifier.Value;
 
-            if (Weapon.WeaponProperties.HasFlag(EWeaponProperty.Finesse | EWeaponProperty.Range))
+            if (weapon.WeaponProperties.HasFlag(EWeaponProperty.Finesse | EWeaponProperty.Range))
             {
                 var getDexterityModifier = new GetAttributeModifier(this.Character, EAttributeType.Dexterity);
                 var dexterityModifier = getDexterityModifier.Execute();
@@ -35,7 +43,7 @@ public class CalculateWeaponDamageModifier : DndScoreCommand
                 }
             }
 
-            if (Weapon == Character.Inventory.Equipments.MainHandWeapon || attributeModifier < 0)
+            if (WeaponItem == Character.Inventory.Equipments.MainHandWeapon || attributeModifier < 0)
             {
                 Result.SetBaseValue(usedAttribute, attributeModifier);
             }

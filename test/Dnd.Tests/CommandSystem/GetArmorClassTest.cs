@@ -4,9 +4,10 @@ using Dnd.Predefined.Alignments;
 using Dnd.Predefined.Armors.HeavyArmor;
 using Dnd.Predefined.Armors.Shield;
 using Dnd.Predefined.Characters;
-using Dnd.Predefined.Classes;
-using Dnd.Predefined.Feats.Fighter;
+using Dnd.Predefined.Feats.Fighter.Level1.FightingStyle;
+using Dnd.Predefined.Levels.FighterLevels;
 using Dnd.Predefined.Races;
+using Dnd.Predefined.Skills;
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 using Dnd.System.Entities.Characters;
 using Dnd.System.Entities.Items;
@@ -23,9 +24,7 @@ public class GetArmorClassTest
 
         character.AttributeSet.Set(strength: 15, dexterity: 10, constitution: 14, intelligence: 8, wisdom: 12, charisma: 13);
 
-        character.Levels.Add(new Level(Fighter.Instance, 2));
-
-        character.Feats.Add(FightingStyleDefense.Instance);
+        character.LevelInfo.AddLevel(new FighterLevel1(Athletics.Instance, Intimidation.Instance, Defense.Instance));
 
         character.Inventory.EquipArmor(new Item(ChainMailArmor.Instance));
         character.Inventory.EquipShield(new Item(Shield.Instance));

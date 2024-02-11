@@ -4,65 +4,91 @@ using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
 using Dnd.System.Entities;
 using Dnd.System.Entities.Attributes;
 using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.Items;
 using Dnd.System.Entities.Items.Equipments.Weapons;
 
 public class CalculateWeaponAttackModifier : DndScoreCommand
 {
-    public CalculateWeaponAttackModifier(ICharacter character, IWeapon weapon) : base(character)
+    public CalculateWeaponAttackModifier(ICharacter character, IItem weaponItem, ICharacter target) : base(character)
     {
-        this.Weapon = weapon;
+        this.WeaponItem = weaponItem;
+        this.Target = target;
     }
 
-    public IWeapon Weapon { get; }
+    public IItem WeaponItem { get; }
+
+    public ICharacter Target { get; }
 
     public override void InitializeResult()
     {
-        if (Weapon.SuccessMeasuringType == ESuccessMeasuringType.AttackRoll)
+        if (WeaponItem.ItemDescription is not IWeapon weapon)
         {
-            var getStrengthModifier = new GetAttributeModifier(this.Character, EAttributeType.Strength);
-            var strengthModifier = getStrengthModifier.Execute();
+            Result.SetError("Item is not a weapon");
+            return;
+        }
 
-            if (strengthModifier.IsSuccess)
+        if (weapon.SuccessMeasuringType != ESuccessMeasuringType.AttackRoll)
+        {
+            Result.SetError("Weapon doesn't use attack roll");
+            return;
+        }
+
+        var getStrengthModifier = new GetAttributeModifier(this.Character, EAttributeType.Strength);
+        var strengthModifier = getStrengthModifier.Execute();
+
+        if (strengthModifier.IsSuccess)
+        {
+            IAttribute usedAttribute = this.Character.AttributeSet.GetAttribute(EAttributeType.Strength);
+            int attributeModifier = strengthModifier.Value;
+
+            if (weapon.WeaponProperties.HasFlag(EWeaponProperty.Finesse | EWeaponProperty.Range))
             {
-                IAttribute usedAttribute = this.Character.AttributeSet.GetAttribute(EAttributeType.Strength);
-                int attributeModifier = strengthModifier.Value;
+                var getDexterityModifier = new GetAttributeModifier(this.Character, EAttributeType.Dexterity);
+                var dexterityModifier = getDexterityModifier.Execute();
 
-                if (Weapon.WeaponProperties.HasFlag(EWeaponProperty.Finesse | EWeaponProperty.Range))
+                if (dexterityModifier.IsSuccess && dexterityModifier.Value > attributeModifier)
                 {
-                    var getDexterityModifier = new GetAttributeModifier(this.Character, EAttributeType.Dexterity);
-                    var dexterityModifier = getDexterityModifier.Execute();
-
-                    if (dexterityModifier.IsSuccess && dexterityModifier.Value > attributeModifier)
-                    {
-                        attributeModifier = dexterityModifier.Value;
-                        usedAttribute = this.Character.AttributeSet.GetAttribute(EAttributeType.Dexterity);
-                    }
-                }
-
-                Result.SetBaseValue(usedAttribute, attributeModifier);
-
-                var getWeaponProficiency = new HasWeaponProficiency(this.Character, this.Weapon.WeaponType);
-                var weaponProficiency = getWeaponProficiency.Execute();
-
-                if (weaponProficiency.IsSuccess && weaponProficiency.Value)
-                {
-                    var getProficiencyBonus = new GetProficiencyBonus(this.Character);
-                    var proficiencyBonus = getProficiencyBonus.Execute();
-
-                    if (proficiencyBonus.IsSuccess)
-                    {
-                        Result.BonusCollection.AddBonus("Proficiency Bonus", proficiencyBonus.Value);
-                    }
+                    attributeModifier = dexterityModifier.Value;
+                    usedAttribute = this.Character.AttributeSet.GetAttribute(EAttributeType.Dexterity);
                 }
             }
-            else
+
+            Result.SetBaseValue(usedAttribute, attributeModifier);
+
+            var getWeaponProficiency = new HasWeaponProficiency(this.Character, weapon.WeaponType);
+            var weaponProficiency = getWeaponProficiency.Execute();
+
+            if (weaponProficiency.IsSuccess && weaponProficiency.Value)
             {
-                Result.SetError(strengthModifier.ErrorMessage ?? "Couldn't get attribute modifier");
+                var getProficiencyBonus = new GetProficiencyBonus(this.Character);
+                var proficiencyBonus = getProficiencyBonus.Execute();
+
+                if (proficiencyBonus.IsSuccess)
+                {
+                    Result.BonusCollection.AddBonus("Proficiency Bonus", proficiencyBonus.Value);
+                }
             }
         }
         else
         {
-            Result.SetError("Weapon doesn't use attack roll");
+            Result.SetError(strengthModifier.ErrorMessage ?? "Couldn't get attribute modifier");
+            return;
+        }
+
+        var calculateWeaponAttackModifierAgainstCharacter = new CalculateWeaponAttackModifierAgainstCharacter(this.Target);
+        var attackModifierAgainstCharacter = calculateWeaponAttackModifierAgainstCharacter.Execute();
+
+        if (attackModifierAgainstCharacter.IsSuccess)
+        {
+            if (attackModifierAgainstCharacter.BaseValue != 0)
+            {
+                Result.BonusCollection.AddBonus(attackModifierAgainstCharacter.BaseSource ?? new CustomDndEntity("Attack Modifier Base Against Character"), attackModifierAgainstCharacter.Value);
+            }
+
+            foreach (var bonus in attackModifierAgainstCharacter.BonusCollection.Values)
+            {
+                Result.BonusCollection.AddBonus(bonus.Key, bonus.Value);
+            }
         }
     }
 }

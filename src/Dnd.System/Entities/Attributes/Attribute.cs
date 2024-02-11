@@ -6,7 +6,6 @@ public class Attribute : IAttribute
     {
         AttributeType = attributeType;
         Score = score;
-        SavingThrowProficiency = false;
     }
 
     public EAttributeType AttributeType { get; }
@@ -14,6 +13,4 @@ public class Attribute : IAttribute
     public string Name => AttributeType.ToString();
 
     public int Score { get; set; }
-
-    public bool SavingThrowProficiency { get; set; }
 }

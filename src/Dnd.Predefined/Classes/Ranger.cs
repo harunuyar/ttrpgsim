@@ -7,6 +7,7 @@ using Dnd.System.Entities.Skills;
 using Dnd.GameManagers.Dice;
 using Dnd.System.Entities.Classes;
 using Dnd.Predefined.Skills;
+using Dnd.System.Entities.Characters;
 
 public class Ranger : IClass
 {
@@ -36,7 +37,18 @@ public class Ranger : IClass
 
     public int NumberOfSkillProficiencies => 3;
 
+    public EArmorType MulticlassArmorProficiencies => EArmorType.Light | EArmorType.Medium | EArmorType.Shield;
+
+    public EWeaponType MulticlassWeaponProficiencies => EWeaponType.All;
+
+    public int MulticlassNumberOfSkillProficiencies => 1;
+
     private Ranger() { }
 
     public static readonly Ranger Instance = new Ranger();
+
+    public bool MeetsPrerequisites(AttributeSet attributeSet)
+    {
+        return attributeSet.Dexterity.Score >= 13 && attributeSet.Wisdom.Score >= 13;
+    }
 }

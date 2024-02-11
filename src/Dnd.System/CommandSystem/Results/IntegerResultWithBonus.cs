@@ -16,7 +16,7 @@ public class IntegerResultWithBonus : ICommandResult
         Command = command;
         IsSuccess = success;
         ErrorMessage = errorMessage;
-        Source = source;
+        BaseSource = source;
         BaseValue = baseValue;
         BonusCollection = bonusCollection;
     }
@@ -27,7 +27,7 @@ public class IntegerResultWithBonus : ICommandResult
 
     public int BaseValue { get; private set; }
 
-    public IDndEntity? Source { get; private set; }
+    public IDndEntity? BaseSource { get; private set; }
 
     public bool IsSuccess { get; private set; }
 
@@ -43,7 +43,7 @@ public class IntegerResultWithBonus : ICommandResult
 
     public void SetBaseValue(IDndEntity source, int value)
     {
-        Source = source;
+        BaseSource = source;
         BaseValue = value;
     }
 
@@ -56,13 +56,13 @@ public class IntegerResultWithBonus : ICommandResult
     {
         IsSuccess = true;
         ErrorMessage = null;
-        Source = null;
+        BaseSource = null;
         BaseValue = 0;
         BonusCollection.Reset();
     }
 
     public override string ToString()
     {
-        return IsSuccess ? $"{Source}: {Value}" + Environment.NewLine + BonusCollection.ToString() : ErrorMessage ?? "Unknown error";
+        return IsSuccess ? $"{BaseSource}: {Value}" + Environment.NewLine + BonusCollection.ToString() : ErrorMessage ?? "Unknown error";
     }
 }

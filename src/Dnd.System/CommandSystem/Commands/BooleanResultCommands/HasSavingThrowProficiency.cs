@@ -14,7 +14,6 @@ public class HasSavingThrowProficiency : DndBooleanCommand
 
     public override void InitializeResult()
     {
-        var attribute = Character.AttributeSet.GetAttribute(AttributeType);
-        Result.SetValue("Base", attribute.SavingThrowProficiency);
+        Result.SetValue("Base", false);
     }
 }

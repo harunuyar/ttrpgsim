@@ -18,7 +18,7 @@ public class GetMaxHP : DndScoreCommand
 
         if (constModifierResult.IsSuccess)
         {
-            Result.BonusCollection.AddBonus(Character.AttributeSet.Constitution, Character.Level * constModifierResult.Value);
+            Result.BonusCollection.AddBonus(Character.AttributeSet.Constitution, Character.LevelInfo.Level * constModifierResult.Value);
         }
     }
 }
