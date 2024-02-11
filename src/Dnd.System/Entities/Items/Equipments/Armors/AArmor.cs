@@ -77,10 +77,10 @@ public abstract class AArmor : IItemDescription
         }
         else if (command is CanEquipItem canEquipItem && canEquipItem.Item.ItemDescription == this)
         {
-            var getStrengthModifier = new GetAttributeModifier(canEquipItem.Character, Attributes.EAttributeType.Strength);
-            var strengthModifier = getStrengthModifier.Execute();
+            var getStrengthScore = new GetAttributeScore(canEquipItem.Character, Attributes.EAttributeType.Strength);
+            var strengthScore = getStrengthScore.Execute();
 
-            if (strengthModifier.IsSuccess && strengthModifier.Value < StrengthRequirement)
+            if (strengthScore.IsSuccess && strengthScore.Value < StrengthRequirement)
             {
                 canEquipItem.Result.SetValue("Not enough strength", false);
             }

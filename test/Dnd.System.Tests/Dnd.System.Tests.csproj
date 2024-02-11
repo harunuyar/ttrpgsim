@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Dnd\Dnd.csproj" />
+    <ProjectReference Include="..\..\src\Dnd.System\Dnd.System.csproj" />
   </ItemGroup>
 
 </Project>
