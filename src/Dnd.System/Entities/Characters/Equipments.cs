@@ -1,6 +1,6 @@
-﻿namespace Dnd.Entities.Characters;
+﻿namespace Dnd.System.Entities.Characters;
 
-using Dnd.Entities.Items;
+using Dnd.System.Entities.Items;
 
 public class Equipments
 {

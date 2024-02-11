@@ -1,12 +1,12 @@
-﻿namespace Dnd.CommandSystem.Commands.EventCommands;
+﻿namespace Dnd.System.CommandSystem.Commands.EventCommands;
 
-using Dnd.CommandSystem.Commands.IntegerResultCommands;
-using Dnd.CommandSystem.Results;
-using Dnd.Entities.Characters;
+using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
+using Dnd.System.CommandSystem.Results;
+using Dnd.System.Entities.Characters;
 
 public class ApplyHeal : DndCommand
 {
-    public ApplyHeal(Character character, int amount) : base(character)
+    public ApplyHeal(ICharacter character, int amount) : base(character)
     {
         Amount = amount;
     }

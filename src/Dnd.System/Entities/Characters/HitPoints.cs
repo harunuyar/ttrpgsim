@@ -1,4 +1,4 @@
-﻿namespace Dnd.Entities.Characters;
+﻿namespace Dnd.System.Entities.Characters;
 
 using System;
 

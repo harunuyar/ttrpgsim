@@ -1,12 +1,12 @@
 ﻿
-namespace Dnd.CommandSystem.Commands.BooleanResultCommands;
+namespace Dnd.System.CommandSystem.Commands.BooleanResultCommands;
 
-using Dnd.Entities.Characters;
-using Dnd.Entities.Items.Equipments.Weapons;
+using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.Items.Equipments.Weapons;
 
 public class HasDamageResistance : DndBooleanCommand
 {
-    public HasDamageResistance(Character character, EDamageType damageType) : base(character)
+    public HasDamageResistance(ICharacter character, EDamageType damageType) : base(character)
     {
         DamageType = damageType;
     }

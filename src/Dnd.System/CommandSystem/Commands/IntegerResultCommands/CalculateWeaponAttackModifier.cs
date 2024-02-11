@@ -1,19 +1,19 @@
-﻿namespace Dnd.CommandSystem.Commands.IntegerResultCommands;
+﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 
-using Dnd.CommandSystem.Commands.BooleanResultCommands;
-using Dnd.Entities;
-using Dnd.Entities.Attributes;
-using Dnd.Entities.Characters;
-using Dnd.Entities.Items.Equipments.Weapons;
+using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
+using Dnd.System.Entities;
+using Dnd.System.Entities.Attributes;
+using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.Items.Equipments.Weapons;
 
 public class CalculateWeaponAttackModifier : DndScoreCommand
 {
-    public CalculateWeaponAttackModifier(Character character, AWeapon weapon) : base(character)
+    public CalculateWeaponAttackModifier(ICharacter character, IWeapon weapon) : base(character)
     {
         this.Weapon = weapon;
     }
 
-    public AWeapon Weapon { get; }
+    public IWeapon Weapon { get; }
 
     public override void InitializeResult()
     {

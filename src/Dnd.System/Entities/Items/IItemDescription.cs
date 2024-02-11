@@ -1,10 +1,9 @@
-﻿namespace Dnd.Entities.Items;
+﻿namespace Dnd.System.Entities.Items;
 
-using Dnd.Entities.Units;
+using Dnd.System.Entities.Units;
 
 public interface IItemDescription : IBonusProvider
 {
-    bool IsIdentified { get; }
     bool IsStackable { get; }
     bool IsConsumable { get; }
     bool IsEquippable { get; }

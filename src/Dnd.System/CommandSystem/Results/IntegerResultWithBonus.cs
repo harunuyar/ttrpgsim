@@ -1,7 +1,7 @@
-﻿namespace Dnd.CommandSystem.Results;
+﻿namespace Dnd.System.CommandSystem.Results;
 
-using Dnd.CommandSystem.Commands;
-using Dnd.Entities;
+using Dnd.System.CommandSystem.Commands;
+using Dnd.System.Entities;
 
 public class IntegerResultWithBonus : ICommandResult
 {

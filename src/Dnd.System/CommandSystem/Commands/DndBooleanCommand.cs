@@ -1,17 +1,17 @@
-﻿namespace Dnd.CommandSystem.Commands;
+﻿namespace Dnd.System.CommandSystem.Commands;
 
-using Dnd.CommandSystem.Results;
-using Dnd.Entities.Characters;
+using Dnd.System.CommandSystem.Results;
+using Dnd.System.Entities.Characters;
 
 public abstract class DndBooleanCommand : DndCommand
 {
-    public DndBooleanCommand(Character character) : base(character)
+    public DndBooleanCommand(ICharacter character) : base(character)
     {
         Result = BooleanResult.Empty(this);
         ShouldCollectBonuses = true;
     }
 
-    internal BooleanResult Result { get; }
+    public BooleanResult Result { get; }
 
     protected bool ShouldCollectBonuses { get; set; }
 

@@ -1,4 +1,4 @@
-﻿namespace Dnd.Entities.Advantage;
+﻿namespace Dnd.System.Entities.Advantage;
 
 public static class EAdvantageExtensions
 {

@@ -1,16 +1,16 @@
-﻿namespace Dnd.Entities.Characters;
+﻿namespace Dnd.System.Entities.Characters;
 
-using Dnd.Entities.Classes;
+using Dnd.System.Entities.Classes;
 
 public class Level
 {
-    public Level(IDndClass dndClass, int level)
+    public Level(IClass dndClass, int level)
     {
         this.Class = dndClass;
         this.LevelNum = level;
     }
 
-    public IDndClass Class { get; set; }
+    public IClass Class { get; set; }
 
     public int LevelNum { get; set; }
 }

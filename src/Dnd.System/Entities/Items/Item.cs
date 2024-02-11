@@ -1,4 +1,4 @@
-﻿namespace Dnd.Entities.Items;
+﻿namespace Dnd.System.Entities.Items;
 
 public class Item : IItem
 {

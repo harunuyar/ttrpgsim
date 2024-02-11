@@ -1,4 +1,4 @@
-﻿namespace Dnd.Entities.Items.Equipments.Armors;
+﻿namespace Dnd.System.Entities.Items.Equipments.Armors;
 
 public enum EArmorType : byte
 {

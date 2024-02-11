@@ -1,11 +1,11 @@
-﻿namespace Dnd.CommandSystem.Commands.BooleanResultCommands;
+﻿namespace Dnd.System.CommandSystem.Commands.BooleanResultCommands;
 
-using Dnd.Entities.Characters;
-using Dnd.Entities.Items.Equipments.Armors;
+using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.Items.Equipments.Armors;
 
 public class HasArmorProficiency : DndBooleanCommand
 {
-    public HasArmorProficiency(Character character, EArmorType armorType) : base(character)
+    public HasArmorProficiency(ICharacter character, EArmorType armorType) : base(character)
     {
         ArmorType = armorType;
     }
@@ -14,6 +14,6 @@ public class HasArmorProficiency : DndBooleanCommand
 
     public override void InitializeResult()
     {
-        Result.SetValue("Base Armor Proficiency", Character.HasArmorProficiency(ArmorType));
+        Result.SetValue("Default", false);
     }
 }

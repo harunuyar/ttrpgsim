@@ -1,11 +1,11 @@
-﻿namespace Dnd.CommandSystem.Commands.IntegerResultCommands;
+﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 
-using Dnd.Entities.Attributes;
-using Dnd.Entities.Characters;
+using Dnd.System.Entities.Attributes;
+using Dnd.System.Entities.Characters;
 
 public class GetMaxHP : DndScoreCommand
 {
-    public GetMaxHP(Character character) : base(character)
+    public GetMaxHP(ICharacter character) : base(character)
     {
     }
 

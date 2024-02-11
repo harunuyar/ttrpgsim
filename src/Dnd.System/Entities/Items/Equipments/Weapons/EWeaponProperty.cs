@@ -1,4 +1,4 @@
-﻿namespace Dnd.Entities.Items.Equipments.Weapons;
+﻿namespace Dnd.System.Entities.Items.Equipments.Weapons;
 
 public enum EWeaponProperty : int
 {

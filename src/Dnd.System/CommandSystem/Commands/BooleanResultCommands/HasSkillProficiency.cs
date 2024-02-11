@@ -1,19 +1,19 @@
-﻿namespace Dnd.CommandSystem.Commands.BooleanResultCommands;
+﻿namespace Dnd.System.CommandSystem.Commands.BooleanResultCommands;
 
-using Dnd.Entities.Characters;
-using Dnd.Entities.Skills;
+using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.Skills;
 
 public class HasSkillProficiency : DndBooleanCommand
 {
-    public HasSkillProficiency(Character character, IDndSkill skill) : base(character)
+    public HasSkillProficiency(ICharacter character, ISkill skill) : base(character)
     {
         Skill = skill;
     }
 
-    public IDndSkill Skill { get; }
+    public ISkill Skill { get; }
 
     public override void InitializeResult()
     {
-        Result.SetValue("Base", Character.GetSkillProficiency(Skill));
+        Result.SetValue("Default", false);
     }
 }

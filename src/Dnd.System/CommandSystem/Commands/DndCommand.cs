@@ -1,16 +1,16 @@
-﻿namespace Dnd.CommandSystem.Commands;
+﻿namespace Dnd.System.CommandSystem.Commands;
 
-using Dnd.CommandSystem.Results;
-using Dnd.Entities.Characters;
+using Dnd.System.CommandSystem.Results;
+using Dnd.System.Entities.Characters;
 
 public abstract class DndCommand : ICommand
 {
-    public DndCommand(Character character)
+    public DndCommand(ICharacter character)
     {
         Character = character;
     }
 
-    public Character Character { get; }
+    public ICharacter Character { get; }
 
     public abstract ICommandResult Execute();
     

@@ -1,11 +1,11 @@
-﻿namespace Dnd.CommandSystem.Commands.IntegerResultCommands;
+﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 
-using Dnd.Entities.Attributes;
-using Dnd.Entities.Characters;
+using Dnd.System.Entities.Attributes;
+using Dnd.System.Entities.Characters;
 
 public class GetAttributeScore : DndScoreCommand
 {
-    public GetAttributeScore(Character character, EAttributeType attributeType) : base(character)
+    public GetAttributeScore(ICharacter character, EAttributeType attributeType) : base(character)
     {
         AttributeType = attributeType;
     }

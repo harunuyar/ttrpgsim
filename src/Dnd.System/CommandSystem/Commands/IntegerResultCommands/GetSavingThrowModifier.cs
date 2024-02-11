@@ -1,13 +1,13 @@
-﻿namespace Dnd.CommandSystem.Commands.IntegerResultCommands;
+﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 
-using Dnd.CommandSystem.Commands.BooleanResultCommands;
-using Dnd.Entities.Attributes;
-using Dnd.Entities.Characters;
-using Dnd.Entities.Items.Equipments.Weapons;
+using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
+using Dnd.System.Entities.Attributes;
+using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.Items.Equipments.Weapons;
 
 public class GetSavingThrowModifier : DndScoreCommand
 {
-    public GetSavingThrowModifier(Character character, EDamageType damageType, EAttributeType attributeType) : base(character)
+    public GetSavingThrowModifier(ICharacter character, EDamageType damageType, EAttributeType attributeType) : base(character)
     {
         DamageType = damageType;
         AttributeType = attributeType;

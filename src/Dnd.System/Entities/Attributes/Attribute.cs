@@ -1,4 +1,4 @@
-﻿namespace Dnd.Entities.Attributes;
+﻿namespace Dnd.System.Entities.Attributes;
 
 public class Attribute : IAttribute
 {

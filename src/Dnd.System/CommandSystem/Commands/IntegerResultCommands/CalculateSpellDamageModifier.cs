@@ -1,11 +1,11 @@
-﻿namespace Dnd.CommandSystem.Commands.IntegerResultCommands;
+﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 
-using Dnd.Entities.Characters;
-using Dnd.Entities.Spells;
+using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.Spells;
 
 public class CalculateSpellDamageModifier : DndScoreCommand
 {
-    public CalculateSpellDamageModifier(Character character, ISpell spell) : base(character)
+    public CalculateSpellDamageModifier(ICharacter character, ISpell spell) : base(character)
     {
         Spell = spell;
     }

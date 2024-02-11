@@ -1,12 +1,12 @@
-﻿namespace Dnd.CommandSystem.Commands.IntegerResultCommands;
+﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 
-using Dnd.Entities;
-using Dnd.Entities.Characters;
-using Dnd.Entities.Spells;
+using Dnd.System.Entities;
+using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.Spells;
 
 public class CalculateSpellSavingDifficultyClass : DndScoreCommand
 {
-    public CalculateSpellSavingDifficultyClass(Character character, ISpell spell) : base(character)
+    public CalculateSpellSavingDifficultyClass(ICharacter character, ISpell spell) : base(character)
     {
         Spell = spell;
     }

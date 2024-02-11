@@ -1,11 +1,11 @@
-﻿namespace Dnd.CommandSystem.Commands.BooleanResultCommands;
+﻿namespace Dnd.System.CommandSystem.Commands.BooleanResultCommands;
 
-using Dnd.Entities.Characters;
-using Dnd.Entities.Items;
+using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.Items;
 
 public class CanEquipItem : DndBooleanCommand
 {
-    public CanEquipItem(Character character, IItem item) : base(character)
+    public CanEquipItem(ICharacter character, IItem item) : base(character)
     {
         Item = item;
     }

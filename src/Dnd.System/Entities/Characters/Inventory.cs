@@ -1,10 +1,9 @@
-﻿namespace Dnd.Entities.Characters;
+﻿namespace Dnd.System.Entities.Characters;
 
-using Dnd.Entities.Items;
-using Dnd.Entities.Items.Equipments.Armors;
-using Dnd.Entities.Items.Equipments.Weapons;
-using Dnd.Entities.Units;
-using System.Collections.Generic;
+using Dnd.System.Entities.Items;
+using Dnd.System.Entities.Items.Equipments.Armors;
+using Dnd.System.Entities.Items.Equipments.Weapons;
+using Dnd.System.Entities.Units;
 
 public class Inventory
 {
@@ -101,15 +100,15 @@ public class Inventory
 
     public void EquipItem(IItem item)
     {
-        if (item.ItemDescription is AArmor)
+        if (item.ItemDescription is IArmor)
         {
             EquipArmor(item);
         }
-        else if (item.ItemDescription is AWeapon)
+        else if (item.ItemDescription is IWeapon)
         {
             EquipWeapon(item, true);
         }
-        else if (item.ItemDescription is Shield)
+        else if (item.ItemDescription is IShield)
         {
             EquipShield(item);
         }
@@ -125,15 +124,15 @@ public class Inventory
 
     public void UnequipItem(IItem item)
     {
-        if (item.ItemDescription is AArmor)
+        if (item.ItemDescription is IArmor)
         {
             UnequipArmor();
         }
-        else if (item.ItemDescription is AWeapon)
+        else if (item.ItemDescription is IWeapon)
         {
             UnequipWeapon(true);
         }
-        else if (item.ItemDescription is Shield)
+        else if (item.ItemDescription is IShield)
         {
             UnequipShield();
         }
@@ -186,12 +185,12 @@ public class Inventory
     {
         UnequipWeapon(mainHand);
 
-        if (item.ItemDescription is AWeapon weapon && weapon.WeaponProperties.HasFlag(EWeaponProperty.TwoHanded)) // If the weapon is two-handed
+        if (item.ItemDescription is IWeapon weapon && weapon.WeaponProperties.HasFlag(EWeaponProperty.TwoHanded)) // If the weapon is two-handed
         {
             UnequipWeapon(!mainHand); // Unequip the other-hand weapon
             mainHand = true; // Equip the two-handed weapon in the main hand
         }
-        else if (Equipments.MainHandWeapon?.ItemDescription is AWeapon mainHandWeapon && mainHandWeapon.WeaponProperties.HasFlag(EWeaponProperty.TwoHanded)) // If the main hand weapon is two-handed
+        else if (Equipments.MainHandWeapon?.ItemDescription is IWeapon mainHandWeapon && mainHandWeapon.WeaponProperties.HasFlag(EWeaponProperty.TwoHanded)) // If the main hand weapon is two-handed
         {
             UnequipWeapon(true); // Unequip the two-handed weapon
         }

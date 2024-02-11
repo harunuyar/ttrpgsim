@@ -1,6 +1,6 @@
-﻿namespace Dnd.Entities;
+﻿namespace Dnd.System.Entities;
 
-using Dnd.CommandSystem.Commands;
+using Dnd.System.CommandSystem.Commands;
 
 public interface IBonusProvider : IDndEntity
 {

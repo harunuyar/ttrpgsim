@@ -5,7 +5,9 @@ VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dnd.System", "src\Dnd.System\Dnd.System.csproj", "{7A482D9A-714E-4AB9-8A94-B865D95AF2E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnd.System.Tests", "test\Dnd.System.Tests\Dnd.System.Tests.csproj", "{2E08426D-BDAA-4D75-87D2-C4C872AA19FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dnd.Tests", "test\Dnd.Tests\Dnd.Tests.csproj", "{2E08426D-BDAA-4D75-87D2-C4C872AA19FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnd.Predefined", "src\Dnd.Predefined\Dnd.Predefined.csproj", "{6FE732D2-1F8C-446E-8BC7-FBAEBABC9646}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{2E08426D-BDAA-4D75-87D2-C4C872AA19FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E08426D-BDAA-4D75-87D2-C4C872AA19FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E08426D-BDAA-4D75-87D2-C4C872AA19FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FE732D2-1F8C-446E-8BC7-FBAEBABC9646}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FE732D2-1F8C-446E-8BC7-FBAEBABC9646}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FE732D2-1F8C-446E-8BC7-FBAEBABC9646}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FE732D2-1F8C-446E-8BC7-FBAEBABC9646}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

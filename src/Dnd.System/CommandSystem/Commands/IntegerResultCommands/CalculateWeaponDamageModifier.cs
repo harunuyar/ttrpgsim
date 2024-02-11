@@ -1,17 +1,17 @@
-﻿namespace Dnd.CommandSystem.Commands.IntegerResultCommands;
+﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 
-using Dnd.Entities.Attributes;
-using Dnd.Entities.Characters;
-using Dnd.Entities.Items.Equipments.Weapons;
+using Dnd.System.Entities.Attributes;
+using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.Items.Equipments.Weapons;
 
 public class CalculateWeaponDamageModifier : DndScoreCommand
 {
-    public CalculateWeaponDamageModifier(Character character, AWeapon weapon) : base(character)
+    public CalculateWeaponDamageModifier(ICharacter character, IWeapon weapon) : base(character)
     {
         Weapon = weapon;
     }
 
-    public AWeapon Weapon { get; }
+    public IWeapon Weapon { get; }
 
     public override void InitializeResult()
     {

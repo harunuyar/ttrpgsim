@@ -1,17 +1,17 @@
-﻿namespace Dnd.CommandSystem.Commands;
+﻿namespace Dnd.System.CommandSystem.Commands;
 
-using Dnd.CommandSystem.Results;
-using Dnd.Entities.Characters;
+using Dnd.System.CommandSystem.Results;
+using Dnd.System.Entities.Characters;
 
 public abstract class DndScoreCommand : DndCommand
 {
-    public DndScoreCommand(Character character) : base(character)
+    public DndScoreCommand(ICharacter character) : base(character)
     {
         Result = IntegerResultWithBonus.Empty(this);
         ShouldCollectBonuses = true;
     }
 
-    internal IntegerResultWithBonus Result { get; }
+    public IntegerResultWithBonus Result { get; }
 
     protected bool ShouldCollectBonuses { get; set; }
 

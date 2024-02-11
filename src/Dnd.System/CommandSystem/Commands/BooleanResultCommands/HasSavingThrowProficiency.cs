@@ -1,11 +1,11 @@
-﻿namespace Dnd.CommandSystem.Commands.BooleanResultCommands;
+﻿namespace Dnd.System.CommandSystem.Commands.BooleanResultCommands;
 
-using Dnd.Entities.Attributes;
-using Dnd.Entities.Characters;
+using Dnd.System.Entities.Attributes;
+using Dnd.System.Entities.Characters;
 
 public class HasSavingThrowProficiency : DndBooleanCommand
 {
-    public HasSavingThrowProficiency(Character character, EAttributeType attributeType) : base(character)
+    public HasSavingThrowProficiency(ICharacter character, EAttributeType attributeType) : base(character)
     {
         AttributeType = attributeType;
     }

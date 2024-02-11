@@ -1,13 +1,13 @@
-﻿namespace Dnd.CommandSystem.Commands.IntegerResultCommands;
+﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 
-using Dnd.CommandSystem.Commands.BooleanResultCommands;
-using Dnd.Entities;
-using Dnd.Entities.Characters;
-using Dnd.Entities.Items.Equipments.Weapons;
+using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
+using Dnd.System.Entities;
+using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.Items.Equipments.Weapons;
 
 public class CalculateDamage : DndScoreCommand
 {
-    public CalculateDamage(Character character, int damage, EDamageType damageType) : base(character)
+    public CalculateDamage(ICharacter character, int damage, EDamageType damageType) : base(character)
     {
         Damage = damage;
         DamageType = damageType;

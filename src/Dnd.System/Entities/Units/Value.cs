@@ -1,4 +1,4 @@
-﻿namespace Dnd.Entities.Units;
+﻿namespace Dnd.System.Entities.Units;
 using System;
 
 public class Value

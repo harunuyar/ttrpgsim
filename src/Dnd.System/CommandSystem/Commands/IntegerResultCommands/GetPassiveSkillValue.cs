@@ -1,16 +1,16 @@
-﻿namespace Dnd.CommandSystem.Commands.IntegerResultCommands;
+﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 
-using Dnd.Entities.Characters;
-using Dnd.Entities.Skills;
+using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.Skills;
 
 public class GetPassiveSkillValue : DndScoreCommand
 {
-    public GetPassiveSkillValue(Character character, IDndSkill skill) : base(character)
+    public GetPassiveSkillValue(ICharacter character, ISkill skill) : base(character)
     {
         Skill = skill;
     }
 
-    public IDndSkill Skill { get; }
+    public ISkill Skill { get; }
 
     public override void InitializeResult()
     {

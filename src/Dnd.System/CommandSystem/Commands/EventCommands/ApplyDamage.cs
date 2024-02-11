@@ -1,13 +1,13 @@
-﻿namespace Dnd.CommandSystem.Commands.EventCommands;
+﻿namespace Dnd.System.CommandSystem.Commands.EventCommands;
 
-using Dnd.CommandSystem.Commands.IntegerResultCommands;
-using Dnd.CommandSystem.Results;
-using Dnd.Entities.Characters;
-using Dnd.Entities.Items.Equipments.Weapons;
+using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
+using Dnd.System.CommandSystem.Results;
+using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.Items.Equipments.Weapons;
 
 public class ApplyDamage : DndCommand
 {
-    public ApplyDamage(Character character, int damage, EDamageType damageType) : base(character)
+    public ApplyDamage(ICharacter character, int damage, EDamageType damageType) : base(character)
     {
         Damage = damage;
         DamageType = damageType;

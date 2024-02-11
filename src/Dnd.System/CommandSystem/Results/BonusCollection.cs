@@ -1,10 +1,7 @@
-﻿namespace Dnd.CommandSystem.Results;
+﻿namespace Dnd.System.CommandSystem.Results;
 
-using Dnd.Entities;
-using Dnd.Entities.Advantage;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Dnd.System.Entities;
+using Dnd.System.Entities.Advantage;
 
 public class BonusCollection
 {

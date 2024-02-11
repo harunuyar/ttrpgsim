@@ -1,6 +1,6 @@
-﻿namespace Dnd.CommandSystem.Results;
+﻿namespace Dnd.System.CommandSystem.Results;
 
-using Dnd.CommandSystem.Commands;
+using Dnd.System.CommandSystem.Commands;
 
 public interface ICommandResult
 {

@@ -1,12 +1,15 @@
-﻿namespace Dnd.Entities.Races;
+﻿namespace Dnd.System.Entities.Races;
 
-using Dnd.Entities;
-using Dnd.Entities.Traits;
+using Dnd.System.Entities;
+using Dnd.System.Entities.Traits;
 
 public interface IRace : IDndEntity
 {
     string Description { get; }
+
     ICreatureType CreatureType { get; }
+
     ISize Size { get; }
-    List<ATrait> RaceTraits { get; }
+
+    List<ITrait> RaceTraits { get; }
 }
