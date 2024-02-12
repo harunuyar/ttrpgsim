@@ -13,7 +13,7 @@ public class ArmorProficiency : AFeat
 
     public EArmorType ArmorType { get; }
 
-    public override void HandleCommand(DndCommand command)
+    public override void HandleCommand(ICommand command)
     {
         if (command is HasArmorProficiency hasArmorProficiency && ArmorType.HasFlag(hasArmorProficiency.ArmorType))
         {

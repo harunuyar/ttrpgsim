@@ -1,5 +1,6 @@
 ﻿namespace Dnd.System.Entities.Characters;
 
+using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.Classes;
 using Dnd.System.Entities.Levels;
 
@@ -41,5 +42,13 @@ public class LevelInfo
     public int GetLevel(IClass dndClass)
     {
         return Levels.TryGetValue(dndClass, out var levels) ? levels.Count : 0;
+    }
+
+    public void HandleCommand(ICommand command)
+    {
+        foreach (var feat in Levels.Values.SelectMany(levelList => levelList).SelectMany(level => level.Feats))
+        {
+            feat.HandleCommand(command);
+        }
     }
 }

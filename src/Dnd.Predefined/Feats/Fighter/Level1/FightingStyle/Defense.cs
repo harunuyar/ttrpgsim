@@ -12,7 +12,7 @@ public class Defense : AFeat, IFightingStyle
     {
     }
 
-    public override void HandleCommand(DndCommand command)
+    public override void HandleCommand(ICommand command)
     {
         base.HandleCommand(command);
 

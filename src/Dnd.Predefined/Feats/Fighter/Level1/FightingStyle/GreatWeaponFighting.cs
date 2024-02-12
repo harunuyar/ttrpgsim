@@ -8,7 +8,7 @@ public class GreatWeaponFighting : AFeat, IFightingStyle
     {
     }
 
-    public override void HandleCommand(DndCommand command)
+    public override void HandleCommand(ICommand command)
     {
         // TODO: add Great Weapon Fighting to GetAvailableActions command with unlimited uses
     }

@@ -13,7 +13,7 @@ public class SavingThrowProficiency : AFeat
 
     public EAttributeType AttributeTypes { get; }
 
-    public override void HandleCommand(DndCommand command)
+    public override void HandleCommand(ICommand command)
     {
         if (command is HasSavingThrowProficiency hasSavingThrowProficiency && AttributeTypes.HasFlag(hasSavingThrowProficiency.AttributeType))
         {

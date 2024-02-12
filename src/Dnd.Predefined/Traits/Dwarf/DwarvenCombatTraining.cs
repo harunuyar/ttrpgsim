@@ -14,7 +14,7 @@ public class DwarvenCombatTraining : ATrait
 
     public EWeaponType WeaponProficiency => EWeaponType.Battleaxe | EWeaponType.Handaxe | EWeaponType.LightHammer | EWeaponType.Warhammer;
 
-    public override void HandleCommand(DndCommand command)
+    public override void HandleCommand(ICommand command)
     {
         if (command is HasWeaponProficiency getWeaponProficiency)
         {

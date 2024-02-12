@@ -15,7 +15,7 @@ public class UntilTriggered : IEffectDuration
 
     public int TimesTriggered { get; set; }
 
-    public void HandleCommand(DndCommand command)
+    public void HandleCommand(ICommand command)
     {
         // TODO: Check if the command is TriggeredEvent
     }

@@ -32,7 +32,7 @@ public abstract class AShield : IShield
 
     public int ArmorClass { get; }
 
-    public virtual void HandleCommand(DndCommand command)
+    public virtual void HandleCommand(ICommand command)
     {
         if (command is GetArmorClass getArmorClass)
         {

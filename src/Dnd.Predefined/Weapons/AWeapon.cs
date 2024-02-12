@@ -64,7 +64,7 @@ public abstract class AWeapon : IWeapon
 
     public ESuccessMeasuringType SuccessMeasuringType { get; }
 
-    public virtual void HandleCommand(DndCommand command)
+    public virtual void HandleCommand(ICommand command)
     {
     }
 }

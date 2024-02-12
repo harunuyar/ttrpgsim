@@ -17,7 +17,7 @@ public class AbilityScoreIncrease : ATrait
     public EAttributeType Attribute1 { get; }
     public EAttributeType Attribute2 { get; }
 
-    public override void HandleCommand(DndCommand command)
+    public override void HandleCommand(ICommand command)
     {
         if (command is GetAttributeScore getAttributeScore)
         {

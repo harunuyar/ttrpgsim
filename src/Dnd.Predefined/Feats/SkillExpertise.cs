@@ -14,7 +14,7 @@ public class SkillExpertise : AFeat
 
     public ISkill Skill { get; }
 
-    public override void HandleCommand(DndCommand command)
+    public override void HandleCommand(ICommand command)
     {
         if (command is HasSkillExpertise hasSkillExpertise && hasSkillExpertise.Skill == Skill)
         {

@@ -15,7 +15,7 @@ public abstract class AFeat : IFeat
 
     public string Description { get; }
 
-    public virtual void HandleCommand(DndCommand command)
+    public virtual void HandleCommand(ICommand command)
     {
     }
 }

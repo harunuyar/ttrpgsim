@@ -1,6 +1,7 @@
 ﻿namespace Dnd.System.Entities.Effects.Duration;
 
 using Dnd.System.CommandSystem.Commands;
+using Dnd.System.CommandSystem.Commands.EventCommands;
 
 public class Time : IEffectDuration
 {
@@ -14,9 +15,12 @@ public class Time : IEffectDuration
 
     public int RemainingTurns { get; private set; }
 
-    public void HandleCommand(DndCommand command)
+    public void HandleCommand(ICommand command)
     {
-        // TODO: Subtract the duration of the command from the remaining duration
+        if (command is TakeTurn)
+        {
+            RemainingTurns--;
+        }
     }
 
     public bool IsExpired()

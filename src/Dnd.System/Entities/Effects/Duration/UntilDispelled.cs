@@ -1,6 +1,7 @@
 ﻿namespace Dnd.System.Entities.Effects.Duration;
 
 using Dnd.System.CommandSystem.Commands;
+using Dnd.System.CommandSystem.Commands.EventCommands;
 
 public class UntilDispelled : IEffectDuration
 {
@@ -11,9 +12,8 @@ public class UntilDispelled : IEffectDuration
 
     private bool IsDispelled { get; set; }
 
-    public void HandleCommand(DndCommand command)
+    public void HandleCommand(ICommand command)
     {
-        // TODO: Check if the command is DispelledEvent
     }
 
     public bool IsExpired()

@@ -8,7 +8,7 @@ public class SecondWind : AFeat
     {
     }
 
-    public override void HandleCommand(DndCommand command)
+    public override void HandleCommand(ICommand command)
     {
         // TODO: add Second Wind to GetAvailableActions command with one charge per short/long rest
     }

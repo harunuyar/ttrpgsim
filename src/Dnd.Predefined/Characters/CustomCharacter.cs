@@ -3,7 +3,6 @@
 using Dnd.Predefined.Alignments;
 using Dnd.System.Entities.Allignments;
 using Dnd.System.Entities.Characters;
-using Dnd.System.Entities.Effects;
 using Dnd.System.Entities.Races;
 
 public class CustomCharacter : ICharacter
@@ -17,7 +16,7 @@ public class CustomCharacter : ICharacter
         LevelInfo = new LevelInfo();
         HitPoints = new HitPoints();
         Inventory = new Inventory();
-        Effects = new List<IEffect>();
+        EffectsTable = new EffectsTable();
     }
 
     public IRace Race { get; }
@@ -32,7 +31,7 @@ public class CustomCharacter : ICharacter
 
     public Inventory Inventory { get; }
 
-    public List<IEffect> Effects { get; }
+    public EffectsTable EffectsTable { get; }
 
     public bool HasInspiration { get; set; }
 

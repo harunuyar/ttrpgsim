@@ -2,17 +2,17 @@
 
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
-using Dnd.System.Entities.Effects;
+using Dnd.System.Entities.Characters;
 using Dnd.System.Entities.Effects.Duration;
 
 public class Blinded : AEffect
 {
-    public Blinded(IEffectDuration duration)
-        : base("Blinded", "A blinded creature can't see and automatically fails any ability check that requires sight. Attack rolls against the creature have advantage, and the creature's attack rolls have disadvantage.", duration)
+    public Blinded(IEffectDuration duration, ICharacter source, ICharacter target)
+        : base("Blinded", "A blinded creature can't see and automatically fails any ability check that requires sight. Attack rolls against the creature have advantage, and the creature's attack rolls have disadvantage.", duration, source, target)
     {
     }
 
-    public override void HandleCommand(DndCommand command)
+    public override void HandleCommand(ICommand command)
     {
         base.HandleCommand(command);
 

@@ -14,10 +14,8 @@ public class Concentration : IEffectDuration
 
     private Time? TimeDuration { get; }
 
-    public void HandleCommand(DndCommand command)
+    public void HandleCommand(ICommand command)
     {
-        // TODO: Check if the command is ConcentrationBrokenEvent
-
         TimeDuration?.HandleCommand(command);
         if (TimeDuration?.IsExpired() == true)
         {

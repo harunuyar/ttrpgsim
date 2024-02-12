@@ -8,7 +8,7 @@ public class ActionSurge : AFeat
     {
     }
 
-    public override void HandleCommand(DndCommand command)
+    public override void HandleCommand(ICommand command)
     {
         // TODO: Add Action Surge to GetAvailableActions command with one charge per short/long rest
     }

@@ -7,7 +7,7 @@ using Dnd.System.Entities.Items.Equipments.Weapons;
 
 public class ApplyDamage : DndEventCommand
 {
-    public ApplyDamage(ICharacter character, int damage, EDamageType damageType) : base(character)
+    public ApplyDamage(IEventListener eventListener, ICharacter character, int damage, EDamageType damageType) : base(eventListener, character)
     {
         Damage = damage;
         DamageType = damageType;
@@ -17,7 +17,7 @@ public class ApplyDamage : DndEventCommand
 
     public EDamageType DamageType { get; }
 
-    public override ICommandResult Execute()
+    public override void FinalizeEvent()
     {
         var calculateDamage = new CalculateDamage(Character, Damage, DamageType);
         var damageResult = calculateDamage.Execute();
@@ -25,11 +25,11 @@ public class ApplyDamage : DndEventCommand
         if (damageResult.IsSuccess)
         {
             Character.HitPoints.Damage(damageResult.Value);
-            return EventResult.Success(this);
+            EventResult.SetMessage($"Dealt {damageResult.Value} damage to {Character.Name}");
         }
         else
         {
-            return EventResult.Failure(this, damageResult.ErrorMessage ?? "Unknown");
+            EventResult.SetError(damageResult.ErrorMessage ?? "Unknown");
         }
     }
 }

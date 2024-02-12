@@ -14,7 +14,7 @@ public class SpellCastingAbility : AFeat
 
     public EAttributeType SpellCastingAttribute { get; }
 
-    public override void HandleCommand(DndCommand command)
+    public override void HandleCommand(ICommand command)
     {
         if (command is CanCastSpell canCastSpell)
         {

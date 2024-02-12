@@ -11,7 +11,7 @@ internal class TwoWeaponFighting : AFeat, IFightingStyle
     {
     }
 
-    public override void HandleCommand(DndCommand command)
+    public override void HandleCommand(ICommand command)
     {
         if (command is CalculateWeaponDamageModifier calculateWeaponDamageModifier 
             && calculateWeaponDamageModifier.WeaponItem.ItemDescription is IWeapon weapon

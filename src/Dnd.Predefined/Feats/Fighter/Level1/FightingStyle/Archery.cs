@@ -10,7 +10,7 @@ internal class Archery : AFeat, IFightingStyle
     {
     }
 
-    public override void HandleCommand(DndCommand command)
+    public override void HandleCommand(ICommand command)
     {
         if (command is CalculateWeaponAttackModifier calculateWeaponAttackModifier 
             && calculateWeaponAttackModifier.WeaponItem.ItemDescription is IWeapon weapon 

@@ -11,7 +11,7 @@ public class AbilityScoreIncrease : ATrait
     {
     }
 
-    public override void HandleCommand(DndCommand command)
+    public override void HandleCommand(ICommand command)
     {
         base.HandleCommand(command);
 

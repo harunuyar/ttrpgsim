@@ -8,7 +8,7 @@ public class Protection : AFeat, IFightingStyle
     {
     }
 
-    public override void HandleCommand(DndCommand command)
+    public override void HandleCommand(ICommand command)
     {
         // TODO: add Protection to GetAvailableActions command with unlimited uses
     }

@@ -13,7 +13,7 @@ public class WeaponProficiency : AFeat
 
     public EWeaponType WeaponType { get; }
 
-    public override void HandleCommand(DndCommand command)
+    public override void HandleCommand(ICommand command)
     {
         if (command is HasWeaponProficiency hasWeaponProficiency && WeaponType.HasFlag(hasWeaponProficiency.WeaponType))
         {

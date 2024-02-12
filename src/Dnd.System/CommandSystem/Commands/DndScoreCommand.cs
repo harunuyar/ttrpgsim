@@ -3,19 +3,22 @@
 using Dnd.System.CommandSystem.Results;
 using Dnd.System.Entities.Characters;
 
-public abstract class DndScoreCommand : DndCommand
+public abstract class DndScoreCommand : ICommand
 {
-    public DndScoreCommand(ICharacter character) : base(character)
+    public DndScoreCommand(ICharacter character)
     {
+        Character = character;
         Result = IntegerResultWithBonus.Empty(this);
         ShouldCollectBonuses = true;
     }
+
+    public ICharacter Character { get; }
 
     public IntegerResultWithBonus Result { get; }
 
     protected bool ShouldCollectBonuses { get; set; }
 
-    public override IntegerResultWithBonus Execute()
+    public IntegerResultWithBonus Execute()
     {
         Result.Reset();
 
@@ -23,11 +26,16 @@ public abstract class DndScoreCommand : DndCommand
 
         if (ShouldCollectBonuses && Result.IsSuccess)
         {
-            CollectBonuses();
+            Character.HandleCommand(this);
         }
 
         return Result;
     }
 
     public abstract void InitializeResult();
+
+    ICommandResult ICommand.Execute()
+    {
+        return Execute();
+    }
 }

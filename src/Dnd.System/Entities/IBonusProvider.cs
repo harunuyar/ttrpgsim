@@ -4,5 +4,5 @@ using Dnd.System.CommandSystem.Commands;
 
 public interface IBonusProvider : IDndEntity
 {
-    void HandleCommand(DndCommand command);
+    void HandleCommand(ICommand command);
 }

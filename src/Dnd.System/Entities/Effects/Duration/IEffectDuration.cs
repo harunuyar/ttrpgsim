@@ -4,7 +4,7 @@ using Dnd.System.CommandSystem.Commands;
 
 public interface IEffectDuration
 {
-    void HandleCommand(DndCommand command);
+    void HandleCommand(ICommand command);
 
     bool IsExpired();
 }

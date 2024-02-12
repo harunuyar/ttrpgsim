@@ -1,10 +1,25 @@
-﻿using Dnd.System.Entities.Effects.Duration;
+﻿using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.Effects.Duration;
 
 namespace Dnd.System.Entities.Effects;
 
 public interface IEffect : IBonusProvider
 {
-    public string Description { get; }
+    string Description { get; }
 
-    public IEffectDuration Duration { get; }
+    IEffectDuration Duration { get; }
+
+    ICharacter Source { get; }
+
+    ICharacter Target { get; }
+
+    void StartEffect()
+    {
+        Source.EffectsTable.AddCausedEffect(this);
+    }
+
+    void RemoveEffect()
+    {
+        Source.EffectsTable.RemoveCausedEffect(this);
+    }
 }

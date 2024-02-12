@@ -12,7 +12,7 @@ public class AbilityScoreIncrease : ATrait
     {
     }
 
-    public override void HandleCommand(DndCommand command)
+    public override void HandleCommand(ICommand command)
     {
         if (command is GetAttributeScore getAttributeScoreCommand)
         {

@@ -21,38 +21,6 @@ public class GetSkillModifier : DndScoreCommand
         if (attributeModifierResult.IsSuccess)
         {
             Result.SetBaseValue(Character.AttributeSet.GetAttribute(Skill.AttributeType), attributeModifierResult.Value);
-
-            // TODO: let expertise and proficiency bonus to be handled by feats
-
-            var getHasSkillExpertise = new HasSkillExpertise(Character, Skill);
-            var hasSkillExpertiseResult = getHasSkillExpertise.Execute();
-
-            if (hasSkillExpertiseResult.IsSuccess && hasSkillExpertiseResult.Value)
-            {
-                var getProficiencyBonusCommand = new GetProficiencyBonus(Character);
-                var proficiencyBonusResult = getProficiencyBonusCommand.Execute();
-
-                if (proficiencyBonusResult.IsSuccess)
-                {
-                    Result.BonusCollection.AddBonus("Expertise Bonus", 2 * attributeModifierResult.Value);
-                }
-            }
-            else
-            {
-                var getSkillProficiencyCommand = new HasSkillProficiency(Character, Skill);
-                var skillProficiencyResult = getSkillProficiencyCommand.Execute();
-
-                if (skillProficiencyResult.IsSuccess && skillProficiencyResult.Value)
-                {
-                    var getProficiencyBonusCommand = new GetProficiencyBonus(Character);
-                    var proficiencyBonusResult = getProficiencyBonusCommand.Execute();
-
-                    if (proficiencyBonusResult.IsSuccess)
-                    {
-                        Result.BonusCollection.AddBonus("Proficiency Bonus", proficiencyBonusResult.Value);
-                    }
-                }
-            }
         }
         else
         {

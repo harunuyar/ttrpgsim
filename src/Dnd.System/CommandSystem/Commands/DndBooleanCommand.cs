@@ -3,19 +3,22 @@
 using Dnd.System.CommandSystem.Results;
 using Dnd.System.Entities.Characters;
 
-public abstract class DndBooleanCommand : DndCommand
+public abstract class DndBooleanCommand : ICommand
 {
-    public DndBooleanCommand(ICharacter character) : base(character)
+    public DndBooleanCommand(ICharacter character)
     {
+        Character = character;
         Result = BooleanResult.Empty(this);
         ShouldCollectBonuses = true;
     }
+
+    public ICharacter Character { get; }
 
     public BooleanResult Result { get; }
 
     protected bool ShouldCollectBonuses { get; set; }
 
-    public override BooleanResult Execute()
+    public BooleanResult Execute()
     {
         Result.Reset();
 
@@ -23,11 +26,16 @@ public abstract class DndBooleanCommand : DndCommand
 
         if (ShouldCollectBonuses && Result.IsSuccess)
         {
-            CollectBonuses();
+            Character.HandleCommand(this);
         }
         
         return Result;
     }
 
     public abstract void InitializeResult();
+
+    ICommandResult ICommand.Execute()
+    {
+        return Execute();
+    }
 }

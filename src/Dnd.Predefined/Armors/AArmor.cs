@@ -55,7 +55,7 @@ public abstract class AArmor : IArmor
         return result.IsSuccess ? result.Value : 0;
     }
 
-    public virtual void HandleCommand(DndCommand command)
+    public virtual void HandleCommand(ICommand command)
     {
         if (command is GetSkillModifier getSkillModifier && DisadvantageToStealth && getSkillModifier.Skill == Stealth.Instance)
         {

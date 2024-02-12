@@ -1,6 +1,8 @@
 ﻿namespace Dnd.Tests.CommandSystem;
 
 using Dnd.Predefined.Characters;
+using Dnd.Predefined.Feats.Fighter.Level1.FightingStyle;
+using Dnd.Predefined.Levels.FighterLevels;
 using Dnd.Predefined.Races;
 using Dnd.Predefined.Skills;
 using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
@@ -15,13 +17,12 @@ public class GetSkillProficiencyTest
     public void TestInitialize()
     {
         character = new CustomCharacter("Test", Dragonborn.Instance);
+        character.AttributeSet.Set(strength: 15, dexterity: 10, constitution: 14, intelligence: 8, wisdom: 12, charisma: 13);
 
-        // character.SetSkillProficiency(Intimidation.Instance, true);
-        // character.SetSkillProficiency(Athletics.Instance, true);
+        character.LevelInfo.AddLevel(new FighterLevel1(Athletics.Instance, Intimidation.Instance, Defense.Instance));
     }
 
     [TestMethod]
-    [Ignore("Not implemented")]
     public void TestGetSkillProficiencyTrue()
     {
         var getSkillProficiencyCommand = new HasSkillProficiency(character!, Intimidation.Instance);

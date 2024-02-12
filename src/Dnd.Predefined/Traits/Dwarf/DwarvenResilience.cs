@@ -14,7 +14,7 @@ public class DwarvenResilience : ATrait
     {
     }
 
-    public override void HandleCommand(DndCommand command)
+    public override void HandleCommand(ICommand command)
     {
         if (command is GetSavingThrowModifier getSavingThrowModifier)
         {
