@@ -2,7 +2,7 @@
 
 using Dnd.Predefined.Alignments;
 using Dnd.Predefined.Characters;
-using Dnd.Predefined.Feats.Fighter.Level1.FightingStyle;
+using Dnd.Predefined.Feats.Classes.Fighter.Level1.FightingStyle;
 using Dnd.Predefined.Levels.FighterLevels;
 using Dnd.Predefined.Races;
 using Dnd.Predefined.Skills;

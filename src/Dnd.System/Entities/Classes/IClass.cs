@@ -13,6 +13,8 @@ public interface IClass : IDndEntity
 
     EDiceType HitDie { get; }
 
+    EAttributeType SpellCastingAttribute { get; }
+
     EAttributeType SavingThrowProficiencies { get; }
 
     EArmorType ArmorProficiencies { get; }

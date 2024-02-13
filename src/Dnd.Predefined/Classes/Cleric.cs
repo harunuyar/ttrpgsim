@@ -40,6 +40,8 @@ public class Cleric : IClass
 
     public int MulticlassNumberOfSkillProficiencies => 0;
 
+    public EAttributeType SpellCastingAttribute => EAttributeType.Wisdom;
+
     private Cleric() { }
 
     public static readonly Cleric Instance = new Cleric();

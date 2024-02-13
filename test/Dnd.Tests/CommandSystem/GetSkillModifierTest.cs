@@ -9,7 +9,7 @@ using Dnd.Predefined.Skills;
 using Dnd.Predefined.Armors.HeavyArmor;
 using Dnd.System.Entities.Items;
 using Dnd.Predefined.Levels.FighterLevels;
-using Dnd.Predefined.Feats.Fighter.Level1.FightingStyle;
+using Dnd.Predefined.Feats.Classes.Fighter.Level1.FightingStyle;
 
 [TestClass]
 public class GetSkillModifierTest

@@ -1,4 +1,4 @@
-﻿namespace Dnd.Predefined.Feats.Fighter.Level1.FightingStyle;
+﻿namespace Dnd.Predefined.Feats.Classes.Fighter.Level1.FightingStyle;
 
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
@@ -13,7 +13,7 @@ internal class TwoWeaponFighting : AFeat, IFightingStyle
 
     public override void HandleCommand(ICommand command)
     {
-        if (command is CalculateWeaponDamageModifier calculateWeaponDamageModifier 
+        if (command is CalculateWeaponDamageModifier calculateWeaponDamageModifier
             && calculateWeaponDamageModifier.WeaponItem.ItemDescription is IWeapon weapon
             && calculateWeaponDamageModifier.WeaponItem == command.Character.Inventory.Equipments.OffHandWeapon)
         {

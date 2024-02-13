@@ -41,6 +41,8 @@ public class Paladin : IClass
 
     public int MulticlassNumberOfSkillProficiencies => 0;
 
+    public EAttributeType SpellCastingAttribute => EAttributeType.Charisma;
+
     private Paladin() { }
 
     public static readonly Paladin Instance = new Paladin();

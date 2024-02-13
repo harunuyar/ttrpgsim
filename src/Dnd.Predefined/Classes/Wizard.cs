@@ -41,6 +41,8 @@ public class Wizard : IClass
 
     public int MulticlassNumberOfSkillProficiencies => 0;
 
+    public EAttributeType SpellCastingAttribute => EAttributeType.Intelligence;
+
     private Wizard() { }
 
     public static readonly Wizard Instance = new Wizard();

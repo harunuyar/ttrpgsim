@@ -43,6 +43,8 @@ public class Druid : IClass
 
     public int MulticlassNumberOfSkillProficiencies => 0;
 
+    public EAttributeType SpellCastingAttribute => EAttributeType.Wisdom;
+
     private Druid() { }
 
     public static readonly Druid Instance = new Druid();

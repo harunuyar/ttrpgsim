@@ -42,6 +42,8 @@ public class Warlock : IClass
 
     public int MulticlassNumberOfSkillProficiencies => 0;
 
+    public EAttributeType SpellCastingAttribute => EAttributeType.Charisma;
+
     private Warlock() { }
 
     public static readonly Warlock Instance = new Warlock();

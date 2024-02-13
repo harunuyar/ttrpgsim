@@ -1,8 +1,8 @@
 ﻿namespace Dnd.Predefined.Levels.FighterLevels;
 
 using Dnd.Predefined.Classes;
-using Dnd.Predefined.Feats.Fighter.Level1;
-using Dnd.Predefined.Feats.Fighter.Level1.FightingStyle;
+using Dnd.Predefined.Feats.Classes.Fighter.Level1;
+using Dnd.Predefined.Feats.Classes.Fighter.Level1.FightingStyle;
 using Dnd.System.Entities.Skills;
 
 public class FighterLevel1 : SharedLevel1

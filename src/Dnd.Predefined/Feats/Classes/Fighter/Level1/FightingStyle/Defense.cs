@@ -1,4 +1,4 @@
-﻿namespace Dnd.Predefined.Feats.Fighter.Level1.FightingStyle;
+﻿namespace Dnd.Predefined.Feats.Classes.Fighter.Level1.FightingStyle;
 
 using Dnd.Predefined.Feats;
 using Dnd.System.CommandSystem.Commands;

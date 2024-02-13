@@ -53,6 +53,8 @@ public class Bard : IClass
 
     public int MulticlassNumberOfSkillProficiencies => 1;
 
+    public EAttributeType SpellCastingAttribute => EAttributeType.Charisma;
+
     private Bard() { }
 
     public static readonly Bard Instance = new Bard();

@@ -41,6 +41,8 @@ public class Sorcerer : IClass
 
     public int MulticlassNumberOfSkillProficiencies => 0;
 
+    public EAttributeType SpellCastingAttribute => EAttributeType.Charisma;
+
     private Sorcerer() { }
 
     public static readonly Sorcerer Instance = new Sorcerer();

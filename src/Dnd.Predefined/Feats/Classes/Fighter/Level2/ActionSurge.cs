@@ -1,4 +1,4 @@
-﻿namespace Dnd.Predefined.Feats.Fighter.Level2;
+﻿namespace Dnd.Predefined.Feats.Classes.Fighter.Level2;
 
 using Dnd.System.CommandSystem.Commands;
 

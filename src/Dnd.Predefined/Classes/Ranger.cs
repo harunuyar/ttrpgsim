@@ -43,6 +43,8 @@ public class Ranger : IClass
 
     public int MulticlassNumberOfSkillProficiencies => 1;
 
+    public EAttributeType SpellCastingAttribute => EAttributeType.Wisdom;
+
     private Ranger() { }
 
     public static readonly Ranger Instance = new Ranger();

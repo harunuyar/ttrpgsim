@@ -42,6 +42,8 @@ public class Artificer : IClass
 
     public int MulticlassNumberOfSkillProficiencies => 0;
 
+    public EAttributeType SpellCastingAttribute => EAttributeType.Intelligence;
+
     private Artificer() { }
 
     public static readonly Artificer Instance = new Artificer();

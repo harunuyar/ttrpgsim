@@ -41,6 +41,8 @@ public class Barbarian : IClass
 
     public int MulticlassNumberOfSkillProficiencies => 0;
 
+    public EAttributeType SpellCastingAttribute => EAttributeType.None;
+
     private Barbarian() { }
 
     public static readonly Barbarian Instance = new Barbarian();

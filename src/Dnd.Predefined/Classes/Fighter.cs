@@ -43,6 +43,8 @@ public class Fighter : IClass
 
     public int MulticlassNumberOfSkillProficiencies => 0;
 
+    public EAttributeType SpellCastingAttribute => EAttributeType.None;
+
     private Fighter() { }
 
     public static readonly Fighter Instance = new Fighter();

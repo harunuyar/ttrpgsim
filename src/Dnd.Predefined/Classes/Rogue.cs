@@ -46,6 +46,8 @@ public class Rogue : IClass
 
     public int MulticlassNumberOfSkillProficiencies => 1;
 
+    public EAttributeType SpellCastingAttribute => EAttributeType.None;
+
     private Rogue() { }
 
     public static readonly Rogue Instance = new Rogue();

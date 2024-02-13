@@ -1,4 +1,4 @@
-﻿namespace Dnd.Predefined.Feats.Fighter.Level1.FightingStyle;
+﻿namespace Dnd.Predefined.Feats.Classes.Fighter.Level1.FightingStyle;
 
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
@@ -12,8 +12,8 @@ internal class Archery : AFeat, IFightingStyle
 
     public override void HandleCommand(ICommand command)
     {
-        if (command is CalculateWeaponAttackModifier calculateWeaponAttackModifier 
-            && calculateWeaponAttackModifier.WeaponItem.ItemDescription is IWeapon weapon 
+        if (command is CalculateWeaponAttackModifier calculateWeaponAttackModifier
+            && calculateWeaponAttackModifier.WeaponItem.ItemDescription is IWeapon weapon
             && weapon.WeaponType.IsRanged())
         {
             calculateWeaponAttackModifier.AddBonus(this, 2);

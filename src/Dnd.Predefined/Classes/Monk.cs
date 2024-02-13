@@ -41,6 +41,8 @@ public class Monk : IClass
 
     public int MulticlassNumberOfSkillProficiencies => 0;
 
+    public EAttributeType SpellCastingAttribute => EAttributeType.None;
+
     private Monk() { }
 
     public static readonly Monk Instance = new Monk();
