@@ -25,6 +25,7 @@ public abstract class SharedLevel1 : ILevel
         {
             Feats = new List<IFeat>(3 + proficientSkills.Count)
             {
+                new ProficiencyBonus(),
                 new ArmorProficiency(dndClass.ArmorProficiencies),
                 new WeaponProficiency(dndClass.WeaponProficiencies),
                 new SavingThrowProficiency(dndClass.SavingThrowProficiencies)
