@@ -3,7 +3,7 @@
 using Dnd.GameManagers.Dice;
 using Dnd.System.Entities.Items.Equipments.Weapons;
 
-public interface IAttackingSpell : ISpell
+public interface IAttackingSpell : ISpellDescription
 {
     public EDamageType DamageType { get; }
 
