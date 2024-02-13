@@ -11,7 +11,7 @@ public class CalculateConcentrationSavingDifficultyClass : DndScoreCommand
 
     public int DamageTaken { get; set; }
 
-    public override void InitializeResult()
+    protected override void InitializeResult()
     {
         int damageDC = DamageTaken / 2;
         if (damageDC > 10)
@@ -22,5 +22,9 @@ public class CalculateConcentrationSavingDifficultyClass : DndScoreCommand
         {
             Result.SetBaseValue("Base", 10);
         }
+    }
+
+    protected override void FinalizeResult()
+    {
     }
 }

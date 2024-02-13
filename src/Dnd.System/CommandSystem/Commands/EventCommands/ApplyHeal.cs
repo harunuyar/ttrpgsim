@@ -13,7 +13,11 @@ public class ApplyHeal : DndEventCommand
 
     public int Amount { get; }
 
-    public override void FinalizeEvent()
+    protected override void InitializeEvent()
+    {
+    }
+
+    protected override void FinalizeEvent()
     {
         var calculateHeal = new CalculateHealAmount(Character, Amount);
         var healAmountResult = calculateHeal.Execute();

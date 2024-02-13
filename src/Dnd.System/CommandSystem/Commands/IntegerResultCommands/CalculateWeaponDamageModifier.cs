@@ -14,7 +14,7 @@ public class CalculateWeaponDamageModifier : DndScoreCommand
 
     public IItem WeaponItem { get; }
 
-    public override void InitializeResult()
+    protected override void InitializeResult()
     {
         IWeapon? weapon = WeaponItem.ItemDescription as IWeapon;
         if (weapon == null)
@@ -57,5 +57,9 @@ public class CalculateWeaponDamageModifier : DndScoreCommand
         {
             Result.SetError(strengthModifier.ErrorMessage ?? "Couldn't get attribute modifier");
         }
+    }
+
+    protected override void FinalizeResult()
+    {
     }
 }

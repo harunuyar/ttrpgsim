@@ -12,9 +12,13 @@ public class GetAttributeScore : DndScoreCommand
 
     public EAttributeType AttributeType { get; }
 
-    public override void InitializeResult()
+    protected override void InitializeResult()
     {
         var attribute = Character.AttributeSet.GetAttribute(AttributeType);
         Result.SetBaseValue(attribute, attribute.Score);
+    }
+
+    protected override void FinalizeResult()
+    {
     }
 }

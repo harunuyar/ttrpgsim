@@ -8,7 +8,11 @@ public class TakeTurn : DndEventCommand
     {
     }
 
-    public override void FinalizeEvent()
+    protected override void InitializeEvent()
+    {
+    }
+
+    protected override void FinalizeEvent()
     {
         EventResult.SetMessage($"It is {Character.Name}'s turn");
     }

@@ -22,7 +22,6 @@ internal class TwoWeaponFighting : AFeat, IFightingStyle
 
             if (strengthModifier.IsSuccess)
             {
-                IAttribute usedAttribute = command.Character.AttributeSet.GetAttribute(EAttributeType.Strength);
                 int attributeModifier = strengthModifier.Value;
 
                 if (weapon.WeaponProperties.HasFlag(EWeaponProperty.Finesse | EWeaponProperty.Range))
@@ -30,18 +29,24 @@ internal class TwoWeaponFighting : AFeat, IFightingStyle
                     var getDexterityModifier = new GetAttributeModifier(command.Character, EAttributeType.Dexterity);
                     var dexterityModifier = getDexterityModifier.Execute();
 
-                    if (dexterityModifier.IsSuccess && dexterityModifier.Value > attributeModifier)
+                    if (dexterityModifier.IsSuccess)
                     {
-                        attributeModifier = dexterityModifier.Value;
-                        usedAttribute = command.Character.AttributeSet.GetAttribute(EAttributeType.Dexterity);
+                        if (dexterityModifier.Value > attributeModifier)
+                        {
+                            attributeModifier = dexterityModifier.Value;
+                        }
+                    }
+                    else
+                    {
+                        calculateWeaponDamageModifier.SetErrorAndReturn("Couldn't get dexterity modifier: " + strengthModifier.ErrorMessage);
                     }
                 }
 
-                calculateWeaponDamageModifier.Result.SetBaseValue(usedAttribute, attributeModifier);
+                calculateWeaponDamageModifier.SetBaseValue(this, attributeModifier);
             }
             else
             {
-                calculateWeaponDamageModifier.Result.SetError(strengthModifier.ErrorMessage ?? "Couldn't get attribute modifier");
+                calculateWeaponDamageModifier.SetErrorAndReturn("Couldn't get strength modifier: " + strengthModifier.ErrorMessage);
             }
         }
     }

@@ -16,7 +16,7 @@ internal class Archery : AFeat, IFightingStyle
             && calculateWeaponAttackModifier.WeaponItem.ItemDescription is IWeapon weapon 
             && weapon.WeaponType.IsRanged())
         {
-            calculateWeaponAttackModifier.Result.BonusCollection.AddBonus(this, 2);
+            calculateWeaponAttackModifier.AddBonus(this, 2);
         }
     }
 }

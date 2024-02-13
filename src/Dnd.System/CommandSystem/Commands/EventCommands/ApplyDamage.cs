@@ -17,7 +17,11 @@ public class ApplyDamage : DndEventCommand
 
     public EDamageType DamageType { get; }
 
-    public override void FinalizeEvent()
+    protected override void InitializeEvent()
+    {
+    }
+
+    protected override void FinalizeEvent()
     {
         var calculateDamage = new CalculateDamage(Character, Damage, DamageType);
         var damageResult = calculateDamage.Execute();

@@ -10,7 +10,7 @@ public class GetProficiencyBonus : DndScoreCommand
     {
     }
 
-    public override void InitializeResult()
+    protected override void InitializeResult()
     {
         int level = Character.LevelInfo.Level;
 
@@ -22,5 +22,9 @@ public class GetProficiencyBonus : DndScoreCommand
         {
             Result.SetBaseValue("Base", ProficiencyBonusArr[level - 1]);
         }
+    }
+
+    protected override void FinalizeResult()
+    {
     }
 }

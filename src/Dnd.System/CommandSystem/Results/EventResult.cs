@@ -34,4 +34,10 @@ public class EventResult : ICommandResult
         
         Message = errorMessage;
     }
+
+    public void Reset()
+    {
+        IsSuccess = true;
+        Message = null;
+    }
 }

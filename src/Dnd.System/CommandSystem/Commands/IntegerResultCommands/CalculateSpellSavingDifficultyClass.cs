@@ -13,7 +13,7 @@ public class CalculateSpellSavingDifficultyClass : DndScoreCommand
 
     public ISpell Spell { get; }
 
-    public override void InitializeResult()
+    protected override void InitializeResult()
     {
         if (Spell.SuccessMeasuringType == ESuccessMeasuringType.SavingThrow)
         {
@@ -37,5 +37,9 @@ public class CalculateSpellSavingDifficultyClass : DndScoreCommand
         {
             Result.SetError("Spell doesn't require saving throw");
         }
+    }
+
+    protected override void FinalizeResult()
+    {
     }
 }

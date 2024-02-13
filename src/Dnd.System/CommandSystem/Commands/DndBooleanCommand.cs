@@ -1,6 +1,7 @@
 ﻿namespace Dnd.System.CommandSystem.Commands;
 
 using Dnd.System.CommandSystem.Results;
+using Dnd.System.Entities;
 using Dnd.System.Entities.Characters;
 
 public abstract class DndBooleanCommand : ICommand
@@ -9,14 +10,16 @@ public abstract class DndBooleanCommand : ICommand
     {
         Character = character;
         Result = BooleanResult.Empty(this);
-        ShouldCollectBonuses = true;
+        ShouldVisitEntities = true;
     }
 
     public ICharacter Character { get; }
 
-    public BooleanResult Result { get; }
+    protected BooleanResult Result { get; }
 
-    protected bool ShouldCollectBonuses { get; set; }
+    protected bool ShouldVisitEntities { get; set; }
+
+    public bool IsForceCompleted { get; private set; }
 
     public BooleanResult Execute()
     {
@@ -24,18 +27,56 @@ public abstract class DndBooleanCommand : ICommand
 
         InitializeResult();
 
-        if (ShouldCollectBonuses && Result.IsSuccess)
+        if (!IsForceCompleted && ShouldVisitEntities && Result.IsSuccess)
         {
             Character.HandleCommand(this);
+        }
+
+        if (!IsForceCompleted)
+        {
+            FinalizeResult();
         }
         
         return Result;
     }
 
-    public abstract void InitializeResult();
+    protected abstract void InitializeResult();
+
+    protected abstract void FinalizeResult();
 
     ICommandResult ICommand.Execute()
     {
         return Execute();
+    }
+
+    public void ForceComplete()
+    {
+        IsForceCompleted = true;
+    }
+
+    public void SetValue(IBonusProvider bonusProvider, bool value)
+    {
+        if (!IsForceCompleted)
+        {
+            Result.SetValue(bonusProvider, value);
+        }
+    }
+
+    public void SetValueAndReturn(IBonusProvider bonusProvider, bool value)
+    {
+        if (!IsForceCompleted)
+        {
+            Result.SetValue(bonusProvider, value);
+            ForceComplete();
+        }
+    }
+
+    public void SetErrorAndReturn(string errorMessage)
+    {
+        if (!IsForceCompleted)
+        {
+            Result.SetError(errorMessage);
+            ForceComplete();
+        }
     }
 }

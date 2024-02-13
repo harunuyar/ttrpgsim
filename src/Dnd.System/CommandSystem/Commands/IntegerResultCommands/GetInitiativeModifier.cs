@@ -9,7 +9,7 @@ public class GetInitiativeModifier : DndScoreCommand
     {
     }
 
-    public override void InitializeResult()
+    protected override void InitializeResult()
     {
         var getDexterityModifierCommand = new GetAttributeModifier(Character, EAttributeType.Dexterity);
         var dexterityModifierResult = getDexterityModifierCommand.Execute();
@@ -22,5 +22,9 @@ public class GetInitiativeModifier : DndScoreCommand
         {
             Result.SetError(dexterityModifierResult.ErrorMessage ?? "Unknown");
         }
+    }
+
+    protected override void FinalizeResult()
+    {
     }
 }

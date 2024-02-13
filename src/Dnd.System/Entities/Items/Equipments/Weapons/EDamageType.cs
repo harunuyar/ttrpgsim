@@ -1,18 +1,19 @@
 ﻿namespace Dnd.System.Entities.Items.Equipments.Weapons;
 
-public enum EDamageType
+public enum EDamageType : ushort
 {
-    Acid,
-    Bludgeoning,
-    Cold,
-    Fire,
-    Force,
-    Lightning,
-    Necrotic,
-    Piercing,
-    Poison,
-    Psychic,
-    Radiant,
-    Slashing,
-    Thunder
+    None            = 0x0000,
+    Acid            = 0x0001,
+    Bludgeoning     = 0x0002,
+    Cold            = 0x0004,
+    Fire            = 0x0008,
+    Force           = 0x0010,
+    Lightning       = 0x0020,
+    Necrotic        = 0x0040,
+    Piercing        = 0x0080,
+    Poison          = 0x0100,
+    Psychic         = 0x0200,
+    Radiant         = 0x0400,
+    Slashing        = 0x0800,
+    Thunder         = 0x1000,
 }

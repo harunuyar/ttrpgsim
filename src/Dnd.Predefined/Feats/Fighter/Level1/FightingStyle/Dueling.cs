@@ -19,7 +19,7 @@ public class Dueling : AFeat, IFightingStyle
             && calculateWeaponDamageModifier.WeaponItem == command.Character.Inventory.Equipments.MainHandWeapon
             && command.Character.Inventory.Equipments.OffHandWeapon == null)
         {
-            calculateWeaponDamageModifier.Result.BonusCollection.AddBonus(this, 2);
+            calculateWeaponDamageModifier.AddBonus(this, 2);
         }
     }
 }

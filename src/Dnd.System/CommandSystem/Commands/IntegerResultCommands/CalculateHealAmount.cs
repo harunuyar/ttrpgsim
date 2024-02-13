@@ -11,7 +11,7 @@ public class CalculateHealAmount : DndScoreCommand
 
     public int Amount { get; }
 
-    public override void InitializeResult()
+    protected override void InitializeResult()
     {
         var getMaxHP = new GetMaxHP(Character);
         var maxHPResult = getMaxHP.Execute();
@@ -25,5 +25,9 @@ public class CalculateHealAmount : DndScoreCommand
         {
             Result.SetError(maxHPResult.ErrorMessage ?? "Unknown");
         }
+    }
+
+    protected override void FinalizeResult()
+    {
     }
 }

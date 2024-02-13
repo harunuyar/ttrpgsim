@@ -12,7 +12,7 @@ public class GetPassiveSkillValue : DndScoreCommand
 
     public ISkill Skill { get; }
 
-    public override void InitializeResult()
+    protected override void InitializeResult()
     {
         Result.SetBaseValue("Base", 10);
 
@@ -23,5 +23,9 @@ public class GetPassiveSkillValue : DndScoreCommand
         {
             Result.BonusCollection.AddBonus(Skill, skillModifierResult.Value);
         }
+    }
+
+    protected override void FinalizeResult()
+    {
     }
 }

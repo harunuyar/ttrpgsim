@@ -20,7 +20,7 @@ public class DwarvenResilience : ATrait
         {
             if (getSavingThrowModifier.DamageType == EDamageType.Poison)
             {
-                getSavingThrowModifier.Result.BonusCollection.AddAdvantage(this, EAdvantage.Advantage);
+                getSavingThrowModifier.AddAdvantage(this, EAdvantage.Advantage);
             }
         }
 
@@ -28,7 +28,7 @@ public class DwarvenResilience : ATrait
         {
             if (getDamageResistance.DamageType == EDamageType.Poison)
             {
-                getDamageResistance.Result.SetValue(this, true);
+                getDamageResistance.SetValue(this, true);
             }
         }
     }

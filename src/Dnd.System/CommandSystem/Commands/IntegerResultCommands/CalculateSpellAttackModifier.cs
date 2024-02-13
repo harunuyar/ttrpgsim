@@ -16,7 +16,7 @@ public class CalculateSpellAttackModifier : DndScoreCommand
 
     public ICharacter Target { get; }
 
-    public override void InitializeResult()
+    protected override void InitializeResult()
     {
         if (Spell.SuccessMeasuringType != ESuccessMeasuringType.AttackRoll)
         {
@@ -56,5 +56,9 @@ public class CalculateSpellAttackModifier : DndScoreCommand
                 Result.BonusCollection.AddBonus(bonus.Key, bonus.Value);
             }
         }
+    }
+
+    protected override void FinalizeResult()
+    {
     }
 }

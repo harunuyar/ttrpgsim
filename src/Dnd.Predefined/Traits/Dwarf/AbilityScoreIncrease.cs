@@ -18,7 +18,7 @@ public class AbilityScoreIncrease : ATrait
         {
             if (getAttributeScore.AttributeType == EAttributeType.Constitution)
             {
-                getAttributeScore.Result.BonusCollection.AddBonus(this, 2);
+                getAttributeScore.AddBonus(this, 2);
             }
         }
     }

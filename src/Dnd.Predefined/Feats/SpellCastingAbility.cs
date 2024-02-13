@@ -18,7 +18,7 @@ public class SpellCastingAbility : AFeat
     {
         if (command is CanCastSpell canCastSpell)
         {
-            canCastSpell.Result.SetValue(this, true);
+            canCastSpell.SetValue(this, true);
         }
         else if (command is CalculateSpellAttackModifier calculateSpellAttackModifier)
         {
@@ -27,14 +27,14 @@ public class SpellCastingAbility : AFeat
 
             if (attributeModifier.IsSuccess)
             {
-                if (calculateSpellAttackModifier.Result.BaseValue <= attributeModifier.Value)
+                if (calculateSpellAttackModifier.GetResult().BaseValue <= attributeModifier.Value)
                 {
-                    calculateSpellAttackModifier.Result.SetBaseValue(command.Character.AttributeSet.GetAttribute(SpellCastingAttribute), attributeModifier.Value);
+                    calculateSpellAttackModifier.SetBaseValue(this, attributeModifier.Value);
                 }
             }
             else
             {
-                calculateSpellAttackModifier.Result.SetError("Couldn't get attribute modifier");
+                calculateSpellAttackModifier.SetErrorAndReturn("Couldn't get attribute modifier: " + attributeModifier.ErrorMessage);
             }
         }
         else if (command is CalculateSpellSavingDifficultyClass calculateSpellSavingDifficultyClass)
@@ -44,14 +44,14 @@ public class SpellCastingAbility : AFeat
 
             if (attributeModifier.IsSuccess)
             {
-                if (calculateSpellSavingDifficultyClass.Result.BaseValue <= attributeModifier.Value)
+                if (calculateSpellSavingDifficultyClass.GetResult().BaseValue <= attributeModifier.Value)
                 {
-                    calculateSpellSavingDifficultyClass.Result.SetBaseValue(command.Character.AttributeSet.GetAttribute(SpellCastingAttribute), attributeModifier.Value);
+                    calculateSpellSavingDifficultyClass.SetBaseValue(this, attributeModifier.Value);
                 }
             }
             else
             {
-                calculateSpellSavingDifficultyClass.Result.SetError("Couldn't get attribute modifier");
+                calculateSpellSavingDifficultyClass.SetErrorAndReturn("Couldn't get attribute modifier" + attributeModifier.ErrorMessage);
             }
         }
     }

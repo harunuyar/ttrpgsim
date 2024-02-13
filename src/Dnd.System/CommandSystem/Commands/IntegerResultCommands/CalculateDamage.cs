@@ -17,7 +17,7 @@ public class CalculateDamage : DndScoreCommand
 
     public EDamageType DamageType { get; }
 
-    public override void InitializeResult()
+    protected override void InitializeResult()
     {
         Result.SetBaseValue("Damage", Damage);
 
@@ -28,5 +28,9 @@ public class CalculateDamage : DndScoreCommand
         {
             Result.BonusCollection.AddBonus(damageResistanceResult.Source ?? new CustomDndEntity("Resistance"), -Damage / 2);
         }
+    }
+
+    protected override void FinalizeResult()
+    {
     }
 }

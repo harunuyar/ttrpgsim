@@ -1,6 +1,6 @@
 ﻿namespace Dnd.Predefined.Levels;
 
-using Dnd.Predefined.Feats;
+using Dnd.Predefined.Feats.Proficiency;
 using Dnd.System.Entities.Classes;
 using Dnd.System.Entities.Feats;
 using Dnd.System.Entities.Levels;
@@ -33,7 +33,7 @@ public abstract class SharedLevel1 : ILevel
 
         foreach (var skill in proficientSkills)
         {
-            Feats.Add(new SkillProficiency(skill));
+            Feats.Add(new SkillProficiency(skill, EProficiencyType.FullProficiency));
         }
     }
 

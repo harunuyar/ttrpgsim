@@ -7,5 +7,9 @@ public interface ICommand
 {
     ICharacter Character { get; }
 
+    bool IsForceCompleted { get; }
+
+    void ForceComplete();
+
     ICommandResult Execute();
 }

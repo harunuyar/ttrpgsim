@@ -18,7 +18,11 @@ public class RollConcentrationSavingThrow : DndRollCommand
 
     public EDamageType DamageType { get; }
 
-    public override void FinalizeEvent()
+    protected override void InitializeEvent()
+    {
+    }
+
+    protected override void FinalizeEvent()
     {
         if (Character.EffectsTable.Concentration == null)
         {

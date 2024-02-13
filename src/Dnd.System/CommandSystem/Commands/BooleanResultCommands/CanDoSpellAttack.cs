@@ -15,8 +15,12 @@ public class CanDoSpellAttack : DndBooleanCommand
 
     public ICharacter Target { get; set; }
 
-    public override void InitializeResult()
+    protected override void InitializeResult()
     {
         Result.SetValue("Default", true);
+    }
+
+    protected override void FinalizeResult()
+    {
     }
 }

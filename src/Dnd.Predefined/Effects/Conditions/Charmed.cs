@@ -21,11 +21,11 @@ public class Charmed : AEffect
 
         if (command is CanDoWeaponAttack canDoWeaponAttack && canDoWeaponAttack.Target == Charmer)
         {
-            canDoWeaponAttack.Result.SetValue(this, false);
+            canDoWeaponAttack.SetValue(this, false);
         }
         else if (command is CanDoSpellAttack canDoSpellAttack && canDoSpellAttack.Target == Charmer)
         {
-            canDoSpellAttack.Result.SetValue(this, false);
+            canDoSpellAttack.SetValue(this, false);
         }
     }
 }

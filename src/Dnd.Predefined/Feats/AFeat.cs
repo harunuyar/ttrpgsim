@@ -13,7 +13,7 @@ public abstract class AFeat : IFeat
 
     public string Name {  get; }
 
-    public string Description { get; }
+    public virtual string Description { get; }
 
     public virtual void HandleCommand(ICommand command)
     {

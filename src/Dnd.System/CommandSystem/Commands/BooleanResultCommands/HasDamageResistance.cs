@@ -13,8 +13,12 @@ public class HasDamageResistance : DndBooleanCommand
 
     public EDamageType DamageType { get; }
 
-    public override void InitializeResult()
+    protected override void InitializeResult()
     {
         Result.SetValue("Base", false);
+    }
+
+    protected override void FinalizeResult()
+    {
     }
 }

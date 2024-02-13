@@ -16,7 +16,7 @@ public class CanDoWeaponAttack : DndBooleanCommand
 
     public ICharacter Target { get; set; }
 
-    public override void InitializeResult()
+    protected override void InitializeResult()
     {
         if (WeaponItem.ItemDescription is not IWeapon)
         {
@@ -24,5 +24,9 @@ public class CanDoWeaponAttack : DndBooleanCommand
         }
 
         Result.SetValue("Default", true);
+    }
+
+    protected override void FinalizeResult()
+    {
     }
 }

@@ -12,8 +12,12 @@ public class CalculateSpellDamageModifier : DndScoreCommand
 
     public ISpell Spell { get; }
 
-    public override void InitializeResult()
+    protected override void InitializeResult()
     {
         Result.SetBaseValue("Base", 0);
+    }
+
+    protected override void FinalizeResult()
+    {
     }
 }

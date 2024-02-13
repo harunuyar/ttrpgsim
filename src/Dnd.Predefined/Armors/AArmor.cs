@@ -59,19 +59,19 @@ public abstract class AArmor : IArmor
     {
         if (command is GetSkillModifier getSkillModifier && DisadvantageToStealth && getSkillModifier.Skill == Stealth.Instance)
         {
-            getSkillModifier.Result.BonusCollection.AddAdvantage(this, EAdvantage.Disadvantage);
+            getSkillModifier.AddAdvantage(this, EAdvantage.Disadvantage);
         }
         else if (command is GetArmorClass getArmorClass)
         {
-            getArmorClass.Result.SetBaseValue(this, BaseArmorClass);
+            getArmorClass.SetBaseValue(this, BaseArmorClass);
 
             int dexterityBonus = GetDexterityBonus(getArmorClass.Character);
-            int baseDexterityBonus = getArmorClass.Result.BonusCollection.GetBonus(getArmorClass.Character.AttributeSet.Dexterity);
+            int baseDexterityBonus = GetDexterityModifier(getArmorClass.Character);
 
             int dexterityBonusDifference = dexterityBonus - baseDexterityBonus;
             if (dexterityBonusDifference != 0)
             {
-                getArmorClass.Result.BonusCollection.AddBonus(this, dexterityBonusDifference);
+                getArmorClass.AddBonus(this, dexterityBonusDifference);
             }
         }
         else if (command is CanEquipItem canEquipItem && canEquipItem.Item.ItemDescription == this)
@@ -81,7 +81,7 @@ public abstract class AArmor : IArmor
 
             if (strengthScore.IsSuccess && strengthScore.Value < StrengthRequirement)
             {
-                canEquipItem.Result.SetValue("Not enough strength", false);
+                canEquipItem.SetValue(this, false);
             }
         }
     }

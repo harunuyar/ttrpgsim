@@ -1,6 +1,5 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 
-using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
 using Dnd.System.Entities.Attributes;
 using Dnd.System.Entities.Characters;
 using Dnd.System.Entities.Items.Equipments.Weapons;
@@ -17,7 +16,7 @@ public class GetSavingThrowModifier : DndScoreCommand
 
     public EAttributeType AttributeType { get; }
 
-    public override void InitializeResult()
+    protected override void InitializeResult()
     {
         var getAttributeModifierCommand = new GetAttributeModifier(Character, AttributeType);
         var attributeModifierResult = getAttributeModifierCommand.Execute();
@@ -25,24 +24,14 @@ public class GetSavingThrowModifier : DndScoreCommand
         if (attributeModifierResult.IsSuccess)
         {
             Result.SetBaseValue(Character.AttributeSet.GetAttribute(AttributeType), attributeModifierResult.Value);
-
-            var getSavingThrowProficiencyLevel = new HasSavingThrowProficiency(Character, AttributeType);
-            var savingThrowProficiencyLevelResult = getSavingThrowProficiencyLevel.Execute();
-
-            if (savingThrowProficiencyLevelResult.IsSuccess && savingThrowProficiencyLevelResult.Value)
-            {
-                var getProficiencyBonusCommand = new GetProficiencyBonus(Character);
-                var proficiencyBonusResult = getProficiencyBonusCommand.Execute();
-
-                if (proficiencyBonusResult.IsSuccess)
-                {
-                    Result.BonusCollection.AddBonus("Proficiency Bonus", proficiencyBonusResult.Value);
-                }
-            }
         }
         else
         {
             Result.SetError(attributeModifierResult.ErrorMessage ?? "Couldn't get attribute modifier");
         }
+    }
+
+    protected override void FinalizeResult()
+    {
     }
 }

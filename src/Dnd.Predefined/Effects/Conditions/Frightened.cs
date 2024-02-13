@@ -19,15 +19,15 @@ public class Frightened : AEffect
 
         if (command is CalculateWeaponAttackModifier calculateWeaponAttackModifier)
         {
-            calculateWeaponAttackModifier.Result.BonusCollection.AddAdvantage(this, EAdvantage.Disadvantage);
+            calculateWeaponAttackModifier.AddAdvantage(this, EAdvantage.Disadvantage);
         }
         else if (command is CalculateSpellAttackModifier calculateSpellAttackModifier)
         {
-            calculateSpellAttackModifier.Result.BonusCollection.AddAdvantage(this, EAdvantage.Disadvantage);
+            calculateSpellAttackModifier.AddAdvantage(this, EAdvantage.Disadvantage);
         }
         else if (command is GetSavingThrowModifier getSavingThrowModifier)
         {
-            getSavingThrowModifier.Result.BonusCollection.AddAdvantage(this, EAdvantage.Disadvantage);
+            getSavingThrowModifier.AddAdvantage(this, EAdvantage.Disadvantage);
         }
     }
 }

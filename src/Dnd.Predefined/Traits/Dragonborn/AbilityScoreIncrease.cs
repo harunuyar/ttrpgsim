@@ -18,11 +18,11 @@ public class AbilityScoreIncrease : ATrait
         {
             if (getAttributeScoreCommand.AttributeType == EAttributeType.Strength)
             {
-                getAttributeScoreCommand.Result.BonusCollection.AddBonus(this, 2);
+                getAttributeScoreCommand.AddBonus(this, 2);
             }
             else if (getAttributeScoreCommand.AttributeType == EAttributeType.Charisma)
             {
-                getAttributeScoreCommand.Result.BonusCollection.AddBonus(this, 1);
+                getAttributeScoreCommand.AddBonus(this, 1);
             }
         }
     }

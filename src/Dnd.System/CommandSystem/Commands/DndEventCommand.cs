@@ -15,33 +15,64 @@ public abstract class DndEventCommand : ICommand
 
     public ICharacter Character { get; }
 
-    public EventResult EventResult { get; }
+    protected EventResult EventResult { get; }
 
     public IEventListener EventListener { get; }
 
     protected bool ShouldVisitEntities { get; set; }
 
+    public bool IsForceCompleted { get; private set; }
+
     public EventResult Execute()
     {
-        if (ShouldVisitEntities)
+        EventResult.Reset();
+
+        InitializeEvent();
+
+        if (!IsForceCompleted && ShouldVisitEntities && EventResult.IsSuccess)
         {
             Character.HandleCommand(this);
         }
 
-        if (EventResult.IsSuccess)
+        if (!IsForceCompleted)
         {
             FinalizeEvent();
         }
-
+        
         EventListener.OnEventResult(EventResult);
        
         return EventResult;
     }
 
-    public abstract void FinalizeEvent();
+    protected abstract void InitializeEvent();
+
+    protected abstract void FinalizeEvent();
 
     ICommandResult ICommand.Execute()
     {
         return Execute();
+    }
+
+    public void ForceComplete()
+    {
+        IsForceCompleted = true;
+    }
+
+    public void SetEventMessageAndReturn(string message)
+    {
+        if (!IsForceCompleted)
+        {
+            EventResult.SetMessage(message);
+            ForceComplete();
+        }
+    }
+
+    public void SetErrorAndReturn(string message)
+    {
+        if (!IsForceCompleted)
+        {
+            EventResult.SetError(message);
+            ForceComplete();
+        }
     }
 }

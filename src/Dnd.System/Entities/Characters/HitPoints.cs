@@ -12,8 +12,12 @@ public class HitPoints
     }
 
     public List<int> HitPointRolls { get; }
+
     public int CurrentHitPoints { get; private set; }
+
     public int TemporaryHitPoints { get; private set; }
+
+    internal int MaxHitPoints { get; set; }
 
     public void Heal(int amount)
     {

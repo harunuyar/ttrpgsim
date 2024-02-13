@@ -36,7 +36,7 @@ public abstract class AShield : IShield
     {
         if (command is GetArmorClass getArmorClass)
         {
-            getArmorClass.Result.BonusCollection.AddBonus(this, ArmorClass);
+            getArmorClass.AddBonus(this, ArmorClass);
         }
     }
 }

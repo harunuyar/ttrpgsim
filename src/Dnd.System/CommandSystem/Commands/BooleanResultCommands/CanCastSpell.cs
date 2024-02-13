@@ -8,8 +8,12 @@ public class CanCastSpell : DndBooleanCommand
     {
     }
 
-    public override void InitializeResult()
+    protected override void InitializeResult()
     {
         Result.SetValue("Default", false);
+    }
+
+    protected override void FinalizeResult()
+    {
     }
 }

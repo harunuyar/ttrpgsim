@@ -1,4 +1,4 @@
-﻿namespace Dnd.Predefined.Feats;
+﻿namespace Dnd.Predefined.Feats.Proficiency;
 
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
@@ -17,7 +17,7 @@ public class WeaponProficiency : AFeat
     {
         if (command is HasWeaponProficiency hasWeaponProficiency && WeaponType.HasFlag(hasWeaponProficiency.WeaponType))
         {
-            hasWeaponProficiency.Result.SetValue(this, true);
+            hasWeaponProficiency.SetValue(this, true);
         }
     }
 
@@ -43,13 +43,13 @@ public class WeaponProficiency : AFeat
                 }
                 else
                 {
-                    list.AddRange(new[] { 
-                            EWeaponType.Club, EWeaponType.Dagger, EWeaponType.Greatclub, EWeaponType.Handaxe, EWeaponType.Javelin, 
+                    list.AddRange(new[] {
+                            EWeaponType.Club, EWeaponType.Dagger, EWeaponType.Greatclub, EWeaponType.Handaxe, EWeaponType.Javelin,
                             EWeaponType.LightHammer, EWeaponType.Mace, EWeaponType.Quarterstaff, EWeaponType.Sickle, EWeaponType.Spear }
                         .Where(wt => weaponType.HasFlag(wt))
                         .Select(wt => wt.ToString()));
                 }
-                
+
                 if (weaponType.HasFlag(EWeaponType.SimpleRangedWeapon))
                 {
                     list.Add("Simple Ranged Weapon");
@@ -74,9 +74,9 @@ public class WeaponProficiency : AFeat
                 }
                 else
                 {
-                    list.AddRange(new[] { 
-                            EWeaponType.Battleaxe, EWeaponType.Flail, EWeaponType.Glaive, EWeaponType.Greataxe, EWeaponType.Greatsword, EWeaponType.Halberd, 
-                            EWeaponType.Lance, EWeaponType.Longsword, EWeaponType.Maul, EWeaponType.Morningstar, EWeaponType.Pike, EWeaponType.Rapier, EWeaponType.Scimitar, 
+                    list.AddRange(new[] {
+                            EWeaponType.Battleaxe, EWeaponType.Flail, EWeaponType.Glaive, EWeaponType.Greataxe, EWeaponType.Greatsword, EWeaponType.Halberd,
+                            EWeaponType.Lance, EWeaponType.Longsword, EWeaponType.Maul, EWeaponType.Morningstar, EWeaponType.Pike, EWeaponType.Rapier, EWeaponType.Scimitar,
                             EWeaponType.Shortsword, EWeaponType.Trident, EWeaponType.WarPick, EWeaponType.Warhammer, EWeaponType.Whip }
                         .Where(wt => weaponType.HasFlag(wt))
                         .Select(wt => wt.ToString()));

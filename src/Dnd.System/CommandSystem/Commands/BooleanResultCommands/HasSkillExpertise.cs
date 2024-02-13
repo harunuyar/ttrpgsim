@@ -12,8 +12,12 @@ public class HasSkillExpertise : DndBooleanCommand
 
     public ISkill Skill { get; }
 
-    public override void InitializeResult()
+    protected override void InitializeResult()
     {
         Result.SetValue("Default", false);
+    }
+
+    protected override void FinalizeResult()
+    {
     }
 }

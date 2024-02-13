@@ -9,7 +9,7 @@ public class GetArmorClass : DndScoreCommand
     {
     }
 
-    public override void InitializeResult()
+    protected override void InitializeResult()
     {
         Result.SetBaseValue("Base Armor Class", 10);
 
@@ -20,5 +20,9 @@ public class GetArmorClass : DndScoreCommand
         {
             Result.BonusCollection.AddBonus(Character.AttributeSet.Dexterity, dexterityModifierResult.Value);
         }
+    }
+
+    protected override void FinalizeResult()
+    {
     }
 }

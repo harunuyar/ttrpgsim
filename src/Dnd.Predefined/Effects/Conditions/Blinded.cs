@@ -18,19 +18,19 @@ public class Blinded : AEffect
 
         if (command is CalculateWeaponAttackModifier calculateWeaponAttackModifier)
         {
-            calculateWeaponAttackModifier.Result.BonusCollection.AddAdvantage(this, System.Entities.Advantage.EAdvantage.Disadvantage);
+            calculateWeaponAttackModifier.AddAdvantage(this, System.Entities.Advantage.EAdvantage.Disadvantage);
         }
         else if (command is CalculateSpellAttackModifier calculateSpellAttackModifier)
         {
-            calculateSpellAttackModifier.Result.BonusCollection.AddAdvantage(this, System.Entities.Advantage.EAdvantage.Disadvantage);
+            calculateSpellAttackModifier.AddAdvantage(this, System.Entities.Advantage.EAdvantage.Disadvantage);
         }
         else if (command is CalculateWeaponAttackModifierAgainstCharacter calculateWeaponAttackModifierAgainstCharacter)
         {
-            calculateWeaponAttackModifierAgainstCharacter.Result.BonusCollection.AddAdvantage(this, System.Entities.Advantage.EAdvantage.Advantage);
+            calculateWeaponAttackModifierAgainstCharacter.AddAdvantage(this, System.Entities.Advantage.EAdvantage.Advantage);
         }
         else if (command is CalculateSpellAttackModifierAgainstCharacter calculateSpellAttackModifierAgainstCharacter)
         {
-            calculateSpellAttackModifierAgainstCharacter.Result.BonusCollection.AddAdvantage(this, System.Entities.Advantage.EAdvantage.Advantage);
+            calculateSpellAttackModifierAgainstCharacter.AddAdvantage(this, System.Entities.Advantage.EAdvantage.Advantage);
         }
     }
 }

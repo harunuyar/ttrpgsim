@@ -13,7 +13,7 @@ public class GetSkillModifier : DndScoreCommand
 
     public ISkill Skill { get; }
 
-    public override void InitializeResult()
+    protected override void InitializeResult()
     {
         var getAttributeModifierCommand = new GetAttributeModifier(Character, Skill.AttributeType);
         var attributeModifierResult = getAttributeModifierCommand.Execute();
@@ -26,5 +26,9 @@ public class GetSkillModifier : DndScoreCommand
         {
             Result.SetError(attributeModifierResult.ErrorMessage ?? "Couldn't get attribute modifier");
         }
+    }
+
+    protected override void FinalizeResult()
+    {
     }
 }

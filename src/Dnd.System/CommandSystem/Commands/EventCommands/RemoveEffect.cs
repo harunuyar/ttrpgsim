@@ -12,7 +12,11 @@ internal class RemoveEffect : DndEventCommand
 
     public IEffect Effect { get; }
 
-    public override void FinalizeEvent()
+    protected override void InitializeEvent()
+    {
+    }
+
+    protected override void FinalizeEvent()
     {
         Effect.RemoveEffect();
         EventResult.SetMessage($"Removed {Effect.Name} from {Effect.Target.Name}");

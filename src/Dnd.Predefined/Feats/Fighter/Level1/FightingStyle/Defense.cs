@@ -18,7 +18,7 @@ public class Defense : AFeat, IFightingStyle
 
         if (command is GetArmorClass getArmorClass && getArmorClass.Character.Inventory.Equipments.Armor != null)
         {
-            getArmorClass.Result.BonusCollection.AddBonus(this, 1);
+            getArmorClass.AddBonus(this, 1);
         }
     }
 }

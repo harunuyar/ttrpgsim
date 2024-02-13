@@ -19,7 +19,7 @@ public class CalculateWeaponAttackModifier : DndScoreCommand
 
     public ICharacter Target { get; }
 
-    public override void InitializeResult()
+    protected override void InitializeResult()
     {
         if (WeaponItem.ItemDescription is not IWeapon weapon)
         {
@@ -90,5 +90,9 @@ public class CalculateWeaponAttackModifier : DndScoreCommand
                 Result.BonusCollection.AddBonus(bonus.Key, bonus.Value);
             }
         }
+    }
+
+    protected override void FinalizeResult()
+    {
     }
 }

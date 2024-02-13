@@ -12,7 +12,7 @@ public class GetAttributeModifier : DndScoreCommand
 
     public EAttributeType AttributeType { get; }
 
-    public override void InitializeResult()
+    protected override void InitializeResult()
     {
         var getAttributeScoreCommand = new GetAttributeScore(Character, AttributeType);
         var attributeScoreResult = getAttributeScoreCommand.Execute();
@@ -25,5 +25,9 @@ public class GetAttributeModifier : DndScoreCommand
         {
             Result.SetError(attributeScoreResult.ErrorMessage ?? "Unknown");
         }
+    }
+
+    protected override void FinalizeResult()
+    {
     }
 }

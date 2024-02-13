@@ -10,6 +10,6 @@ public class GreatWeaponFighting : AFeat, IFightingStyle
 
     public override void HandleCommand(ICommand command)
     {
-        // TODO: add Great Weapon Fighting to GetAvailableActions command with unlimited uses
+        // TODO: check if command is MakeAttackRoll and reroll if 1 or 2
     }
 }

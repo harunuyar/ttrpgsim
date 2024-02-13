@@ -17,7 +17,7 @@ public class AbilityScoreIncrease : ATrait
 
         if (command is GetAttributeScore getAttributeScoreCommand)
         {
-            getAttributeScoreCommand.Result.BonusCollection.AddBonus(this, 1);
+            getAttributeScoreCommand.AddBonus(this, 1);
         }
     }
 }

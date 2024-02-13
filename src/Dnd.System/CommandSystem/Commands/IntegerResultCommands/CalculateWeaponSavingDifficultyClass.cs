@@ -12,7 +12,7 @@ public class CalculateWeaponSavingDifficultyClass : DndScoreCommand
 
     public IWeapon Weapon { get; }
 
-    public override void InitializeResult()
+    protected override void InitializeResult()
     {
         if (Weapon.SuccessMeasuringType == Entities.ESuccessMeasuringType.SavingThrow)
         {
@@ -34,5 +34,9 @@ public class CalculateWeaponSavingDifficultyClass : DndScoreCommand
         {
             Result.SetError("Weapon doesn't use saving throw as success measuring type");
         }
+    }
+
+    protected override void FinalizeResult()
+    {
     }
 }

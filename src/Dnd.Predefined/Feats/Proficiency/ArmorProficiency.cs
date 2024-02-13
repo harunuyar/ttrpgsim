@@ -1,4 +1,4 @@
-﻿namespace Dnd.Predefined.Feats;
+﻿namespace Dnd.Predefined.Feats.Proficiency;
 
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
@@ -17,7 +17,7 @@ public class ArmorProficiency : AFeat
     {
         if (command is HasArmorProficiency hasArmorProficiency && ArmorType.HasFlag(hasArmorProficiency.ArmorType))
         {
-            hasArmorProficiency.Result.SetValue(this, true);
+            hasArmorProficiency.SetValue(this, true);
         }
     }
 
@@ -45,7 +45,7 @@ public class ArmorProficiency : AFeat
             {
                 list.Add("Heavy");
             }
-            
+
             if (armorType.HasFlag(EArmorType.Shield))
             {
                 list.Add("Shield");

@@ -23,15 +23,15 @@ public class AbilityScoreIncrease : ATrait
         {
             if (getAttributeScore.AttributeType == EAttributeType.Charisma)
             {
-                getAttributeScore.Result.BonusCollection.AddBonus(this, 2);
+                getAttributeScore.AddBonus(this, 2);
             }
             else if (getAttributeScore.AttributeType == Attribute1)
             {
-                getAttributeScore.Result.BonusCollection.AddBonus(this, 1);
+                getAttributeScore.AddBonus(this, 1);
             }
             else if (getAttributeScore.AttributeType == Attribute2)
             {
-                getAttributeScore.Result.BonusCollection.AddBonus(this, 1);
+                getAttributeScore.AddBonus(this, 1);
             }
         }
     }

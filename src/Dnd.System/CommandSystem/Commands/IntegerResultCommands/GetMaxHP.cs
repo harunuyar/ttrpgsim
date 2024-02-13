@@ -7,9 +7,12 @@ public class GetMaxHP : DndScoreCommand
 {
     public GetMaxHP(ICharacter character) : base(character)
     {
+        ShouldSetFullHealth = character.HitPoints.CurrentHitPoints == character.HitPoints.MaxHitPoints;
     }
 
-    public override void InitializeResult()
+    public bool ShouldSetFullHealth { get; set; }
+
+    protected override void InitializeResult()
     {
         Result.SetBaseValue("Base", Character.HitPoints.HitPointRolls.Sum());
 
@@ -19,6 +22,15 @@ public class GetMaxHP : DndScoreCommand
         if (constModifierResult.IsSuccess)
         {
             Result.BonusCollection.AddBonus(Character.AttributeSet.Constitution, Character.LevelInfo.Level * constModifierResult.Value);
+        }
+    }
+
+    protected override void FinalizeResult()
+    {
+        if (Result.IsSuccess)
+        {
+            Character.HitPoints.MaxHitPoints = Result.Value;
+            Character.HitPoints.SetCurrentHitPoints(ShouldSetFullHealth ? Result.Value : Math.Min(Character.HitPoints.CurrentHitPoints, Result.Value));
         }
     }
 }
