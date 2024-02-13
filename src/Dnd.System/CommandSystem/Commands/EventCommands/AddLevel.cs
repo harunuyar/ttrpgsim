@@ -1,11 +1,11 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.EventCommands;
 
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Levels;
 
 public class AddLevel : DndEventCommand
 {
-    public AddLevel(IEventListener eventListener, ICharacter character, ILevel level) : base(eventListener, character)
+    public AddLevel(IEventListener eventListener, IGameActor character, ILevel level) : base(eventListener, character)
     {
         Level = level;
     }

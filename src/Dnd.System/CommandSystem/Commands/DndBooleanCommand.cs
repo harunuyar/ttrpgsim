@@ -2,18 +2,18 @@
 
 using Dnd.System.CommandSystem.Results;
 using Dnd.System.Entities;
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 
 public abstract class DndBooleanCommand : ICommand
 {
-    public DndBooleanCommand(ICharacter character)
+    public DndBooleanCommand(IGameActor character)
     {
         Character = character;
-        Result = BooleanResult.Empty(this);
+        Result = BooleanResult.Empty();
         ShouldVisitEntities = true;
     }
 
-    public ICharacter Character { get; }
+    public IGameActor Character { get; }
 
     protected BooleanResult Result { get; }
 

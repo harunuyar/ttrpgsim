@@ -9,13 +9,13 @@ using Dnd.Predefined.Levels.FighterLevels;
 using Dnd.Predefined.Races;
 using Dnd.Predefined.Skills;
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Items;
 
 [TestClass]
 public class GetArmorClassTest
 {
-    private ICharacter? character;
+    private IGameActor? character;
 
     [TestInitialize]
     public void TestInitialize()

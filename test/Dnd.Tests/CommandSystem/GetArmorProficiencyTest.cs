@@ -7,13 +7,13 @@ using Dnd.Predefined.Levels.FighterLevels;
 using Dnd.Predefined.Races;
 using Dnd.Predefined.Skills;
 using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Items.Equipments.Armors;
 
 [TestClass]
 public class GetArmorProficiencyTest
 {
-    private ICharacter? character;
+    private IGameActor? character;
 
     [TestInitialize]
     public void TestInitialize()

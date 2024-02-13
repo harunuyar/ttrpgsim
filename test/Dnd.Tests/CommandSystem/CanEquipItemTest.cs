@@ -5,13 +5,13 @@ using Dnd.Predefined.Armors.HeavyArmor;
 using Dnd.Predefined.Characters;
 using Dnd.Predefined.Races;
 using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Items;
 
 [TestClass]
 public class CanEquipItemTest
 {
-    private ICharacter? character;
+    private IGameActor? character;
     private IItem? armor;
 
     [TestInitialize]

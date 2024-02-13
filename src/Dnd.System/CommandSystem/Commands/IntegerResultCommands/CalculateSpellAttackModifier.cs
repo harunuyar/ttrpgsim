@@ -1,12 +1,12 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 
 using Dnd.System.Entities;
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Spells;
 
 public class CalculateSpellAttackModifier : DndScoreCommand
 {
-    public CalculateSpellAttackModifier(ICharacter character, ISpell spell, ICharacter target) : base(character)
+    public CalculateSpellAttackModifier(IGameActor character, ISpell spell, IGameActor target) : base(character)
     {
         Spell = spell;
         Target = target;
@@ -14,11 +14,11 @@ public class CalculateSpellAttackModifier : DndScoreCommand
 
     public ISpell Spell { get; }
 
-    public ICharacter Target { get; }
+    public IGameActor Target { get; }
 
     protected override void InitializeResult()
     {
-        if (Spell.SuccessMeasuringType != ESuccessMeasuringType.AttackRoll)
+        if (Spell.SpellDescription.SuccessMeasuringType != ESuccessMeasuringType.AttackRoll)
         {
             Result.SetError("Spell doesn't use attack roll");
             return;
@@ -41,7 +41,7 @@ public class CalculateSpellAttackModifier : DndScoreCommand
             return;
         }
 
-        var calculateSpellAttackModifierAgainstCharacter = new CalculateSpellAttackModifierAgainstCharacter(this.Target);
+        var calculateSpellAttackModifierAgainstCharacter = new CalculateSpellAttackModifierAgainst(this.Target, Spell, Character);
         var attackModifierAgainstCharacter = calculateSpellAttackModifierAgainstCharacter.Execute();
 
         if (attackModifierAgainstCharacter.IsSuccess)

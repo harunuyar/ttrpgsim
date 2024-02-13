@@ -1,10 +1,10 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 
 public class CalculateConcentrationSavingDifficultyClass : DndScoreCommand
 {
-    public CalculateConcentrationSavingDifficultyClass(ICharacter character, int damageTaken) : base(character)
+    public CalculateConcentrationSavingDifficultyClass(IGameActor character, int damageTaken) : base(character)
     {
         DamageTaken = damageTaken;
     }

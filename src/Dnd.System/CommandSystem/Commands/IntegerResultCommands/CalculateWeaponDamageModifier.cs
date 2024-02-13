@@ -1,18 +1,21 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 
 using Dnd.System.Entities.Attributes;
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Items;
 using Dnd.System.Entities.Items.Equipments.Weapons;
 
 public class CalculateWeaponDamageModifier : DndScoreCommand
 {
-    public CalculateWeaponDamageModifier(ICharacter character, IItem weaponItem) : base(character)
+    public CalculateWeaponDamageModifier(IGameActor character, IItem weaponItem, IGameActor target) : base(character)
     {
         WeaponItem = weaponItem;
+        Target = target;
     }
 
     public IItem WeaponItem { get; }
+
+    public IGameActor Target { get; }
 
     protected override void InitializeResult()
     {

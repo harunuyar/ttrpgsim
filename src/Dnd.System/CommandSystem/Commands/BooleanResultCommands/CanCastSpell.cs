@@ -1,10 +1,10 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.BooleanResultCommands;
 
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 
 public class CanCastSpell : DndBooleanCommand
 {
-    public CanCastSpell(ICharacter character) : base(character)
+    public CanCastSpell(IGameActor character) : base(character)
     {
     }
 

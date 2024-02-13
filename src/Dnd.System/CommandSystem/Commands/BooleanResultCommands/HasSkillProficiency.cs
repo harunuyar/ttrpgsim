@@ -1,11 +1,11 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.BooleanResultCommands;
 
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Skills;
 
 public class HasSkillProficiency : DndBooleanCommand
 {
-    public HasSkillProficiency(ICharacter character, ISkill skill) : base(character)
+    public HasSkillProficiency(IGameActor character, ISkill skill) : base(character)
     {
         Skill = skill;
     }

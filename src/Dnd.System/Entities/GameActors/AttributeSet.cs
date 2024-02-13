@@ -1,6 +1,6 @@
 ﻿using Dnd.System.Entities.Attributes;
 
-namespace Dnd.System.Entities.Characters;
+namespace Dnd.System.Entities.GameActors;
 
 public class AttributeSet
 {

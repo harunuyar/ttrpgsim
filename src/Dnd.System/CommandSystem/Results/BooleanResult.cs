@@ -1,19 +1,17 @@
 ﻿namespace Dnd.System.CommandSystem.Results;
 
-using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities;
 
 public class BooleanResult : ICommandResult
 {
-    public static BooleanResult Empty(ICommand command) => new BooleanResult(command, true, null, null, false);
+    public static BooleanResult Empty() => new BooleanResult(true, null, null, false);
 
-    public static BooleanResult Success(ICommand command, IDndEntity source, bool value) => new BooleanResult(command, true, null, source, value);
+    public static BooleanResult Success(IDndEntity source, bool value) => new BooleanResult(true, null, source, value);
 
-    public static BooleanResult Failure(ICommand command, string errorMessage) => new BooleanResult(command, false, errorMessage, null, false);
+    public static BooleanResult Failure(string errorMessage) => new BooleanResult(false, errorMessage, null, false);
 
-    public BooleanResult(ICommand command, bool success, string? errorMsg, IDndEntity? source, bool value)
+    public BooleanResult(bool success, string? errorMsg, IDndEntity? source, bool value)
     {
-        Command = command;
         IsSuccess = success;
         ErrorMessage = errorMsg;
         Source = source;
@@ -23,8 +21,6 @@ public class BooleanResult : ICommandResult
     public IDndEntity? Source { get; private set; }
 
     public bool Value { get; private set; }
-
-    public ICommand Command { get; }
 
     public bool IsSuccess { get; private set; }
 

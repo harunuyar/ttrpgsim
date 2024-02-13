@@ -1,11 +1,11 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Skills;
 
 public class GetPassiveSkillValue : DndScoreCommand
 {
-    public GetPassiveSkillValue(ICharacter character, ISkill skill) : base(character)
+    public GetPassiveSkillValue(IGameActor character, ISkill skill) : base(character)
     {
         Skill = skill;
     }

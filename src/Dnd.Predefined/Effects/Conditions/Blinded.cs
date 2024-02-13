@@ -2,12 +2,12 @@
 
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Effects.Duration;
 
 public class Blinded : AEffect
 {
-    public Blinded(IEffectDuration duration, ICharacter source, ICharacter target)
+    public Blinded(IEffectDuration duration, IGameActor source, IGameActor target)
         : base("Blinded", "A blinded creature can't see and automatically fails any ability check that requires sight. Attack rolls against the creature have advantage, and the creature's attack rolls have disadvantage.", duration, source, target)
     {
     }
@@ -24,11 +24,11 @@ public class Blinded : AEffect
         {
             calculateSpellAttackModifier.AddAdvantage(this, System.Entities.Advantage.EAdvantage.Disadvantage);
         }
-        else if (command is CalculateWeaponAttackModifierAgainstCharacter calculateWeaponAttackModifierAgainstCharacter)
+        else if (command is CalculateWeaponAttackModifierAgainst calculateWeaponAttackModifierAgainstCharacter)
         {
             calculateWeaponAttackModifierAgainstCharacter.AddAdvantage(this, System.Entities.Advantage.EAdvantage.Advantage);
         }
-        else if (command is CalculateSpellAttackModifierAgainstCharacter calculateSpellAttackModifierAgainstCharacter)
+        else if (command is CalculateSpellAttackModifierAgainst calculateSpellAttackModifierAgainstCharacter)
         {
             calculateSpellAttackModifierAgainstCharacter.AddAdvantage(this, System.Entities.Advantage.EAdvantage.Advantage);
         }

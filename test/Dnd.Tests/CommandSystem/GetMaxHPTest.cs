@@ -8,7 +8,7 @@ using Dnd.Predefined.Races;
 using Dnd.Predefined.Skills;
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 
 [TestClass]
 public class GetMaxHPTest
@@ -16,7 +16,7 @@ public class GetMaxHPTest
     [TestMethod]
     public void TestGetMaxHitPoints()
     {
-        ICharacter character = new CustomCharacter("Test", Human.Instance);
+        IGameActor character = new CustomCharacter("Test", Human.Instance);
         character.AttributeSet.Constitution.Score = 14; // +1 from human racial bonus
 
         character.LevelInfo.AddLevel(new FighterLevel1(Athletics.Instance, Intimidation.Instance, Defense.Instance));

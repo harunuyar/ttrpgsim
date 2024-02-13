@@ -6,7 +6,7 @@ using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 using Dnd.System.Entities.Advantage;
 using Dnd.System.Entities.Attributes;
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Items.Equipments.Armors;
 using Dnd.System.Entities.Units;
 
@@ -46,9 +46,9 @@ public abstract class AArmor : IArmor
 
     public int BaseArmorClass { get; set; }
 
-    public abstract int GetDexterityBonus(ICharacter character);
+    public abstract int GetDexterityBonus(IGameActor character);
 
-    protected static int GetDexterityModifier(ICharacter character)
+    protected static int GetDexterityModifier(IGameActor character)
     {
         var command = new GetAttributeModifier(character, EAttributeType.Dexterity);
         var result = command.Execute();

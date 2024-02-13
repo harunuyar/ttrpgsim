@@ -1,11 +1,11 @@
 ﻿namespace Dnd.System.CommandSystem.Commands;
 
 using Dnd.System.CommandSystem.Results;
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 
 public interface ICommand
 {
-    ICharacter Character { get; }
+    IGameActor Character { get; }
 
     bool IsForceCompleted { get; }
 

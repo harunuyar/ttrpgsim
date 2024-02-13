@@ -1,21 +1,16 @@
 ﻿namespace Dnd.System.CommandSystem.Results;
 
-using Dnd.System.CommandSystem.Commands;
-
 public class EventResult : ICommandResult
 {
-    public static EventResult Success(ICommand command, string? message = null) => new EventResult(command, true, message);
+    public static EventResult Success(string? message = null) => new EventResult(true, message);
 
-    public static EventResult Failure(ICommand command, string errorMessage) => new EventResult(command, false, errorMessage);
+    public static EventResult Failure(string errorMessage) => new EventResult(false, errorMessage);
 
-    private EventResult(ICommand command, bool success = true, string? message = null)
+    private EventResult(bool success = true, string? message = null)
     {
-        Command = command;
         IsSuccess = success;
         Message = message;
     }
-
-    public ICommand Command { get; }
 
     public bool IsSuccess { get; private set; }
 

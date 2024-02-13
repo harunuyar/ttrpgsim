@@ -1,12 +1,12 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 
 using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Skills;
 
 public class GetSkillModifier : DndScoreCommand
 {
-    public GetSkillModifier(ICharacter character, ISkill skill) : base(character)
+    public GetSkillModifier(IGameActor character, ISkill skill) : base(character)
     {
         Skill = skill;
     }

@@ -1,11 +1,11 @@
-﻿namespace Dnd.System.Entities.Characters;
+﻿namespace Dnd.System.Entities.GameActors;
 
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities;
 using Dnd.System.Entities.Allignments;
 using Dnd.System.Entities.Races;
 
-public interface ICharacter : IDndEntity
+public interface IGameActor : IDndEntity
 {
     IRace Race { get; }
 

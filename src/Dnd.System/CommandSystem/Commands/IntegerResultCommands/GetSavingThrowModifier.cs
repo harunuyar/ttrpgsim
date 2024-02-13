@@ -1,20 +1,20 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 
 using Dnd.System.Entities.Attributes;
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Items.Equipments.Weapons;
 
 public class GetSavingThrowModifier : DndScoreCommand
 {
-    public GetSavingThrowModifier(ICharacter character, EDamageType damageType, EAttributeType attributeType) : base(character)
+    public GetSavingThrowModifier(IGameActor character, EAttributeType attributeType, EDamageType damageType) : base(character)
     {
-        DamageType = damageType;
         AttributeType = attributeType;
+        DamageType = damageType;
     }
 
-    public EDamageType DamageType { get; }
-
     public EAttributeType AttributeType { get; }
+
+    public EDamageType DamageType { get; }
 
     protected override void InitializeResult()
     {

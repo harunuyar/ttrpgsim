@@ -1,19 +1,19 @@
 ﻿namespace Dnd.System.CommandSystem.Commands;
 
 using Dnd.System.CommandSystem.Results;
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 
 public abstract class DndEventCommand : ICommand
 {
-    public DndEventCommand(IEventListener eventListener, ICharacter character)
+    public DndEventCommand(IEventListener eventListener, IGameActor character)
     {
         EventListener = eventListener;
         Character = character;
-        EventResult = EventResult.Success(this);
+        EventResult = EventResult.Success();
         ShouldVisitEntities = true;
     }
 
-    public ICharacter Character { get; }
+    public IGameActor Character { get; }
 
     protected EventResult EventResult { get; }
 

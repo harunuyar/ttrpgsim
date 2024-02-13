@@ -1,11 +1,11 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 
 using Dnd.System.Entities.Attributes;
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 
 public class GetMaxHP : DndScoreCommand
 {
-    public GetMaxHP(ICharacter character) : base(character)
+    public GetMaxHP(IGameActor character) : base(character)
     {
         ShouldSetFullHealth = character.HitPoints.CurrentHitPoints == character.HitPoints.MaxHitPoints;
     }

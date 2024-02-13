@@ -1,13 +1,13 @@
 ﻿namespace Dnd.Predefined.Effects;
 
 using Dnd.System.CommandSystem.Commands;
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Effects;
 using Dnd.System.Entities.Effects.Duration;
 
 public class AEffect : IEffect
 {
-    public AEffect(string name, string description, IEffectDuration duration, ICharacter source, ICharacter target)
+    public AEffect(string name, string description, IEffectDuration duration, IGameActor source, IGameActor target)
     {
         Name = name;
         Description = description;
@@ -22,9 +22,9 @@ public class AEffect : IEffect
 
     public IEffectDuration Duration { get; }
 
-    public ICharacter Source { get; }
+    public IGameActor Source { get; }
 
-    public ICharacter Target { get; }
+    public IGameActor Target { get; }
 
     public virtual void HandleCommand(ICommand command)
     {

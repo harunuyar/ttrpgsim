@@ -1,11 +1,11 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 
 using Dnd.System.Entities.Attributes;
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 
 public class GetArmorClass : DndScoreCommand
 {
-    public GetArmorClass(ICharacter character) : base(character)
+    public GetArmorClass(IGameActor character) : base(character)
     {
     }
 

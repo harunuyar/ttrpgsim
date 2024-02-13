@@ -4,7 +4,7 @@ using Dnd.Predefined.Characters;
 using Dnd.Predefined.Races;
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 using Dnd.System.Entities.Attributes;
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 
 [TestClass]
 public class GetAttributeScoreTest
@@ -18,7 +18,7 @@ public class GetAttributeScoreTest
     [DataRow(EAttributeType.Charisma, 14)] // base score (13) + racial bonus (1)
     public void TestGetAttributeScoreHuman(EAttributeType attribute, int score)
     {
-        ICharacter character = new CustomCharacter("Test", Human.Instance);
+        IGameActor character = new CustomCharacter("Test", Human.Instance);
         character.AttributeSet.Set(strength: 15, dexterity: 10, constitution: 14, intelligence: 8, wisdom: 12, charisma: 13);
 
         var getAttributeScoreCommand = new GetAttributeScore(character!, attribute);
@@ -37,7 +37,7 @@ public class GetAttributeScoreTest
     [DataRow(EAttributeType.Charisma, 14)] // base score (13) + racial bonus (1)
     public void TestGetAttributeScoreDragonborn(EAttributeType attribute, int score)
     {
-        ICharacter character = new CustomCharacter("Test", Dragonborn.Instance);
+        IGameActor character = new CustomCharacter("Test", Dragonborn.Instance);
         character.AttributeSet.Set(strength: 15, dexterity: 10, constitution: 14, intelligence: 8, wisdom: 12, charisma: 13);
 
         var getAttributeScoreCommand = new GetAttributeScore(character!, attribute);

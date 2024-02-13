@@ -1,11 +1,11 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.BooleanResultCommands;
 
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Spells;
 
 public class CanDoSpellAttack : DndBooleanCommand
 {
-    public CanDoSpellAttack(ICharacter character, ISpell spell, ICharacter target) : base(character)
+    public CanDoSpellAttack(IGameActor character, ISpell spell, IGameActor target) : base(character)
     {
         Spell = spell;
         Target = target;
@@ -13,7 +13,7 @@ public class CanDoSpellAttack : DndBooleanCommand
 
     public ISpell Spell { get; set; }
 
-    public ICharacter Target { get; set; }
+    public IGameActor Target { get; set; }
 
     protected override void InitializeResult()
     {

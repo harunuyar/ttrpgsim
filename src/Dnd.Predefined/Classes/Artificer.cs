@@ -7,7 +7,7 @@ using Dnd.System.Entities.Skills;
 using Dnd.GameManagers.Dice;
 using Dnd.Predefined.Skills;
 using Dnd.System.Entities.Classes;
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 
 public class Artificer : IClass
 {

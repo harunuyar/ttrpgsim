@@ -2,11 +2,11 @@
 
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 using Dnd.System.CommandSystem.Results;
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 
 public class ApplyHeal : DndEventCommand
 {
-    public ApplyHeal(IEventListener eventListener, ICharacter character, int amount) : base(eventListener, character)
+    public ApplyHeal(IEventListener eventListener, IGameActor character, int amount) : base(eventListener, character)
     {
         Amount = amount;
     }

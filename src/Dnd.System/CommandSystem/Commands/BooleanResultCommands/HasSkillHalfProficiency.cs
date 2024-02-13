@@ -1,11 +1,11 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.BooleanResultCommands;
 
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Skills;
 
 public class HasSkillHalfProficiency : DndBooleanCommand
 {
-    public HasSkillHalfProficiency(ICharacter character, ISkill skill) : base(character)
+    public HasSkillHalfProficiency(IGameActor character, ISkill skill) : base(character)
     {
         Skill = skill;
     }

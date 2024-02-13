@@ -2,12 +2,12 @@
 
 using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
 using Dnd.System.Entities;
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Items.Equipments.Weapons;
 
 public class CalculateDamage : DndScoreCommand
 {
-    public CalculateDamage(ICharacter character, int damage, EDamageType damageType) : base(character)
+    public CalculateDamage(IGameActor character, int damage, EDamageType damageType) : base(character)
     {
         Damage = damage;
         DamageType = damageType;

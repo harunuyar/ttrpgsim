@@ -1,10 +1,10 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.EventCommands;
 
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 
 public class PassTime : DndEventCommand
 {
-    public PassTime(IEventListener eventListener, ICharacter character, TimeSpan timeSpan) : base(eventListener, character)
+    public PassTime(IEventListener eventListener, IGameActor character, TimeSpan timeSpan) : base(eventListener, character)
     {
         TimeSpan = timeSpan;
     }

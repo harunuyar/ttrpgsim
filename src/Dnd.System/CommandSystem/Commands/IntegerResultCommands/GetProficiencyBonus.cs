@@ -1,12 +1,12 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 
 public class GetProficiencyBonus : DndScoreCommand
 {
     private static readonly int[] ProficiencyBonusArr = new[] { 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6 };
 
-    public GetProficiencyBonus(ICharacter character) : base(character)
+    public GetProficiencyBonus(IGameActor character) : base(character)
     {
     }
 

@@ -5,7 +5,7 @@ using Dnd.System.Entities.Items.Equipments.Armors;
 using Dnd.System.Entities.Items.Equipments.Weapons;
 using Dnd.System.Entities.Skills;
 using Dnd.GameManagers.Dice;
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 
 public interface IClass : IDndEntity
 {

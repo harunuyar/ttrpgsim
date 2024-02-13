@@ -2,10 +2,10 @@
 
 using Dnd.Predefined.Alignments;
 using Dnd.System.Entities.Allignments;
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Races;
 
-public class CustomCharacter : ICharacter
+public class CustomCharacter : IGameActor
 {
     public CustomCharacter(string name, IRace race, IAlignment? alignment = null)
     {

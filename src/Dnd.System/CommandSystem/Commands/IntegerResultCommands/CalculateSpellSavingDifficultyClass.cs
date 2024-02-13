@@ -1,12 +1,12 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 
 using Dnd.System.Entities;
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Spells;
 
 public class CalculateSpellSavingDifficultyClass : DndScoreCommand
 {
-    public CalculateSpellSavingDifficultyClass(ICharacter character, ISpell spell) : base(character)
+    public CalculateSpellSavingDifficultyClass(IGameActor character, ISpell spell) : base(character)
     {
         Spell = spell;
     }
@@ -15,7 +15,7 @@ public class CalculateSpellSavingDifficultyClass : DndScoreCommand
 
     protected override void InitializeResult()
     {
-        if (Spell.SuccessMeasuringType == ESuccessMeasuringType.SavingThrow)
+        if (Spell.SpellDescription.SuccessMeasuringType == ESuccessMeasuringType.SavingThrow)
         {
             Result.SetBaseValue("Base", 8);
 

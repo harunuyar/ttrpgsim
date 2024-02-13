@@ -1,10 +1,10 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.EventCommands;
 
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 
 public class BreakConcentration : DndEventCommand
 {
-    public BreakConcentration(IEventListener eventListener, ICharacter character) : base(eventListener, character)
+    public BreakConcentration(IEventListener eventListener, IGameActor character) : base(eventListener, character)
     {
     }
 

@@ -1,11 +1,11 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.EventCommands;
 
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Effects;
 
 public class AddEffect : DndEventCommand
 {
-    public AddEffect(IEventListener eventListener, ICharacter character, IEffect effect) : base(eventListener, character)
+    public AddEffect(IEventListener eventListener, IGameActor character, IEffect effect) : base(eventListener, character)
     {
         Effect = effect;
     }

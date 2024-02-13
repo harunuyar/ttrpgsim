@@ -1,4 +1,4 @@
-﻿namespace Dnd.System.Entities.Characters;
+﻿namespace Dnd.System.Entities.GameActors;
 
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.CommandSystem.Commands.EventCommands;
@@ -60,7 +60,7 @@ public class EffectsTable
 
         if (Concentration != null && command is ApplyDamage applyDamage)
         {
-            var rollConcentrationSavingThrow = new RollConcentrationSavingThrow(applyDamage.EventListener, applyDamage.Character, applyDamage.Damage, applyDamage.DamageType);
+            var rollConcentrationSavingThrow = new ConcentrationCheckAfterDamage(applyDamage.EventListener, applyDamage.Character, applyDamage.Damage, applyDamage.DamageType);
             _ = rollConcentrationSavingThrow.Execute();
         }
 

@@ -1,17 +1,12 @@
-﻿using Dnd.System.CommandSystem.Commands;
-
-namespace Dnd.System.CommandSystem.Results;
+﻿namespace Dnd.System.CommandSystem.Results;
 
 public class ListResult<T> : ICommandResult
 {
-    public ListResult(ICommand command)
+    public ListResult()
     {
-        Command = command;
         IsSuccess = true;
         Values = new List<T>();
     }
-
-    public ICommand Command { get; }
 
     public List<T> Values { get; }
 

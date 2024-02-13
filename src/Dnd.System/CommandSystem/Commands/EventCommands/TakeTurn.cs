@@ -1,10 +1,10 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.EventCommands;
 
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 
 public class TakeTurn : DndEventCommand
 {
-    public TakeTurn(IEventListener eventListener, ICharacter character) : base(eventListener, character)
+    public TakeTurn(IEventListener eventListener, IGameActor character) : base(eventListener, character)
     {
     }
 

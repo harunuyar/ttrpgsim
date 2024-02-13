@@ -1,10 +1,10 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 
 public class CalculateHealAmount : DndScoreCommand
 {
-    public CalculateHealAmount(ICharacter character, int amount) : base(character)
+    public CalculateHealAmount(IGameActor character, int amount) : base(character)
     {
         Amount = amount;
     }

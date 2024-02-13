@@ -3,13 +3,13 @@
 using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
 using Dnd.System.Entities;
 using Dnd.System.Entities.Attributes;
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Items;
 using Dnd.System.Entities.Items.Equipments.Weapons;
 
 public class CalculateWeaponAttackModifier : DndScoreCommand
 {
-    public CalculateWeaponAttackModifier(ICharacter character, IItem weaponItem, ICharacter target) : base(character)
+    public CalculateWeaponAttackModifier(IGameActor character, IItem weaponItem, IGameActor target) : base(character)
     {
         this.WeaponItem = weaponItem;
         this.Target = target;
@@ -17,7 +17,7 @@ public class CalculateWeaponAttackModifier : DndScoreCommand
 
     public IItem WeaponItem { get; }
 
-    public ICharacter Target { get; }
+    public IGameActor Target { get; }
 
     protected override void InitializeResult()
     {
@@ -75,7 +75,7 @@ public class CalculateWeaponAttackModifier : DndScoreCommand
             return;
         }
 
-        var calculateWeaponAttackModifierAgainstCharacter = new CalculateWeaponAttackModifierAgainstCharacter(this.Target);
+        var calculateWeaponAttackModifierAgainstCharacter = new CalculateWeaponAttackModifier(this.Target, WeaponItem, Character);
         var attackModifierAgainstCharacter = calculateWeaponAttackModifierAgainstCharacter.Execute();
 
         if (attackModifierAgainstCharacter.IsSuccess)

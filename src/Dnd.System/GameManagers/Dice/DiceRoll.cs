@@ -16,4 +16,16 @@ public class DiceRoll
     {
         return $"{NumberOfDice}{DiceType}";
     }
+
+    public int[] Roll()
+    {
+        int[] rolls = new int[NumberOfDice];
+
+        for (int i = 0; i < NumberOfDice; i++)
+        {
+            rolls[i] = DiceManager.RollDice(DiceType);
+        }
+
+        return rolls;
+    }
 }

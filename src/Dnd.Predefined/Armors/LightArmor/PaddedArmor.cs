@@ -1,6 +1,6 @@
 ﻿namespace Dnd.Predefined.Armors.LightArmor;
 
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Items.Equipments.Armors;
 using Dnd.System.Entities.Units;
 
@@ -21,7 +21,7 @@ public class PaddedArmor : AArmor
     {
     }
 
-    public override int GetDexterityBonus(ICharacter character)
+    public override int GetDexterityBonus(IGameActor character)
     {
         return GetDexterityModifier(character);
     }

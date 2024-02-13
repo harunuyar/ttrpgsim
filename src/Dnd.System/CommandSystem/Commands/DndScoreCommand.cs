@@ -3,18 +3,18 @@
 using Dnd.System.CommandSystem.Results;
 using Dnd.System.Entities;
 using Dnd.System.Entities.Advantage;
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 
 public abstract class DndScoreCommand : ICommand
 {
-    public DndScoreCommand(ICharacter character)
+    public DndScoreCommand(IGameActor character)
     {
         Character = character;
-        Result = IntegerResultWithBonus.Empty(this);
+        Result = IntegerResultWithBonus.Empty();
         ShouldVisitEntities = true;
     }
 
-    public ICharacter Character { get; }
+    public IGameActor Character { get; }
 
     protected IntegerResultWithBonus Result { get; }
 

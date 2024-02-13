@@ -2,7 +2,7 @@
 
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 using Dnd.System.Entities.Advantage;
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 using Dnd.Predefined.Characters;
 using Dnd.Predefined.Races;
 using Dnd.Predefined.Skills;
@@ -14,7 +14,7 @@ using Dnd.Predefined.Feats.Fighter.Level1.FightingStyle;
 [TestClass]
 public class GetSkillModifierTest
 {
-    private ICharacter? character;
+    private IGameActor? character;
 
     [TestInitialize]
     public void TestInitialize()

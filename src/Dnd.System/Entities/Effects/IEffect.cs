@@ -1,4 +1,4 @@
-﻿using Dnd.System.Entities.Characters;
+﻿using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Effects.Duration;
 
 namespace Dnd.System.Entities.Effects;
@@ -9,9 +9,9 @@ public interface IEffect : IBonusProvider
 
     IEffectDuration Duration { get; }
 
-    ICharacter Source { get; }
+    IGameActor Source { get; }
 
-    ICharacter Target { get; }
+    IGameActor Target { get; }
 
     void StartEffect()
     {

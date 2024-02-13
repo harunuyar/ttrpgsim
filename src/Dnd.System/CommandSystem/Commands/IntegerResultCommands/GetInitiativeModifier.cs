@@ -1,11 +1,11 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 
 using Dnd.System.Entities.Attributes;
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 
 public class GetInitiativeModifier : DndScoreCommand
 {
-    public GetInitiativeModifier(ICharacter character) : base(character)
+    public GetInitiativeModifier(IGameActor character) : base(character)
     {
     }
 

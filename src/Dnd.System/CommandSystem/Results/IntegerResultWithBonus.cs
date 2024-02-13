@@ -1,19 +1,17 @@
 ﻿namespace Dnd.System.CommandSystem.Results;
 
-using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities;
 
 public class IntegerResultWithBonus : ICommandResult
 {
-    public static IntegerResultWithBonus Empty(ICommand command) => new IntegerResultWithBonus(command, true, null, null, 0, new BonusCollection());
+    public static IntegerResultWithBonus Empty() => new IntegerResultWithBonus(true, null, null, 0, new BonusCollection());
 
-    public static IntegerResultWithBonus Success(ICommand command, IDndEntity source, int baseValue, BonusCollection bonuses) => new IntegerResultWithBonus(command, true, null, source, baseValue, bonuses);
+    public static IntegerResultWithBonus Success(IDndEntity source, int baseValue, BonusCollection bonuses) => new IntegerResultWithBonus(true, null, source, baseValue, bonuses);
 
-    public static IntegerResultWithBonus Failure(ICommand command, string errorMessage) => new IntegerResultWithBonus(command, false, errorMessage, null, 0, new BonusCollection());
+    public static IntegerResultWithBonus Failure(string errorMessage) => new IntegerResultWithBonus(false, errorMessage, null, 0, new BonusCollection());
 
-    private IntegerResultWithBonus(ICommand command, bool success, string? errorMessage, IDndEntity? source, int baseValue, BonusCollection bonusCollection)
+    private IntegerResultWithBonus(bool success, string? errorMessage, IDndEntity? source, int baseValue, BonusCollection bonusCollection)
     {
-        Command = command;
         IsSuccess = success;
         ErrorMessage = errorMessage;
         BaseSource = source;
@@ -32,8 +30,6 @@ public class IntegerResultWithBonus : ICommandResult
     public bool IsSuccess { get; private set; }
 
     public string? ErrorMessage { get; private set; }
-
-    public ICommand Command { get; }
 
     public void SetError(string errorMessage)
     {

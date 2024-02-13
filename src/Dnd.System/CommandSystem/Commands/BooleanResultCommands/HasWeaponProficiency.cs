@@ -1,11 +1,11 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.BooleanResultCommands;
 
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Items.Equipments.Weapons;
 
 public class HasWeaponProficiency : DndBooleanCommand
 {
-    public HasWeaponProficiency(ICharacter character, EWeaponType weaponType) : base(character)
+    public HasWeaponProficiency(IGameActor character, EWeaponType weaponType) : base(character)
     {
         this.WeaponType = weaponType;
     }

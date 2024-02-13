@@ -1,11 +1,11 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 
-using Dnd.System.Entities.Characters;
+using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Items.Equipments.Weapons;
 
 public class CalculateWeaponSavingDifficultyClass : DndScoreCommand
 {
-    public CalculateWeaponSavingDifficultyClass(ICharacter character, IWeapon weapon) : base(character)
+    public CalculateWeaponSavingDifficultyClass(IGameActor character, IWeapon weapon) : base(character)
     {
         Weapon = weapon;
     }
