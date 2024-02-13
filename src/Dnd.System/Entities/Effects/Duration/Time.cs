@@ -2,29 +2,31 @@
 
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.CommandSystem.Commands.EventCommands;
+using Dnd.System.Entities.Units;
 
 public class Time : IEffectDuration
 {
-    public Time(int turns)
+    public Time(TimeSpan timeSpan)
     {
-        Turns = turns;
-        RemainingTurns = turns;
+        TimeSpan = timeSpan;
     }
 
-    public int Turns { get; }
-
-    public int RemainingTurns { get; private set; }
+    public TimeSpan TimeSpan { get; }
 
     public void HandleCommand(ICommand command)
     {
         if (command is TakeTurn)
         {
-            RemainingTurns--;
+            TimeSpan.PassTurn();
+        }
+        else if (command is PassTime passTime)
+        {
+            TimeSpan.PassTime(passTime.TimeSpan);
         }
     }
 
     public bool IsExpired()
     {
-        return RemainingTurns <= 0;
+        return TimeSpan.IsOver;
     }
 }

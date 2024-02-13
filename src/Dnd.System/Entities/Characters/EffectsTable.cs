@@ -64,7 +64,7 @@ public class EffectsTable
             _ = rollConcentrationSavingThrow.Execute();
         }
 
-        if (command is TakeTurn)
+        if (command is TakeTurn || command is PassTime)
         {
             foreach (var effect in CausedEffects)
             {
