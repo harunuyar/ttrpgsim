@@ -1,12 +1,16 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.BooleanResultCommands;
 
 using Dnd.System.Entities.GameActors;
+using Dnd.System.Entities.Spells;
 
-public class CanCastSpell : DndBooleanCommand
+public class CanCastKnownSpell : DndBooleanCommand
 {
-    public CanCastSpell(IGameActor character) : base(character)
+    public CanCastKnownSpell(IGameActor character, ISpell spell) : base(character)
     {
+        Spell = spell;
     }
+
+    public ISpell Spell { get; }
 
     protected override void InitializeResult()
     {

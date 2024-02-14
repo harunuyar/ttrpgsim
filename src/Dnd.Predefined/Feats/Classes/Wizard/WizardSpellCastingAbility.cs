@@ -2,6 +2,7 @@
 
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 using Dnd.System.Entities.Attributes;
+using Dnd.System.Entities.GameActors;
 
 public class WizardSpellCastingAbility : SpellCastingAbility
 {
@@ -34,51 +35,51 @@ public class WizardSpellCastingAbility : SpellCastingAbility
     public WizardSpellCastingAbility() 
         : base("Wizard Spell Casting Ability", 
             "As a student of arcane magic, you have a spellbook containing spells that show the first glimmerings of your true power.",
-            Predefined.Classes.Wizard.Instance)
+            EAttributeType.Intelligence)
     {
     }
 
-    public override void HandleCantripsCount(GetKnownCantripsCount getKnownCantripsCount)
+    public override int GetMaxCantripsCount(IGameActor actor)
     {
-        int wizardLevel = getKnownCantripsCount.Actor.LevelInfo.GetLevelsInClass(Predefined.Classes.Wizard.Instance);
+        int wizardLevel = actor.LevelInfo.GetLevelsInClass(Predefined.Classes.Wizard.Instance);
 
         if (wizardLevel < 1 || wizardLevel > 20)
         {
-            getKnownCantripsCount.SetErrorAndReturn("Wizard level must be between 1 and 20");
+            return 0;
         }
 
-        getKnownCantripsCount.SetBaseValue(this, CantripsKnownPerLevel[wizardLevel - 1]);
+        return CantripsKnownPerLevel[wizardLevel - 1];
     }
 
-    public override void HandleKnownSpellsCount(GetKnownSpellsCount getKnownSpellsCount)
+    public override int GetMaxSpellsCount(IGameActor actor)
     {
-        var getIntelligenceModifier = new GetAttributeModifier(getKnownSpellsCount.Actor, EAttributeType.Intelligence);
+        var getIntelligenceModifier = new GetAttributeModifier(actor, EAttributeType.Intelligence);
         var intelligenceModifier = getIntelligenceModifier.Execute();
 
         if (!intelligenceModifier.IsSuccess)
         {
-            getKnownSpellsCount.SetErrorAndReturn("Couldn't get intelligence modifier. GetAttributeModifier: " + intelligenceModifier.ErrorMessage);
+            return 0;
         }
 
-        int wizardLevel = getKnownSpellsCount.Actor.LevelInfo.GetLevelsInClass(Predefined.Classes.Wizard.Instance);
+        int wizardLevel = actor.LevelInfo.GetLevelsInClass(Predefined.Classes.Wizard.Instance);
 
         if (wizardLevel < 1 || wizardLevel > 20)
         {
-            getKnownSpellsCount.SetErrorAndReturn("Wizard level must be between 1 and 20");
+            return 0;
         }
 
-        getKnownSpellsCount.SetBaseValue(this, Math.Max(1, wizardLevel + intelligenceModifier.Value));
+        return Math.Max(1, wizardLevel + intelligenceModifier.Value);
     }
 
-    public override void HandleSpellSlotsCount(GetSpellSlotsCount getSpellSlotsCount)
+    public override int GetMaxSpellSlotsCount(IGameActor actor, int spellLevel)
     {
-        int wizardLevel = getSpellSlotsCount.Actor.LevelInfo.GetLevelsInClass(Predefined.Classes.Wizard.Instance);
+        int wizardLevel = actor.LevelInfo.GetLevelsInClass(Predefined.Classes.Wizard.Instance);
 
         if (wizardLevel < 1 || wizardLevel > 20)
         {
-            getSpellSlotsCount.SetErrorAndReturn("Wizard level must be between 1 and 20");
+            return 0;
         }
 
-        getSpellSlotsCount.SetBaseValue(this, SpellSlotsPerSpellLevel[wizardLevel - 1][getSpellSlotsCount.SpellLevel - 1]);
+        return SpellSlotsPerSpellLevel[wizardLevel - 1][spellLevel - 1];
     }
 }

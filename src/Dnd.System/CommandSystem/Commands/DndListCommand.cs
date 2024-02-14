@@ -20,6 +20,14 @@ public abstract class DndListCommand<T> : ADndCommand<ListResult<T>>
         }
     }
 
+    public void AddItems(IEnumerable<T> items)
+    {
+        if (!IsForceCompleted)
+        {
+            Result.Values.AddRange(items);
+        }
+    }
+
     public void SetItemsAndReturn(List<T> list)
     {
         Result.Set(list);

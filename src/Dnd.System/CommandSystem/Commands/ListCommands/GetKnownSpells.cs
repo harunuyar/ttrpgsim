@@ -3,7 +3,7 @@
 using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Spells;
 
-internal class GetKnownSpells : DndListCommand<ISpell>
+public class GetKnownSpells : DndListCommand<ISpell>
 {
     public GetKnownSpells(IGameActor character) : base(character)
     {

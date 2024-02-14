@@ -18,7 +18,7 @@ public class CalculateSpellAttackModifier : DndScoreCommand
 
     protected override void InitializeResult()
     {
-        if (Spell.SpellDescription.SuccessMeasuringType != ESuccessMeasuringType.AttackRoll)
+        if (Spell.SuccessMeasuringType != ESuccessMeasuringType.AttackRoll)
         {
             SetErrorAndReturn("Spell doesn't use attack roll");
             return;

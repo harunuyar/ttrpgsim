@@ -2,9 +2,9 @@
 
 using Dnd.System.Entities.GameActors;
 
-public class GetKnownCantripsCount : DndScoreCommand
+public class GetMaxKnownCantripsCount : DndScoreCommand
 {
-    public GetKnownCantripsCount(IGameActor character) : base(character)
+    public GetMaxKnownCantripsCount(IGameActor character) : base(character)
     {
     }
 

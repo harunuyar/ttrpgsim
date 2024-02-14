@@ -15,7 +15,7 @@ public class CalculateSpellSavingDifficultyClass : DndScoreCommand
 
     protected override void InitializeResult()
     {
-        if (Spell.SpellDescription.SuccessMeasuringType == ESuccessMeasuringType.SavingThrow)
+        if (Spell.SuccessMeasuringType == ESuccessMeasuringType.SavingThrow)
         {
             Result.SetBaseValue("Base", 8);
         }

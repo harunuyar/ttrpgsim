@@ -2,5 +2,11 @@
 
 public interface ISpell : IDndEntity
 {
-    ISpellDescription SpellDescription { get; }
+    string Description { get; }
+
+    int Level { get; }
+
+    TimeSpan CastingTime { get; }
+
+    ESuccessMeasuringType SuccessMeasuringType { get; }
 }

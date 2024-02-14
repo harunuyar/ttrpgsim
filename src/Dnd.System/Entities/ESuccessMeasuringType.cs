@@ -2,6 +2,7 @@
 
 public enum ESuccessMeasuringType
 {
+    None,
     AttackRoll,
     SavingThrow,
 }

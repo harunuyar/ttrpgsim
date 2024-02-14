@@ -19,4 +19,15 @@ public abstract class DndEventCommand : ADndCommand<EventResult>
     {
         EventListener.OnEventResult(Result);
     }
+
+    public void SetMessage(string message)
+    {
+        Result.SetMessage(message);
+    }
+
+    public void SetMessageAndReturn(string message)
+    {
+        SetMessage(message);
+        ForceComplete();
+    }
 }

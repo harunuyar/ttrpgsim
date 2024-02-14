@@ -2,15 +2,11 @@
 
 using Dnd.System.Entities.GameActors;
 
-public class GetSpellSlotsCount : DndScoreCommand
+public class GetMaxKnownSpellsCount : DndScoreCommand
 {
-    public GetSpellSlotsCount(IGameActor character, int spellLevel) : base(character)
+    public GetMaxKnownSpellsCount(IGameActor character) : base(character)
     {
-        SpellLevel = spellLevel;
     }
-
-    public int SpellLevel { get; }
-
 
     protected override void InitializeResult()
     {
