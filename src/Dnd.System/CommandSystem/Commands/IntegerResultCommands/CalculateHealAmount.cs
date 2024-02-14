@@ -13,21 +13,17 @@ public class CalculateHealAmount : DndScoreCommand
 
     protected override void InitializeResult()
     {
-        var getMaxHP = new GetMaxHP(Character);
+        var getMaxHP = new GetMaxHP(Actor);
         var maxHPResult = getMaxHP.Execute();
 
         if (maxHPResult.IsSuccess)
         {
-            int maxHeal = maxHPResult.Value - Character.HitPoints.CurrentHitPoints;
+            int maxHeal = maxHPResult.Value - Actor.HitPoints.CurrentHitPoints;
             Result.SetBaseValue("Base", Math.Min(Amount, maxHeal));
         }
         else
         {
-            Result.SetError(maxHPResult.ErrorMessage ?? "Unknown");
+            SetErrorAndReturn("GetMaxHP: " + maxHPResult.ErrorMessage);
         }
-    }
-
-    protected override void FinalizeResult()
-    {
     }
 }

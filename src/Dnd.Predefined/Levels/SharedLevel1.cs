@@ -45,4 +45,6 @@ public abstract class SharedLevel1 : ILevel
     public List<IFeat> Feats { get; }
 
     public string Name { get; }
+
+    public string? Subclass => null;
 }

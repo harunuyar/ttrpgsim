@@ -14,20 +14,15 @@ public class GetAttributeModifier : DndScoreCommand
 
     protected override void InitializeResult()
     {
-        var getAttributeScoreCommand = new GetAttributeScore(Character, AttributeType);
+        var getAttributeScoreCommand = new GetAttributeScore(Actor, AttributeType);
         var attributeScoreResult = getAttributeScoreCommand.Execute();
 
-        if (attributeScoreResult.IsSuccess)
+        if (!attributeScoreResult.IsSuccess)
         {
-            Result.SetBaseValue(Character.AttributeSet.GetAttribute(AttributeType), (attributeScoreResult.Value - 10) / 2);
+            SetErrorAndReturn("GetAttributeScore: " + attributeScoreResult.ErrorMessage);
+            return;
         }
-        else
-        {
-            Result.SetError(attributeScoreResult.ErrorMessage ?? "Unknown");
-        }
-    }
 
-    protected override void FinalizeResult()
-    {
+        Result.SetBaseValue(Actor.AttributeSet.GetAttribute(AttributeType), (attributeScoreResult.Value - 10) / 2);
     }
 }

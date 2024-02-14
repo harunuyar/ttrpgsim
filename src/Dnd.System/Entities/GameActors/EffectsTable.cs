@@ -60,7 +60,7 @@ public class EffectsTable
 
         if (Concentration != null && command is ApplyDamage applyDamage)
         {
-            var rollConcentrationSavingThrow = new ConcentrationCheckAfterDamage(applyDamage.EventListener, applyDamage.Character, applyDamage.Damage, applyDamage.DamageType);
+            var rollConcentrationSavingThrow = new ConcentrationCheckAfterDamage(applyDamage.EventListener, applyDamage.Actor, applyDamage.Damage, applyDamage.DamageType);
             _ = rollConcentrationSavingThrow.Execute();
         }
 

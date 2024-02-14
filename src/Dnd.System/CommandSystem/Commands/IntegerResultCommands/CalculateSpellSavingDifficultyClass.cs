@@ -18,28 +18,10 @@ public class CalculateSpellSavingDifficultyClass : DndScoreCommand
         if (Spell.SpellDescription.SuccessMeasuringType == ESuccessMeasuringType.SavingThrow)
         {
             Result.SetBaseValue("Base", 8);
-
-            var getProficiencyBonus = new GetProficiencyBonus(this.Character);
-            var proficiencyBonus = getProficiencyBonus.Execute();
-
-            if (proficiencyBonus.IsSuccess)
-            {
-                Result.BonusCollection.AddBonus("Proficiency Bonus", proficiencyBonus.Value);
-            }
-            else
-            {
-                Result.SetError(proficiencyBonus.ErrorMessage ?? "Couldn't get proficiency bonus");
-            }
-
-            // Attribute bonus will be provided by spell casting ability feature
         }
         else
         {
-            Result.SetError("Spell doesn't require saving throw");
+            SetErrorAndReturn("Spell doesn't require saving throw");
         }
-    }
-
-    protected override void FinalizeResult()
-    {
     }
 }

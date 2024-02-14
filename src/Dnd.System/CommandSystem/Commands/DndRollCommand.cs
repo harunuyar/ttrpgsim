@@ -5,15 +5,19 @@ using Dnd.System.CommandSystem.Results;
 using Dnd.System.Entities.Advantage;
 using Dnd.System.Entities.GameActors;
 
-public abstract class DndRollCommand : ICommand
+public abstract class DndRollCommand : ADndCommand<RollResult>
 {
-    public DndRollCommand(IEventListener eventListener, IGameActor character, EAdvantage advantage, DiceRoll diceRoll)
+    public DndRollCommand(IEventListener eventListener, IGameActor character, EAdvantage advantage, DiceRoll diceRoll) : base(character)
     {
         EventListener = eventListener;
-        Character = character;
         DiceRoll = diceRoll;
         Advantage = advantage;
-        RollResult = RollResult.Empty();
+
+        Result = RollResult.Success(RollDice());
+        if (Advantage.HasAdvantage() || Advantage.HasDisadvantage())
+        {
+            Result.AddAdvantageRoll(Advantage, RollDice());
+        }
     }
 
     public IEventListener EventListener { get; }
@@ -22,81 +26,26 @@ public abstract class DndRollCommand : ICommand
 
     public DiceRoll DiceRoll { get; }
 
-    public IGameActor Character { get; }
-
-    public RollResult RollResult { get; }
-
-    protected bool ShouldVisitEntities { get; set; }
-
-    public bool IsForceCompleted { get; private set; }
-
-    public RollResult Execute()
-    {
-        RollResult.Reset();
-
-        RollResult.AddRoll(RollDice());
-
-        if (Advantage.HasAdvantage() || Advantage.HasDisadvantage())
-        {
-            RollResult.AddAdvantageRoll(Advantage, RollDice());
-        }
-
-        InitializeResult();
-
-        if (!IsForceCompleted && ShouldVisitEntities && RollResult.IsSuccess)
-        {
-            Character.HandleCommand(this);
-        }
-
-        if (!IsForceCompleted)
-        {
-            FinalizeResult();
-        }
-
-        return RollResult;
-    }
-
-    protected virtual void InitializeResult() { }
-
-    protected virtual void FinalizeResult() { }
-
-    public void ForceComplete()
-    {
-        IsForceCompleted = true;
-    }
+    public override RollResult Result { get; }
 
     protected int[] RollDice()
     {
         return DiceRoll.Roll();
     }
 
-    ICommandResult ICommand.Execute()
-    {
-        return Execute();
-    }
-
-    public void AddAdvantageRoll(EAdvantage advantage, int[] roll)
+    public void AddAdvantageRoll(EAdvantage advantage)
     {
         if (!IsForceCompleted)
         {
-            RollResult.AddAdvantageRoll(advantage, roll);
+            Result.AddAdvantageRoll(advantage, RollDice());
         }
     }
 
-    public void SetRollAndReturn(IntegerResultWithBonus bonus, EAdvantage advantage, List<int[]> rolls)
+    public void SetRollAndReturn(EAdvantage advantage, List<int[]> rolls)
     {
         if (!IsForceCompleted)
         {
-            RollResult.Set(bonus, advantage, rolls);
-            ForceComplete();
-        }
-    }
-
-    public void SetErrorAndReturn(string errorMessage)
-    {
-        if (!IsForceCompleted)
-        {
-            RollResult.SetError(errorMessage);
+            Result.Set(advantage, rolls);
             ForceComplete();
         }
     }

@@ -16,8 +16,4 @@ public class HasSkillProficiency : DndBooleanCommand
     {
         Result.SetValue("Default", false);
     }
-
-    protected override void FinalizeResult()
-    {
-    }
 }

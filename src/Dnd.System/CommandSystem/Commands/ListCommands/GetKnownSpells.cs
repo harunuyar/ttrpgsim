@@ -3,9 +3,9 @@
 using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Spells;
 
-internal class GetSpells : DndListCommand<ISpell>
+internal class GetKnownSpells : DndListCommand<ISpell>
 {
-    public GetSpells(IGameActor character) : base(character)
+    public GetKnownSpells(IGameActor character) : base(character)
     {
     }
 }

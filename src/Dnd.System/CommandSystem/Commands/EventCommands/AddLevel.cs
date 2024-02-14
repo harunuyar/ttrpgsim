@@ -12,13 +12,19 @@ public class AddLevel : DndEventCommand
 
     public ILevel Level { get; }
 
-    protected override void InitializeEvent()
+    protected override void InitializeResult()
     {
+        int currentLevel = Actor.LevelInfo.GetLevelsInClass(Level.Class);
+
+        if (currentLevel + 1 != Level.Level)
+        {
+            SetErrorAndReturn($"{Actor.Name} is not ready to become {Level.Name}");
+        }
     }
 
-    protected override void FinalizeEvent()
+    protected override void FinalizeResult()
     {
-        Character.LevelInfo.AddLevel(Level);
-        EventResult.SetMessage($"{Character.Name} has become {Level.Name}");
+        Actor.LevelInfo.AddLevel(Level);
+        Result.SetMessage($"{Actor.Name} has become {Level.Name}");
     }
 }

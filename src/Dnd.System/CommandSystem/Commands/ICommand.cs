@@ -5,11 +5,11 @@ using Dnd.System.Entities.GameActors;
 
 public interface ICommand
 {
-    IGameActor Character { get; }
-
-    bool IsForceCompleted { get; }
+    IGameActor Actor { get; }
 
     void ForceComplete();
 
     ICommandResult Execute();
+
+    void AddFinalAction(Action action);
 }

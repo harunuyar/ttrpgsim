@@ -1,42 +1,32 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 
 using Dnd.System.Entities.GameActors;
+using Dnd.System.Entities.Items;
 using Dnd.System.Entities.Items.Equipments.Weapons;
 
 public class CalculateWeaponSavingDifficultyClass : DndScoreCommand
 {
-    public CalculateWeaponSavingDifficultyClass(IGameActor character, IWeapon weapon) : base(character)
+    public CalculateWeaponSavingDifficultyClass(IGameActor character, IItem weaponItem) : base(character)
     {
-        Weapon = weapon;
+        WeaponItem = weaponItem;
     }
 
-    public IWeapon Weapon { get; }
+    public IItem WeaponItem { get; }
 
     protected override void InitializeResult()
     {
-        if (Weapon.SuccessMeasuringType == Entities.ESuccessMeasuringType.SavingThrow)
+        if (WeaponItem.ItemDescription is not IWeapon weapon)
         {
-            Result.SetBaseValue("Base", 8);
-
-            var getProficiencyBonus = new GetProficiencyBonus(this.Character);
-            var proficiencyBonus = getProficiencyBonus.Execute();
-
-            if (proficiencyBonus.IsSuccess)
-            {
-                Result.BonusCollection.AddBonus("Proficiency Bonus", proficiencyBonus.Value);
-            }
-            else
-            {
-                Result.SetError(proficiencyBonus.ErrorMessage ?? "Couldn't get proficiency bonus");
-            }
+            SetErrorAndReturn("Item is not a weapon");
+            return;
         }
-        else
+
+        if (weapon.SuccessMeasuringType != Entities.ESuccessMeasuringType.SavingThrow)
         {
-            Result.SetError("Weapon doesn't use saving throw as success measuring type");
+            SetErrorAndReturn("Weapon doesn't use saving throw as success measuring type");
+            return;
         }
-    }
 
-    protected override void FinalizeResult()
-    {
+        Result.SetBaseValue("Base", 8);
     }
 }

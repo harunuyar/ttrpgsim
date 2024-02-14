@@ -19,8 +19,4 @@ public class CanDoSpellAttackAgainst : DndBooleanCommand
     {
         Result.SetValue("Default", true);
     }
-
-    protected override void FinalizeResult()
-    {
-    }
 }

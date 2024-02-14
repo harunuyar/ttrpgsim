@@ -20,45 +20,11 @@ public class CalculateSpellAttackModifier : DndScoreCommand
     {
         if (Spell.SpellDescription.SuccessMeasuringType != ESuccessMeasuringType.AttackRoll)
         {
-            Result.SetError("Spell doesn't use attack roll");
+            SetErrorAndReturn("Spell doesn't use attack roll");
             return;
         }
 
+        // Real base value for spell attack modifier will be provided by spell casting ability feat if there is one
         Result.SetBaseValue("Base", 0);
-
-        // Real base value for spell attack modifier will be provided by spell casting ability feature
-
-        var getProficiencyBonus = new GetProficiencyBonus(this.Character);
-        var proficiencyBonus = getProficiencyBonus.Execute();
-
-        if (proficiencyBonus.IsSuccess)
-        {
-            Result.BonusCollection.AddBonus("Proficiency Bonus", proficiencyBonus.Value);
-        }
-        else
-        {
-            Result.SetError(proficiencyBonus.ErrorMessage ?? "Couldn't get proficiency bonus");
-            return;
-        }
-
-        var calculateSpellAttackModifierAgainstCharacter = new CalculateSpellAttackModifierAgainst(this.Target, Spell, Character);
-        var attackModifierAgainstCharacter = calculateSpellAttackModifierAgainstCharacter.Execute();
-
-        if (attackModifierAgainstCharacter.IsSuccess)
-        {
-            if (attackModifierAgainstCharacter.BaseValue != 0)
-            {
-                Result.BonusCollection.AddBonus(attackModifierAgainstCharacter.BaseSource ?? new CustomDndEntity("Attack Modifier Base Against Character"), attackModifierAgainstCharacter.Value);
-            }
-
-            foreach (var bonus in attackModifierAgainstCharacter.BonusCollection.Values)
-            {
-                Result.BonusCollection.AddBonus(bonus.Key, bonus.Value);
-            }
-        }
-    }
-
-    protected override void FinalizeResult()
-    {
     }
 }

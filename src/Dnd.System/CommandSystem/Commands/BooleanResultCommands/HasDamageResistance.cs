@@ -17,8 +17,4 @@ public class HasDamageResistance : DndBooleanCommand
     {
         Result.SetValue("Base", false);
     }
-
-    protected override void FinalizeResult()
-    {
-    }
 }

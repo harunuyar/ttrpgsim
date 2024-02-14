@@ -17,16 +17,12 @@ public class CanEquipItem : DndBooleanCommand
         if (Item.IsEquipped)
         {
             Result.SetValue("Already equiped", false);
-            ShouldVisitEntities = false;
+            ForceComplete();
         }
         else
         {
             Result.SetValue("Base", true);
             Item.ItemDescription.HandleCommand(this);
         }
-    }
-
-    protected override void FinalizeResult()
-    {
     }
 }

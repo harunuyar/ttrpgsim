@@ -8,16 +8,12 @@ public class BreakConcentration : DndEventCommand
     {
     }
 
-    protected override void InitializeEvent()
+    protected override void FinalizeResult()
     {
-    }
-
-    protected override void FinalizeEvent()
-    {
-        if (Character.EffectsTable.Concentration != null)
+        if (Actor.EffectsTable.Concentration != null)
         {
-            Character.EffectsTable.RemoveConcentration();
-            EventResult.SetMessage($"{Character.Name} has lost concentration");
+            Actor.EffectsTable.RemoveConcentration();
+            Result.SetMessage($"{Actor.Name} has lost concentration");
         }
     }
 }

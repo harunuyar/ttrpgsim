@@ -6,7 +6,8 @@ using Dnd.System.Entities.GameActors;
 
 public class RollConcentrationSavingThrow : DndRollCommand
 {
-    public RollConcentrationSavingThrow(IEventListener eventListener, IGameActor character, EAdvantage advantage) : base(eventListener, character, advantage, new DiceRoll(1, EDiceType.d20))
+    public RollConcentrationSavingThrow(IEventListener eventListener, IGameActor character, EAdvantage advantage) 
+        : base(eventListener, character, advantage, new DiceRoll(1, EDiceType.d20))
     {
     }
 }

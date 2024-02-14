@@ -3,76 +3,20 @@
 using Dnd.System.CommandSystem.Results;
 using Dnd.System.Entities.GameActors;
 
-public abstract class DndEventCommand : ICommand
+public abstract class DndEventCommand : ADndCommand<EventResult>
 {
-    public DndEventCommand(IEventListener eventListener, IGameActor character)
+    public DndEventCommand(IEventListener eventListener, IGameActor character) : base(character)
     {
         EventListener = eventListener;
-        Character = character;
-        EventResult = EventResult.Success();
-        ShouldVisitEntities = true;
+        Result = EventResult.Success();
     }
 
-    public IGameActor Character { get; }
-
-    protected EventResult EventResult { get; }
+    public override EventResult Result { get; }
 
     public IEventListener EventListener { get; }
 
-    protected bool ShouldVisitEntities { get; set; }
-
-    public bool IsForceCompleted { get; private set; }
-
-    public EventResult Execute()
+    protected override void FinalAction()
     {
-        EventResult.Reset();
-
-        InitializeEvent();
-
-        if (!IsForceCompleted && ShouldVisitEntities && EventResult.IsSuccess)
-        {
-            Character.HandleCommand(this);
-        }
-
-        if (!IsForceCompleted)
-        {
-            FinalizeEvent();
-        }
-        
-        EventListener.OnEventResult(EventResult);
-       
-        return EventResult;
-    }
-
-    protected abstract void InitializeEvent();
-
-    protected abstract void FinalizeEvent();
-
-    ICommandResult ICommand.Execute()
-    {
-        return Execute();
-    }
-
-    public void ForceComplete()
-    {
-        IsForceCompleted = true;
-    }
-
-    public void SetEventMessageAndReturn(string message)
-    {
-        if (!IsForceCompleted)
-        {
-            EventResult.SetMessage(message);
-            ForceComplete();
-        }
-    }
-
-    public void SetErrorAndReturn(string message)
-    {
-        if (!IsForceCompleted)
-        {
-            EventResult.SetError(message);
-            ForceComplete();
-        }
+        EventListener.OnEventResult(Result);
     }
 }

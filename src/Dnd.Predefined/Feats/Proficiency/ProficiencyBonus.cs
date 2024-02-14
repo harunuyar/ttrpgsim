@@ -15,7 +15,7 @@ public class ProficiencyBonus : AFeat
     {
         if (command is GetProficiencyBonus getProficiencyBonus)
         {
-            int level = command.Character.LevelInfo.Level;
+            int level = command.Actor.LevelInfo.Level;
 
             if (level < 1 || level > 20)
             {

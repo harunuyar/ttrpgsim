@@ -19,8 +19,4 @@ public class CalculateSpellAttackModifierAgainst : DndScoreCommand
     {
         Result.SetBaseValue("Base", 0);
     }
-
-    protected override void FinalizeResult()
-    {
-    }
 }

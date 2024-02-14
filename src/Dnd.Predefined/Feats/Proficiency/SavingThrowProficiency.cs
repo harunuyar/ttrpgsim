@@ -27,7 +27,7 @@ public class SavingThrowProficiency : AFeat
         }
         else if (command is GetSavingThrowModifier getSavingThrowModifier && AttributeTypes.HasFlag(getSavingThrowModifier.AttributeType))
         {
-            var getProficiencyBonus = new GetProficiencyBonus(getSavingThrowModifier.Character);
+            var getProficiencyBonus = new GetProficiencyBonus(getSavingThrowModifier.Actor);
             var proficiencyBonusResult = getProficiencyBonus.Execute();
 
             if (proficiencyBonusResult.IsSuccess)

@@ -11,9 +11,6 @@ public class GetSpellSlotsCount : DndScoreCommand
 
     public int SpellLevel { get; }
 
-    protected override void FinalizeResult()
-    {
-    }
 
     protected override void InitializeResult()
     {

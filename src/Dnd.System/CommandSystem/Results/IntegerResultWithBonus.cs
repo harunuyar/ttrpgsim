@@ -1,6 +1,7 @@
 ﻿namespace Dnd.System.CommandSystem.Results;
 
 using Dnd.System.Entities;
+using Dnd.System.Entities.Advantage;
 
 public class IntegerResultWithBonus : ICommandResult
 {
@@ -20,6 +21,8 @@ public class IntegerResultWithBonus : ICommandResult
     }
 
     public BonusCollection BonusCollection { get; }
+
+    public EAdvantage Advantage => BonusCollection.Advantage;
 
     public int Value => BaseValue + BonusCollection.TotalValue;
 

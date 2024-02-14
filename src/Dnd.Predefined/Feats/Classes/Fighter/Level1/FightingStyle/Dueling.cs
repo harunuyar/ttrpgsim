@@ -16,8 +16,8 @@ public class Dueling : AFeat, IFightingStyle
             && calculateWeaponDamageModifier.WeaponItem.ItemDescription is IWeapon weapon
             && weapon.WeaponType.IsMelee()
             && !weapon.WeaponProperties.HasFlag(EWeaponProperty.TwoHanded)
-            && calculateWeaponDamageModifier.WeaponItem == command.Character.Inventory.Equipments.MainHandWeapon
-            && command.Character.Inventory.Equipments.OffHandWeapon == null)
+            && calculateWeaponDamageModifier.WeaponItem == command.Actor.Inventory.Equipments.MainHandWeapon
+            && command.Actor.Inventory.Equipments.OffHandWeapon == null)
         {
             calculateWeaponDamageModifier.AddBonus(this, 2);
         }

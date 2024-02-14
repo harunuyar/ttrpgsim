@@ -6,7 +6,8 @@ using Dnd.System.Entities.GameActors;
 
 public class RollDamage : DndRollCommand
 {
-    public RollDamage(IEventListener eventListener, IGameActor character, EAdvantage advantage, DiceRoll diceRoll) : base(eventListener, character, advantage, diceRoll)
+    public RollDamage(IEventListener eventListener, IGameActor character, EAdvantage advantage, DiceRoll diceRoll) 
+        : base(eventListener, character, advantage, diceRoll)
     {
     }
 }

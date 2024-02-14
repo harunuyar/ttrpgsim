@@ -16,8 +16,4 @@ public class HasSavingThrowProficiency : DndBooleanCommand
     {
         Result.SetValue("Base", false);
     }
-
-    protected override void FinalizeResult()
-    {
-    }
 }

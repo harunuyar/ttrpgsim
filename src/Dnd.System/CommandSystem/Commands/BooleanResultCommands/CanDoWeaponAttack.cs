@@ -20,13 +20,10 @@ public class CanDoWeaponAttack : DndBooleanCommand
     {
         if (WeaponItem.ItemDescription is not IWeapon)
         {
-            Result.SetError("The item is not a weapon.");
+            SetErrorAndReturn("The item is not a weapon.");
+            return;
         }
 
         Result.SetValue("Default", true);
-    }
-
-    protected override void FinalizeResult()
-    {
     }
 }

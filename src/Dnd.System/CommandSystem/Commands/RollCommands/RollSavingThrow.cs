@@ -7,7 +7,8 @@ using Dnd.System.Entities.GameActors;
 
 public class RollSavingThrow : DndRollCommand
 {
-    public RollSavingThrow(IEventListener eventListener, IGameActor character, EAttributeType attributeType, EAdvantage advantage) : base(eventListener, character, advantage, new DiceRoll(1, EDiceType.d20))
+    public RollSavingThrow(IEventListener eventListener, IGameActor character, EAttributeType attributeType, EAdvantage advantage) 
+        : base(eventListener, character, advantage, new DiceRoll(1, EDiceType.d20))
     {
         AttributeType = attributeType;
     }

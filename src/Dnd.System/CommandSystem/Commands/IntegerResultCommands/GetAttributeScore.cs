@@ -14,11 +14,7 @@ public class GetAttributeScore : DndScoreCommand
 
     protected override void InitializeResult()
     {
-        var attribute = Character.AttributeSet.GetAttribute(AttributeType);
+        var attribute = Actor.AttributeSet.GetAttribute(AttributeType);
         Result.SetBaseValue(attribute, attribute.Score);
-    }
-
-    protected override void FinalizeResult()
-    {
     }
 }

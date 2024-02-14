@@ -2,6 +2,7 @@
 
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
+using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 using Dnd.System.Entities.Items.Equipments.Weapons;
 
 public class WeaponProficiency : AFeat
@@ -15,9 +16,44 @@ public class WeaponProficiency : AFeat
 
     public override void HandleCommand(ICommand command)
     {
-        if (command is HasWeaponProficiency hasWeaponProficiency && WeaponType.HasFlag(hasWeaponProficiency.WeaponType))
+        if (command is HasWeaponProficiency hasWeaponProficiency)
         {
-            hasWeaponProficiency.SetValue(this, true);
+            if (WeaponType.HasFlag(hasWeaponProficiency.WeaponType))
+            {
+                hasWeaponProficiency.SetValue(this, true);
+            }
+        }
+        else if (command is CalculateWeaponAttackModifier calculateWeaponAttackModifier)
+        {
+            if (calculateWeaponAttackModifier.WeaponItem.ItemDescription is IWeapon weapon && WeaponType.HasFlag(weapon.WeaponType))
+            {
+                var getProficiencyBonus = new GetProficiencyBonus(command.Actor);
+                var proficiencyBonus = getProficiencyBonus.Execute();
+
+                if (!proficiencyBonus.IsSuccess)
+                {
+                    calculateWeaponAttackModifier.SetErrorAndReturn("GetProficiencyBonus: " + proficiencyBonus.ErrorMessage);
+                    return;
+                }
+
+                calculateWeaponAttackModifier.AddBonus(this, proficiencyBonus.Value);
+            }
+        }
+        else if (command is CalculateWeaponSavingDifficultyClass calculateWeaponSavingDC)
+        {
+            if (calculateWeaponSavingDC.WeaponItem.ItemDescription is IWeapon weapon && WeaponType.HasFlag(weapon.WeaponType))
+            {
+                var getProficiencyBonus = new GetProficiencyBonus(command.Actor);
+                var proficiencyBonus = getProficiencyBonus.Execute();
+
+                if (!proficiencyBonus.IsSuccess)
+                {
+                    calculateWeaponSavingDC.SetErrorAndReturn("GetProficiencyBonus: " + proficiencyBonus.ErrorMessage);
+                    return;
+                }
+
+                calculateWeaponSavingDC.AddBonus(this, proficiencyBonus.Value);
+            }
         }
     }
 

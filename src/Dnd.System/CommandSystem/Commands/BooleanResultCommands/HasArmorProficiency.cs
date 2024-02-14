@@ -16,8 +16,4 @@ public class HasArmorProficiency : DndBooleanCommand
     {
         Result.SetValue("Default", false);
     }
-
-    protected override void FinalizeResult()
-    {
-    }
 }

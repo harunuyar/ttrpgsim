@@ -1,7 +1,6 @@
 ﻿namespace Dnd.Predefined.Traits.Dwarf;
 
 using Dnd.System.CommandSystem.Commands;
-using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 using Dnd.System.Entities.Advantage;
 using Dnd.System.Entities.Items.Equipments.Weapons;
@@ -12,7 +11,10 @@ public class DwarvenResilience : ATrait
 
     private DwarvenResilience() : base("Dwarven Resilience", "You have advantage on saving throws against poison, and you have resistance against poison damage.")
     {
+        PoisonResistance = new Resistance(EDamageType.Poison);
     }
+
+    public Resistance PoisonResistance { get; }
 
     public override void HandleCommand(ICommand command)
     {
@@ -24,12 +26,6 @@ public class DwarvenResilience : ATrait
             }
         }
 
-        if (command is HasDamageResistance getDamageResistance)
-        {
-            if (getDamageResistance.DamageType == EDamageType.Poison)
-            {
-                getDamageResistance.SetValue(this, true);
-            }
-        }
+        PoisonResistance.HandleCommand(command);
     }
 }

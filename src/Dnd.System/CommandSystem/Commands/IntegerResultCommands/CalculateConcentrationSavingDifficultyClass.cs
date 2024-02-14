@@ -23,8 +23,4 @@ public class CalculateConcentrationSavingDifficultyClass : DndScoreCommand
             Result.SetBaseValue("Base", 10);
         }
     }
-
-    protected override void FinalizeResult()
-    {
-    }
 }

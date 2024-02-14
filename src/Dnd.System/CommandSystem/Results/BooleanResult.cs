@@ -6,6 +6,8 @@ public class BooleanResult : ICommandResult
 {
     public static BooleanResult Empty() => new BooleanResult(true, null, null, false);
 
+    public static BooleanResult Success(string source, bool value) => new BooleanResult(true, null, new CustomDndEntity(source), value);
+
     public static BooleanResult Success(IDndEntity source, bool value) => new BooleanResult(true, null, source, value);
 
     public static BooleanResult Failure(string errorMessage) => new BooleanResult(false, errorMessage, null, false);

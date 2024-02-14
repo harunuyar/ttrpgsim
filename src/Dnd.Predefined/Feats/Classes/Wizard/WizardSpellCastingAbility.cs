@@ -40,7 +40,7 @@ public class WizardSpellCastingAbility : SpellCastingAbility
 
     public override void HandleCantripsCount(GetKnownCantripsCount getKnownCantripsCount)
     {
-        int wizardLevel = getKnownCantripsCount.Character.LevelInfo.GetLevel(Predefined.Classes.Wizard.Instance);
+        int wizardLevel = getKnownCantripsCount.Actor.LevelInfo.GetLevelsInClass(Predefined.Classes.Wizard.Instance);
 
         if (wizardLevel < 1 || wizardLevel > 20)
         {
@@ -52,7 +52,7 @@ public class WizardSpellCastingAbility : SpellCastingAbility
 
     public override void HandleKnownSpellsCount(GetKnownSpellsCount getKnownSpellsCount)
     {
-        var getIntelligenceModifier = new GetAttributeModifier(getKnownSpellsCount.Character, EAttributeType.Intelligence);
+        var getIntelligenceModifier = new GetAttributeModifier(getKnownSpellsCount.Actor, EAttributeType.Intelligence);
         var intelligenceModifier = getIntelligenceModifier.Execute();
 
         if (!intelligenceModifier.IsSuccess)
@@ -60,7 +60,7 @@ public class WizardSpellCastingAbility : SpellCastingAbility
             getKnownSpellsCount.SetErrorAndReturn("Couldn't get intelligence modifier. GetAttributeModifier: " + intelligenceModifier.ErrorMessage);
         }
 
-        int wizardLevel = getKnownSpellsCount.Character.LevelInfo.GetLevel(Predefined.Classes.Wizard.Instance);
+        int wizardLevel = getKnownSpellsCount.Actor.LevelInfo.GetLevelsInClass(Predefined.Classes.Wizard.Instance);
 
         if (wizardLevel < 1 || wizardLevel > 20)
         {
@@ -72,7 +72,7 @@ public class WizardSpellCastingAbility : SpellCastingAbility
 
     public override void HandleSpellSlotsCount(GetSpellSlotsCount getSpellSlotsCount)
     {
-        int wizardLevel = getSpellSlotsCount.Character.LevelInfo.GetLevel(Predefined.Classes.Wizard.Instance);
+        int wizardLevel = getSpellSlotsCount.Actor.LevelInfo.GetLevelsInClass(Predefined.Classes.Wizard.Instance);
 
         if (wizardLevel < 1 || wizardLevel > 20)
         {

@@ -13,16 +13,12 @@ public class GetArmorClass : DndScoreCommand
     {
         Result.SetBaseValue("Base Armor Class", 10);
 
-        var getDexterityModifier = new GetAttributeModifier(Character, EAttributeType.Dexterity);
+        var getDexterityModifier = new GetAttributeModifier(Actor, EAttributeType.Dexterity);
         var dexterityModifierResult = getDexterityModifier.Execute();
 
         if (dexterityModifierResult.IsSuccess)
         {
-            Result.BonusCollection.AddBonus(Character.AttributeSet.Dexterity, dexterityModifierResult.Value);
+            Result.BonusCollection.AddBonus(Actor.AttributeSet.Dexterity, dexterityModifierResult.Value);
         }
-    }
-
-    protected override void FinalizeResult()
-    {
     }
 }

@@ -11,20 +11,15 @@ public class GetInitiativeModifier : DndScoreCommand
 
     protected override void InitializeResult()
     {
-        var getDexterityModifierCommand = new GetAttributeModifier(Character, EAttributeType.Dexterity);
+        var getDexterityModifierCommand = new GetAttributeModifier(Actor, EAttributeType.Dexterity);
         var dexterityModifierResult = getDexterityModifierCommand.Execute();
 
-        if (dexterityModifierResult.IsSuccess)
+        if (!dexterityModifierResult.IsSuccess)
         {
-            Result.SetBaseValue(Character.AttributeSet.Dexterity, dexterityModifierResult.Value);
+            Result.SetError("GetAttributeModifier: " + dexterityModifierResult.ErrorMessage);
+            return;
         }
-        else
-        {
-            Result.SetError(dexterityModifierResult.ErrorMessage ?? "Unknown");
-        }
-    }
 
-    protected override void FinalizeResult()
-    {
+        Result.SetBaseValue(Actor.AttributeSet.Dexterity, dexterityModifierResult.Value);
     }
 }

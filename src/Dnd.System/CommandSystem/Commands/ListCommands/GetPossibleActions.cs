@@ -3,9 +3,9 @@
 using Dnd.System.Entities.Actions;
 using Dnd.System.Entities.GameActors;
 
-internal class GetActions : DndListCommand<IAction>
+internal class GetPossibleActions : DndListCommand<IAction>
 {
-    public GetActions(IGameActor character) : base(character)
+    public GetPossibleActions(IGameActor character) : base(character)
     {
     }
 }

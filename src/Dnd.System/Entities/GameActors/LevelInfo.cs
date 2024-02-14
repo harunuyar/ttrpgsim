@@ -33,15 +33,20 @@ public class LevelInfo
         currentLevels.Add(newLevel);
         return true;
     }
-
-    public Dictionary<IClass, int> GetLevels()
-    {
-        return Levels.ToDictionary(item => item.Key, item => item.Value.Count);
-    }
-
-    public int GetLevel(IClass dndClass)
+    
+    public int GetLevelsInClass(IClass dndClass)
     {
         return Levels.TryGetValue(dndClass, out var levels) ? levels.Count : 0;
+    }
+
+    public List<ILevel> GetLevels()
+    {
+        return Levels.Select(pair => pair.Value.Last()).ToList();
+    }
+
+    public ILevel? GetLevelForClass(IClass dndClass)
+    {
+        return Levels.GetValueOrDefault(dndClass)?.Last();
     }
 
     public void HandleCommand(ICommand command)

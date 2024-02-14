@@ -16,8 +16,4 @@ public class CalculateSpellDamageModifier : DndScoreCommand
     {
         Result.SetBaseValue("Base", 0);
     }
-
-    protected override void FinalizeResult()
-    {
-    }
 }

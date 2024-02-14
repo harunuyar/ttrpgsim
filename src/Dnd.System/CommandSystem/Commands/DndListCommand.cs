@@ -3,55 +3,14 @@
 using Dnd.System.CommandSystem.Results;
 using Dnd.System.Entities.GameActors;
 
-public abstract class DndListCommand<T> : ICommand
+public abstract class DndListCommand<T> : ADndCommand<ListResult<T>>
 {
-    public DndListCommand(IGameActor character)
+    public DndListCommand(IGameActor character) : base(character)
     {
-        Character = character;
         Result = new ListResult<T>();
-        ShouldVisitEntities = true;
     }
 
-    public IGameActor Character { get; }
-
-    protected bool ShouldVisitEntities { get; set; }
-
-    public bool IsForceCompleted { get; private set; }
-
-    protected ListResult<T> Result { get; }
-
-    public ListResult<T> Execute()
-    {
-        Result.Values.Clear();
-
-        InitializeEvent();
-
-        if (!IsForceCompleted && ShouldVisitEntities && Result.IsSuccess)
-        {
-            Character.HandleCommand(this);
-        }
-
-        if (!IsForceCompleted)
-        {
-            FinalizeEvent();
-        }
-
-        return Result;
-    }
-
-    protected virtual void InitializeEvent() { }
-
-    protected virtual void FinalizeEvent() { }
-
-    ICommandResult ICommand.Execute()
-    {
-        return Execute();
-    }
-
-    public void ForceComplete()
-    {
-        IsForceCompleted = true;
-    }
+    public override ListResult<T> Result { get; }
 
     public void AddItem(T item)
     {
@@ -61,13 +20,8 @@ public abstract class DndListCommand<T> : ICommand
         }
     }
 
-    public void SetErrorAndReturn(string errorMessage)
+    public void SetItemsAndReturn(List<T> list)
     {
-        if (!IsForceCompleted)
-        {
-            Result.Values.Clear();
-            Result.SetError(errorMessage);
-            ForceComplete();
-        }
+        Result.Set(list);
     }
 }

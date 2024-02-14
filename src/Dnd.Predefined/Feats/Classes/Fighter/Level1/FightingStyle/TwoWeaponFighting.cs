@@ -15,9 +15,9 @@ internal class TwoWeaponFighting : AFeat, IFightingStyle
     {
         if (command is CalculateWeaponDamageModifier calculateWeaponDamageModifier
             && calculateWeaponDamageModifier.WeaponItem.ItemDescription is IWeapon weapon
-            && calculateWeaponDamageModifier.WeaponItem == command.Character.Inventory.Equipments.OffHandWeapon)
+            && calculateWeaponDamageModifier.WeaponItem == command.Actor.Inventory.Equipments.OffHandWeapon)
         {
-            var getStrengthModifier = new GetAttributeModifier(command.Character, EAttributeType.Strength);
+            var getStrengthModifier = new GetAttributeModifier(command.Actor, EAttributeType.Strength);
             var strengthModifier = getStrengthModifier.Execute();
 
             if (strengthModifier.IsSuccess)
@@ -26,7 +26,7 @@ internal class TwoWeaponFighting : AFeat, IFightingStyle
 
                 if (weapon.WeaponProperties.HasFlag(EWeaponProperty.Finesse | EWeaponProperty.Range))
                 {
-                    var getDexterityModifier = new GetAttributeModifier(command.Character, EAttributeType.Dexterity);
+                    var getDexterityModifier = new GetAttributeModifier(command.Actor, EAttributeType.Dexterity);
                     var dexterityModifier = getDexterityModifier.Execute();
 
                     if (dexterityModifier.IsSuccess)

@@ -11,12 +11,8 @@ public class PassTime : DndEventCommand
 
     public TimeSpan TimeSpan { get;}
 
-    protected override void FinalizeEvent()
+    protected override void FinalizeResult()
     {
-        EventResult.SetMessage($"{TimeSpan} has passed");
-    }
-
-    protected override void InitializeEvent()
-    {
+        Result.SetMessage($"{TimeSpan} has passed");
     }
 }

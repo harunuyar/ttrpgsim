@@ -8,12 +8,8 @@ public class EndTurn : DndEventCommand
     {
     }
 
-    protected override void InitializeEvent()
+    protected override void FinalizeResult()
     {
-    }
-
-    protected override void FinalizeEvent()
-    {
-        EventResult.SetMessage($"{Character.Name} has ended their turn");
+        Result.SetMessage($"{Actor.Name} has ended their turn");
     }
 }

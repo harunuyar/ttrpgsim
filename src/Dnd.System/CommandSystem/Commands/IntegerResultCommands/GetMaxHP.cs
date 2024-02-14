@@ -14,23 +14,26 @@ public class GetMaxHP : DndScoreCommand
 
     protected override void InitializeResult()
     {
-        Result.SetBaseValue("Base", Character.HitPoints.HitPointRolls.Sum());
+        Result.SetBaseValue("Base", Actor.HitPoints.HitPointRolls.Sum());
 
-        var getConstModifier = new GetAttributeModifier(Character, EAttributeType.Constitution);
+        var getConstModifier = new GetAttributeModifier(Actor, EAttributeType.Constitution);
         var constModifierResult = getConstModifier.Execute();
 
-        if (constModifierResult.IsSuccess)
+        if (!constModifierResult.IsSuccess)
         {
-            Result.BonusCollection.AddBonus(Character.AttributeSet.Constitution, Character.LevelInfo.Level * constModifierResult.Value);
+            SetErrorAndReturn("GetAttributeModifier: " + constModifierResult.ErrorMessage);
+            return;
         }
+
+        Result.BonusCollection.AddBonus(Actor.AttributeSet.Constitution, Actor.LevelInfo.Level * constModifierResult.Value);
     }
 
     protected override void FinalizeResult()
     {
         if (Result.IsSuccess)
         {
-            Character.HitPoints.MaxHitPoints = Result.Value;
-            Character.HitPoints.SetCurrentHitPoints(ShouldSetFullHealth ? Result.Value : Math.Min(Character.HitPoints.CurrentHitPoints, Result.Value));
+            Actor.HitPoints.MaxHitPoints = Result.Value;
+            Actor.HitPoints.SetCurrentHitPoints(ShouldSetFullHealth ? Result.Value : Math.Min(Actor.HitPoints.CurrentHitPoints, Result.Value));
         }
     }
 }

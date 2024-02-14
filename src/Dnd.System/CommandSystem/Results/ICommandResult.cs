@@ -7,4 +7,8 @@ public interface ICommandResult
     bool IsSuccess { get; }
 
     string? ErrorMessage { get; }
+
+    void Reset();
+
+    void SetError(string errorMessage);
 }

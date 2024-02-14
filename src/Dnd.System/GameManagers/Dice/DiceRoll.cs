@@ -8,9 +8,9 @@ public class DiceRoll
         NumberOfDice = numberOfDice;
     }
 
-    EDiceType DiceType { get; set; }
+    public EDiceType DiceType { get; set; }
 
-    int NumberOfDice { get; set; }
+    public int NumberOfDice { get; set; }
 
     public override string ToString()
     {

@@ -2,14 +2,14 @@
 
 using Dnd.System.Entities.GameActors;
 
-public class CanCastSpell : DndBooleanCommand
+public class CanHeal : DndBooleanCommand
 {
-    public CanCastSpell(IGameActor character) : base(character)
+    public CanHeal(IGameActor character) : base(character)
     {
     }
 
     protected override void InitializeResult()
     {
-        Result.SetValue("Default", false);
+        Result.SetValue("Default", true);
     }
 }

@@ -1,6 +1,5 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 
-using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
 using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Skills;
 
@@ -15,20 +14,15 @@ public class GetSkillModifier : DndScoreCommand
 
     protected override void InitializeResult()
     {
-        var getAttributeModifierCommand = new GetAttributeModifier(Character, Skill.AttributeType);
+        var getAttributeModifierCommand = new GetAttributeModifier(Actor, Skill.AttributeType);
         var attributeModifierResult = getAttributeModifierCommand.Execute();
 
-        if (attributeModifierResult.IsSuccess)
+        if (!attributeModifierResult.IsSuccess)
         {
-            Result.SetBaseValue(Character.AttributeSet.GetAttribute(Skill.AttributeType), attributeModifierResult.Value);
+            SetErrorAndReturn("GetAttributeModifier: " + attributeModifierResult.ErrorMessage);
+            return;
         }
-        else
-        {
-            Result.SetError(attributeModifierResult.ErrorMessage ?? "Couldn't get attribute modifier");
-        }
-    }
 
-    protected override void FinalizeResult()
-    {
+        Result.SetBaseValue(Actor.AttributeSet.GetAttribute(Skill.AttributeType), attributeModifierResult.Value);
     }
 }

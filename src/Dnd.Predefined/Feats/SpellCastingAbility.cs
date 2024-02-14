@@ -3,6 +3,7 @@
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
+using Dnd.System.Entities;
 using Dnd.System.Entities.Classes;
 
 public abstract class SpellCastingAbility : AFeat
@@ -28,36 +29,63 @@ public abstract class SpellCastingAbility : AFeat
         }
         else if (command is CalculateSpellAttackModifier calculateSpellAttackModifier)
         {
-            var getAttributeModifier = new GetAttributeModifier(command.Character, SpellCasterClass.SpellCastingAttribute);
+            var getAttributeModifier = new GetAttributeModifier(command.Actor, SpellCasterClass.SpellCastingAttribute);
             var attributeModifier = getAttributeModifier.Execute();
 
             if (attributeModifier.IsSuccess)
             {
-                if (calculateSpellAttackModifier.GetResult().BaseValue <= attributeModifier.Value)
+                if (calculateSpellAttackModifier.Result.BaseValue <= attributeModifier.Value)
                 {
                     calculateSpellAttackModifier.SetBaseValue(this, attributeModifier.Value);
                 }
             }
             else
             {
-                calculateSpellAttackModifier.SetErrorAndReturn("Couldn't get attribute modifier: " + attributeModifier.ErrorMessage);
+                calculateSpellAttackModifier.SetErrorAndReturn("GetAttributeModifier: " + attributeModifier.ErrorMessage);
+                return;
+            }
+
+            var getProficiencyBonus = new GetProficiencyBonus(command.Actor);
+            var proficiencyBonus = getProficiencyBonus.Execute();
+
+            if (proficiencyBonus.IsSuccess)
+            {
+                calculateSpellAttackModifier.AddBonus(new CustomDndEntity("Proficiency Bonus"), proficiencyBonus.Value);
+            }
+            else
+            {
+                calculateSpellAttackModifier.SetErrorAndReturn("GetProficiencyBonus: " + proficiencyBonus.ErrorMessage);
+                return;
             }
         }
         else if (command is CalculateSpellSavingDifficultyClass calculateSpellSavingDifficultyClass)
         {
-            var getAttributeModifier = new GetAttributeModifier(command.Character, SpellCasterClass.SpellCastingAttribute);
+            var getAttributeModifier = new GetAttributeModifier(command.Actor, SpellCasterClass.SpellCastingAttribute);
             var attributeModifier = getAttributeModifier.Execute();
 
             if (attributeModifier.IsSuccess)
             {
-                if (calculateSpellSavingDifficultyClass.GetResult().BaseValue <= attributeModifier.Value)
+                if (calculateSpellSavingDifficultyClass.Result.BaseValue <= attributeModifier.Value)
                 {
                     calculateSpellSavingDifficultyClass.SetBaseValue(this, attributeModifier.Value);
                 }
             }
             else
             {
-                calculateSpellSavingDifficultyClass.SetErrorAndReturn("Couldn't get attribute modifier" + attributeModifier.ErrorMessage);
+                calculateSpellSavingDifficultyClass.SetErrorAndReturn("GetAttributeModifier: " + attributeModifier.ErrorMessage);
+                return;
+            }
+
+            var getProficiencyBonus = new GetProficiencyBonus(command.Actor);
+            var proficiencyBonus = getProficiencyBonus.Execute();
+
+            if (proficiencyBonus.IsSuccess)
+            {
+                calculateSpellSavingDifficultyClass.AddBonus(new CustomDndEntity("Proficiency Bonus"), proficiencyBonus.Value);
+            }
+            else
+            {
+                calculateSpellSavingDifficultyClass.SetErrorAndReturn(proficiencyBonus.ErrorMessage ?? "Couldn't get proficiency bonus");
             }
         }
         else if (command is GetKnownCantripsCount getCantripsCount)

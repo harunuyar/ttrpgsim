@@ -10,4 +10,11 @@ public interface ILevel : IDndEntity
     IClass Class { get; }
 
     List<IFeat> Feats { get; }
+
+    string? Subclass { get; }
+
+    string GetClassName()
+    {
+        return Subclass ?? Class.Name;
+    }
 }

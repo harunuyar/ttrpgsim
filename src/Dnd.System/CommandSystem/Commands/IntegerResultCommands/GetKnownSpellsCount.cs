@@ -8,12 +8,8 @@ public class GetKnownSpellsCount : DndScoreCommand
     {
     }
 
-    protected override void FinalizeResult()
-    {
-    }
-
     protected override void InitializeResult()
     {
-        Result.SetBaseValue("Defauult", 0);
+        Result.SetBaseValue("Default", 0);
     }
 }

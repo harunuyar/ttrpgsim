@@ -16,15 +16,12 @@ internal class CanDoWeaponAttackAgainst : DndBooleanCommand
 
     public IItem WeaponItem { get; }
 
-    protected override void FinalizeResult()
-    {
-    }
-
     protected override void InitializeResult()
     {
         if (WeaponItem.ItemDescription is not IWeapon)
         {
-            Result.SetError("The item is not a weapon.");
+            SetErrorAndReturn("The item is not a weapon.");
+            return;
         }
 
         Result.SetValue("Default", true);

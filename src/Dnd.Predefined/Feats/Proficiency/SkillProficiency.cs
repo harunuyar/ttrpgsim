@@ -76,7 +76,7 @@ public class SkillProficiency : AFeat
                 return;
             }
 
-            var getProficiencyBonus = new GetProficiencyBonus(getSkillModifier.Character);
+            var getProficiencyBonus = new GetProficiencyBonus(getSkillModifier.Actor);
             var proficiencyBonusResult = getProficiencyBonus.Execute();
 
             if (proficiencyBonusResult.IsSuccess)

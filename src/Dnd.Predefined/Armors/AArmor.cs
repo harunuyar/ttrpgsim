@@ -65,8 +65,8 @@ public abstract class AArmor : IArmor
         {
             getArmorClass.SetBaseValue(this, BaseArmorClass);
 
-            int dexterityBonus = GetDexterityBonus(getArmorClass.Character);
-            int baseDexterityBonus = GetDexterityModifier(getArmorClass.Character);
+            int dexterityBonus = GetDexterityBonus(getArmorClass.Actor);
+            int baseDexterityBonus = GetDexterityModifier(getArmorClass.Actor);
 
             int dexterityBonusDifference = dexterityBonus - baseDexterityBonus;
             if (dexterityBonusDifference != 0)
@@ -76,7 +76,7 @@ public abstract class AArmor : IArmor
         }
         else if (command is CanEquipItem canEquipItem && canEquipItem.Item.ItemDescription == this)
         {
-            var getStrengthScore = new GetAttributeScore(canEquipItem.Character, EAttributeType.Strength);
+            var getStrengthScore = new GetAttributeScore(canEquipItem.Actor, EAttributeType.Strength);
             var strengthScore = getStrengthScore.Execute();
 
             if (strengthScore.IsSuccess && strengthScore.Value < StrengthRequirement)

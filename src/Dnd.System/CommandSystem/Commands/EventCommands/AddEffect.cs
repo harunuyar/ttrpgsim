@@ -12,13 +12,9 @@ public class AddEffect : DndEventCommand
 
     public IEffect Effect { get; }
 
-    protected override void InitializeEvent()
-    {
-    }
-
-    protected override void FinalizeEvent()
+    protected override void FinalizeResult()
     {
         Effect.StartEffect();
-        EventResult.SetMessage($"Applied {Effect.Name} to {Effect.Target.Name}");
+        Result.SetMessage($"Applied {Effect.Name} to {Effect.Target.Name}");
     }
 }

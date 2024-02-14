@@ -5,57 +5,16 @@ using Dnd.System.Entities;
 using Dnd.System.Entities.Advantage;
 using Dnd.System.Entities.GameActors;
 
-public abstract class DndScoreCommand : ICommand
+public abstract class DndScoreCommand : ADndCommand<IntegerResultWithBonus>
 {
-    public DndScoreCommand(IGameActor character)
+    public DndScoreCommand(IGameActor character) : base(character)
     {
-        Character = character;
         Result = IntegerResultWithBonus.Empty();
-        ShouldVisitEntities = true;
     }
 
-    public IGameActor Character { get; }
+    public override IntegerResultWithBonus Result { get; }
 
-    protected IntegerResultWithBonus Result { get; }
-
-    protected bool ShouldVisitEntities { get; set; }
-
-    public bool IsForceCompleted { get; private set; }
-
-    public IntegerResultWithBonus Execute()
-    {
-        Result.Reset();
-
-        InitializeResult();
-
-        if (!IsForceCompleted && ShouldVisitEntities && Result.IsSuccess)
-        {
-            Character.HandleCommand(this);
-        }
-
-        if (!IsForceCompleted)
-        {
-            FinalizeResult();
-        }
-        
-        return Result;
-    }
-
-    protected abstract void InitializeResult();
-
-    protected abstract void FinalizeResult();
-
-    ICommandResult ICommand.Execute()
-    {
-        return Execute();
-    }
-
-    public void ForceComplete()
-    {
-        IsForceCompleted = true;
-    }
-
-    public void AddBonus(IBonusProvider bonusProvider, int value)
+    public void AddBonus(IDndEntity bonusProvider, int value)
     {
         if (!IsForceCompleted)
         {
@@ -63,7 +22,7 @@ public abstract class DndScoreCommand : ICommand
         }
     }
 
-    public void AddAdvantage(IBonusProvider bonusProvider, EAdvantage value)
+    public void AddAdvantage(IDndEntity bonusProvider, EAdvantage value)
     {
         if (!IsForceCompleted)
         {
@@ -71,7 +30,7 @@ public abstract class DndScoreCommand : ICommand
         }
     }
 
-    public void SetBaseValue(IBonusProvider bonusProvider, int value)
+    public void SetBaseValue(IDndEntity bonusProvider, int value)
     {
         if (!IsForceCompleted)
         {
@@ -79,7 +38,7 @@ public abstract class DndScoreCommand : ICommand
         }
     }
 
-    public void SetValueAndReturn(IBonusProvider bonusProvider, int value)
+    public void SetValueAndReturn(IDndEntity bonusProvider, int value)
     {
         if (!IsForceCompleted)
         {
@@ -88,19 +47,5 @@ public abstract class DndScoreCommand : ICommand
             Result.BonusCollection.Advantages.Clear();
             ForceComplete();
         }
-    }
-
-    public void SetErrorAndReturn(string errorMessage)
-    {
-        if (!IsForceCompleted)
-        {
-            Result.SetError(errorMessage);
-            ForceComplete();
-        }
-    }
-
-    public IntegerResultWithBonus GetResult()
-    {
-        return Result;
     }
 }

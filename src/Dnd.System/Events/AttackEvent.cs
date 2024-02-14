@@ -10,21 +10,20 @@ using Dnd.System.Entities;
 using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Items;
 using Dnd.System.Entities.Items.Equipments.Weapons;
+using Dnd.System.GameManagers;
 
-public class AttackEvent : IDndEntity
+public class AttackEvent : AEvent
 {
     private BooleanResult? valid;
     private IntegerResultWithBonus? attackRollModifiers, damageModifiers, armorClass;
 
-    public AttackEvent(IEventListener eventListener, IGameActor attacker, IGameActor target, IItem weaponItem)
+    public AttackEvent(IEventListener eventListener, IGameActor attacker, IGameActor target, IItem weaponItem, bool versatile) : base(eventListener)
     {
-        EventListener = eventListener;
         Attacker = attacker;
         Target = target;
         WeaponItem = weaponItem;
+        Versatile = versatile;
     }
-
-    public IEventListener EventListener { get; }
 
     public IGameActor Attacker { get; }
 
@@ -32,9 +31,9 @@ public class AttackEvent : IDndEntity
 
     public IItem WeaponItem { get; }
 
-    public string Name => "Attack Event";
+    public bool Versatile { get; }
 
-    private BooleanResult IsValid()
+    public override BooleanResult IsValid()
     {
         if (valid != null)
         {
@@ -73,7 +72,7 @@ public class AttackEvent : IDndEntity
             return canDoWeaponAttackAgainstResult;
         }
 
-        valid = BooleanResult.Success(this, true);
+        valid = canDoWeaponAttackAgainstResult;
         return valid;
     }
 
@@ -159,6 +158,23 @@ public class AttackEvent : IDndEntity
         return armorClass;
     }
 
+    public int GetSuccessPercentage()
+    {
+        var attackRollModifiers = GetAttackRollModifiers();
+        if (!attackRollModifiers.IsSuccess)
+        {
+            return 0;
+        }
+
+        var armorClass = GetArmorClass();
+        if (!armorClass.IsSuccess)
+        {
+            return 0;
+        }
+
+        return Probability.ForAttackRoll(attackRollModifiers.Value, attackRollModifiers.Advantage, armorClass.Value).ToPercentage();
+    }
+
     public RollResult RollAttackDice()
     {
         IntegerResultWithBonus attackRollModifiers = GetAttackRollModifiers();
@@ -186,13 +202,29 @@ public class AttackEvent : IDndEntity
             return BooleanResult.Failure("GetArmorClass failed: " + armorClass.ErrorMessage);
         }
 
-        return BooleanResult.Success(this, attackRollWithoutModifiers + attackRollModifiers.Value >= armorClass.Value);
+        return BooleanResult.Success("Result", attackRollWithoutModifiers + attackRollModifiers.Value >= armorClass.Value);
     }
 
     public RollResult RollDamageDice()
     {
+        if (WeaponItem.ItemDescription is not IWeapon weapon)
+        {
+            return RollResult.Failure("Item is not a weapon");
+        }
+
+        if (weapon.DamageCalculationType == EDamageCalculationType.Constant)
+        {
+            return RollResult.Success(new int[] { weapon.ConstantDamage });
+        }
+
+        var damageDie = Versatile ? weapon.VersatileDamageDie ?? weapon.DamageDie : weapon.DamageDie;
+        if (damageDie == null)
+        {
+            return RollResult.Failure("Damage die is null. Check weapon properties.");
+        }
+
         IntegerResultWithBonus damageModifiers = GetWeaponDamageModifiers();
-        var rollAttack = new RollAttack(EventListener, Attacker, damageModifiers.BonusCollection.Advantage);
+        var rollAttack = new RollDamage(EventListener, Attacker, damageModifiers.BonusCollection.Advantage, damageDie);
         return rollAttack.Execute();
     }
 
@@ -225,13 +257,58 @@ public class AttackEvent : IDndEntity
     {
         if (damage < 0)
         {
-            var heal = new ApplyHeal(EventListener, Target, damage);
-            return heal.Execute();
+            var heal = new HealEvent(EventListener, Target, -damage);
+            return heal.QuickRun();
         }
         else
         {
             var applyDamage = new ApplyDamage(EventListener, Target, damage, ((IWeapon)WeaponItem.ItemDescription).DamageType);
             return applyDamage.Execute();
         }
+    }
+
+    public override EventResult QuickRun()
+    {
+        var isValid = IsValid();
+        if (!isValid.IsSuccess)
+        {
+            return EventResult.Failure("IsValid failed: " + isValid.ErrorMessage);
+        }
+
+        if (!isValid.Value)
+        {
+            return EventResult.Failure("Attack is not valid: " + isValid.ErrorMessage);
+        }
+
+        var attackRoll = RollAttackDice();
+        if (!attackRoll.IsSuccess)
+        {
+            return EventResult.Failure("RollAttackDice failed: " + attackRoll.ErrorMessage);
+        }
+
+        var canHit = CanHit(attackRoll.Value);
+        if (!canHit.IsSuccess)
+        {
+            return EventResult.Failure("CanHit failed: " + canHit.ErrorMessage);
+        }
+
+        if (!canHit.Value)
+        {
+            return EventResult.Success("Attack missed");
+        }
+
+        var damageRoll = RollDamageDice();
+        if (!damageRoll.IsSuccess)
+        {
+            return EventResult.Failure("RollDamageDice failed: " + damageRoll.ErrorMessage);
+        }
+
+        var totalDamage = GetTotalDamage(damageRoll.Value);
+        if (!totalDamage.IsSuccess)
+        {
+            return EventResult.Failure("GetTotalDamage failed: " + totalDamage.ErrorMessage);
+        }
+
+        return ApplyDamage(totalDamage.Value);
     }
 }
