@@ -1,4 +1,4 @@
-﻿namespace Dnd.Predefined.Armors;
+﻿namespace Dnd.Predefined.Items.Armors;
 
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands;

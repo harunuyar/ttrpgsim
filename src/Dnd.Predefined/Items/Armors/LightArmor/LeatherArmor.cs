@@ -1,4 +1,6 @@
-﻿namespace Dnd.Predefined.Armors.LightArmor;
+﻿namespace Dnd.Predefined.Items.Armors.LightArmor;
+
+using Dnd.Predefined.Items.Armors;
 
 using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Items.Equipments.Armors;

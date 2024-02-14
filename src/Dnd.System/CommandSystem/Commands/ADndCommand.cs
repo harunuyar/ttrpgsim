@@ -44,7 +44,6 @@ public abstract class ADndCommand<T> : ICommand where T : ICommandResult
             Actor.HandleCommand(this);
         }
 
-        
         foreach (Action action in FinalActions)
         {
             if (!IsForceCompleted)

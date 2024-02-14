@@ -1,4 +1,6 @@
-﻿namespace Dnd.Predefined.Armors.HeavyArmor;
+﻿namespace Dnd.Predefined.Items.Armors.HeavyArmor;
+
+using Dnd.Predefined.Items.Armors;
 
 using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Items.Equipments.Armors;

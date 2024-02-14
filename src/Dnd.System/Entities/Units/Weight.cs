@@ -19,19 +19,19 @@ public class Weight
     {
         return weightUnit switch
         {
-            EWeightUnit.Pounds => amount,
-            EWeightUnit.Kilograms => amount * 2.20462,
+            EWeightUnit.Pound => amount,
+            EWeightUnit.Kilogram => amount * 2.20462,
             _ => throw new ArgumentException("Unknown weight unit: " + weightUnit),
         };
     }
 
     public static Weight OfPounds(double amount)
     {
-        return new Weight(amount, EWeightUnit.Pounds);
+        return new Weight(amount, EWeightUnit.Pound);
     }
 
     public static Weight OfKilograms(double amount)
     {
-        return new Weight(amount, EWeightUnit.Kilograms);
+        return new Weight(amount, EWeightUnit.Kilogram);
     }
 }

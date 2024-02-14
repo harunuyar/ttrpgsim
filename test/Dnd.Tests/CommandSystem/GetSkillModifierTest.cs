@@ -6,10 +6,10 @@ using Dnd.System.Entities.GameActors;
 using Dnd.Predefined.Characters;
 using Dnd.Predefined.Races;
 using Dnd.Predefined.Skills;
-using Dnd.Predefined.Armors.HeavyArmor;
 using Dnd.System.Entities.Items;
 using Dnd.Predefined.Levels.FighterLevels;
 using Dnd.Predefined.Feats.Classes.Fighter.Level1.FightingStyle;
+using Dnd.Predefined.Items.Armors.HeavyArmor;
 
 [TestClass]
 public class GetSkillModifierTest

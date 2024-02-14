@@ -1,4 +1,4 @@
-﻿namespace Dnd.Predefined.Armors;
+﻿namespace Dnd.Predefined.Items.Armors;
 
 using Dnd.Predefined.Skills;
 using Dnd.System.CommandSystem.Commands;

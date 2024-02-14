@@ -2,6 +2,6 @@
 
 public enum EWeightUnit
 {
-    Pounds,
-    Kilograms
+    Pound,
+    Kilogram
 }

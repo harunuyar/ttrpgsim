@@ -1,8 +1,8 @@
 ﻿namespace Dnd.Tests.CommandSystem;
 
 using Dnd.Predefined.Alignments;
-using Dnd.Predefined.Armors.HeavyArmor;
 using Dnd.Predefined.Characters;
+using Dnd.Predefined.Items.Armors.HeavyArmor;
 using Dnd.Predefined.Races;
 using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
 using Dnd.System.Entities.GameActors;

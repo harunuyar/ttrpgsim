@@ -1,4 +1,6 @@
-﻿namespace Dnd.Predefined.Armors.MediumArmor;
+﻿namespace Dnd.Predefined.Items.Armors.MediumArmor;
+
+using Dnd.Predefined.Items.Armors;
 
 using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Items.Equipments.Armors;

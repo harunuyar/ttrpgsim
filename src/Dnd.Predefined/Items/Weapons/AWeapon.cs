@@ -1,8 +1,10 @@
-﻿namespace Dnd.System.Entities.Items.Equipments.Weapons;
+﻿namespace Dnd.Predefined.Items.Weapons;
 
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.Units;
 using Dnd.GameManagers.Dice;
+using Dnd.System.Entities.Items.Equipments.Weapons;
+using Dnd.System.Entities;
 
 public abstract class AWeapon : IWeapon
 {

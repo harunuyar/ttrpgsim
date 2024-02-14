@@ -36,12 +36,12 @@ public interface IGameActor : IDndEntity
 
         foreach (var item in Inventory.Equipments.EquipedItems)
         {
-            item.ItemDescription.HandleCommand(command);
+            item.HandleCommand(command);
         }
 
-        Inventory.Equipments.Armor?.ItemDescription.HandleCommand(command);
-        Inventory.Equipments.Shield?.ItemDescription.HandleCommand(command);
-        Inventory.Equipments.MainHandWeapon?.ItemDescription.HandleCommand(command);
-        Inventory.Equipments.OffHandWeapon?.ItemDescription.HandleCommand(command);
+        Inventory.Equipments.Armor?.HandleCommand(command);
+        Inventory.Equipments.Shield?.HandleCommand(command);
+        Inventory.Equipments.MainHandWeapon?.HandleCommand(command);
+        Inventory.Equipments.OffHandWeapon?.HandleCommand(command);
     }
 }

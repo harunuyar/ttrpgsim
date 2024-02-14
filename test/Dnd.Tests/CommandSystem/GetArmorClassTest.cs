@@ -1,10 +1,10 @@
 namespace Dnd.Tests.CommandSystem;
 
 using Dnd.Predefined.Alignments;
-using Dnd.Predefined.Armors.HeavyArmor;
-using Dnd.Predefined.Armors.Shield;
 using Dnd.Predefined.Characters;
 using Dnd.Predefined.Feats.Classes.Fighter.Level1.FightingStyle;
+using Dnd.Predefined.Items.Armors.HeavyArmor;
+using Dnd.Predefined.Items.Armors.Shield;
 using Dnd.Predefined.Levels.FighterLevels;
 using Dnd.Predefined.Races;
 using Dnd.Predefined.Skills;
