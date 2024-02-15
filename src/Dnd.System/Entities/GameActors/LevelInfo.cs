@@ -7,51 +7,48 @@ using Dnd.System.Entities.Levels;
 public class LevelInfo
 {
     public LevelInfo() 
-    { 
-        Levels = new Dictionary<IClass, List<ILevel>>();
+    {
+        Levels = new List<ILevel>();
     }
 
-    private Dictionary<IClass, List<ILevel>> Levels { get; }
+    private List<ILevel> Levels { get; }
 
-    public int Level => Levels.Values.Sum(list => list.Count);
+    public int Level => Levels.Count;
 
     public bool AddLevel(ILevel newLevel)
     {
-        if (!Levels.TryGetValue(newLevel.Class, out var currentLevels))
-        {
-            currentLevels = new List<ILevel>();
-            Levels.Add(newLevel.Class, currentLevels);
-        }
-
-        int lastLevel = currentLevels.Count > 0 ? currentLevels.Last().Level : 0;
-
-        if (newLevel.Level != lastLevel + 1)
+        var currentLevel = Levels.Where(l => l.Class == newLevel.Class).Select(l => l.Level).Max();
+        
+        if (newLevel.Level != currentLevel + 1)
         {
             return false;
         }
 
-        currentLevels.Add(newLevel);
+        Levels.Add(newLevel);
         return true;
-    }
-    
-    public int GetLevelsInClass(IClass dndClass)
-    {
-        return Levels.TryGetValue(dndClass, out var levels) ? levels.Count : 0;
     }
 
     public List<ILevel> GetLevels()
     {
-        return Levels.Select(pair => pair.Value.Last()).ToList();
+        return Levels
+            .GroupBy(l => l.Class)
+            .Select(group => group.OrderByDescending(l => l.Level).First())
+            .ToList();
+    }
+    
+    public int GetLevelsInClass(IClass dndClass)
+    {
+        return Levels.Where(l => l.Class == dndClass).Count();
     }
 
     public ILevel? GetLevelForClass(IClass dndClass)
     {
-        return Levels.GetValueOrDefault(dndClass)?.Last();
+        return Levels.Where(l => l.Class == dndClass).MaxBy(x => x.Level);
     }
 
     public void HandleCommand(ICommand command)
     {
-        foreach (var feat in Levels.Values.SelectMany(levelList => levelList).SelectMany(level => level.Feats))
+        foreach (var feat in Levels.SelectMany(level => level.Feats))
         {
             feat.HandleCommand(command);
         }
