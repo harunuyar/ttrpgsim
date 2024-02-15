@@ -3,7 +3,7 @@
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 using Dnd.System.Entities.Advantage;
-using Dnd.System.Entities.Items.Equipments.Weapons;
+using Dnd.System.Entities.Damage;
 
 public class DwarvenResilience : ATrait
 {

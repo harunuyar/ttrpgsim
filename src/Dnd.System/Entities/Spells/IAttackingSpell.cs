@@ -1,7 +1,7 @@
 ﻿namespace Dnd.System.Entities.Spells;
 
 using Dnd.GameManagers.Dice;
-using Dnd.System.Entities.Items.Equipments.Weapons;
+using Dnd.System.Entities.Damage;
 
 public interface IAttackingSpell : ISpell
 {

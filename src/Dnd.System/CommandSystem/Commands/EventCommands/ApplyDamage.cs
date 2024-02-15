@@ -1,7 +1,7 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.EventCommands;
 
+using Dnd.System.Entities.Damage;
 using Dnd.System.Entities.GameActors;
-using Dnd.System.Entities.Items.Equipments.Weapons;
 
 public class ApplyDamage : DndEventCommand
 {

@@ -2,8 +2,8 @@
 
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 using Dnd.System.CommandSystem.Commands.RollCommands;
+using Dnd.System.Entities.Damage;
 using Dnd.System.Entities.GameActors;
-using Dnd.System.Entities.Items.Equipments.Weapons;
 
 public class ConcentrationCheckAfterDamage : DndEventCommand
 {

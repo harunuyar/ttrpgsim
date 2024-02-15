@@ -1,4 +1,4 @@
-﻿namespace Dnd.System.Entities.Items.Equipments.Weapons;
+﻿namespace Dnd.System.Entities.Damage;
 
 public enum EDamageType : ushort
 {

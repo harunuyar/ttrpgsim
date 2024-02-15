@@ -1,8 +1,8 @@
 ﻿
 namespace Dnd.System.CommandSystem.Commands.BooleanResultCommands;
 
+using Dnd.System.Entities.Damage;
 using Dnd.System.Entities.GameActors;
-using Dnd.System.Entities.Items.Equipments.Weapons;
 
 public class HasDamageResistance : DndBooleanCommand
 {
