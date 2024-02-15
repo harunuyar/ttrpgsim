@@ -2,9 +2,9 @@
 
 using Dnd.System.Entities.GameActors;
 
-public class CalculateConcentrationSavingDifficultyClass : DndScoreCommand
+public class GetConcentrationSavingDC : DndScoreCommand
 {
-    public CalculateConcentrationSavingDifficultyClass(IGameActor character, int damageTaken) : base(character)
+    public GetConcentrationSavingDC(IGameActor character, int damageTaken) : base(character)
     {
         DamageTaken = damageTaken;
     }

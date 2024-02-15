@@ -13,12 +13,12 @@ using Dnd.System.Entities.Items;
 using Dnd.System.Entities.Items.Equipments.Weapons;
 using Dnd.System.GameManagers;
 
-public class AttackEvent : AEvent
+public class WeaponAttackEvent : AEvent
 {
     private BooleanResult? valid;
     private IntegerResultWithBonus? attackRollModifiers, damageModifiers, armorClass;
 
-    public AttackEvent(IEventListener eventListener, IGameActor attacker, IGameActor target, IItem weaponItem, bool versatile) : base(eventListener)
+    public WeaponAttackEvent(IEventListener eventListener, IGameActor attacker, IGameActor target, IItem weaponItem, bool versatile) : base(eventListener)
     {
         Attacker = attacker;
         Target = target;
@@ -84,7 +84,7 @@ public class AttackEvent : AEvent
             return attackRollModifiers;
         }
 
-        var calculateWeaponAttackModifiers = new CalculateWeaponAttackModifier(Attacker, WeaponItem, Target);
+        var calculateWeaponAttackModifiers = new GetWeaponAttackModifier(Attacker, WeaponItem, Target);
         var calculateWeaponAttackModifiersResult = calculateWeaponAttackModifiers.Execute();
 
         if (!calculateWeaponAttackModifiersResult.IsSuccess)
@@ -92,7 +92,7 @@ public class AttackEvent : AEvent
             return IntegerResultWithBonus.Failure("CalculateWeaponAttackModifier failed: " + calculateWeaponAttackModifiersResult.ErrorMessage);
         }
 
-        var calculateWeaponAttackAgainstModifiers = new CalculateWeaponAttackModifierAgainst(Target, WeaponItem, Attacker);
+        var calculateWeaponAttackAgainstModifiers = new GetWeaponAttackModifierAgainst(Target, WeaponItem, Attacker);
         var calculateWeaponAttackAgainstModifiersResult = calculateWeaponAttackAgainstModifiers.Execute();
 
         if (!calculateWeaponAttackAgainstModifiersResult.IsSuccess)
@@ -133,7 +133,7 @@ public class AttackEvent : AEvent
             return damageModifiers;
         }
 
-        var calculateWeaponDamageModifiers = new CalculateWeaponDamageModifier(Attacker, WeaponItem, Target);
+        var calculateWeaponDamageModifiers = new GetWeaponDamageModifier(Attacker, WeaponItem, Target);
         var calculateWeaponDamageModifiersResult = calculateWeaponDamageModifiers.Execute();
 
         if (!calculateWeaponDamageModifiersResult.IsSuccess)

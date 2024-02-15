@@ -4,9 +4,9 @@ using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Items;
 using Dnd.System.Entities.Items.Equipments.Weapons;
 
-public class CalculateWeaponSavingDifficultyClass : DndScoreCommand
+public class GetWeaponSavingDifficultyClass : DndScoreCommand
 {
-    public CalculateWeaponSavingDifficultyClass(IGameActor character, IItem weaponItem) : base(character)
+    public GetWeaponSavingDifficultyClass(IGameActor character, IItem weaponItem) : base(character)
     {
         WeaponItem = weaponItem;
     }

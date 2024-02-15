@@ -6,9 +6,9 @@ using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Items;
 using Dnd.System.Entities.Items.Equipments.Weapons;
 
-public class CalculateWeaponAttackModifier : DndScoreCommand
+public class GetWeaponAttackModifier : DndScoreCommand
 {
-    public CalculateWeaponAttackModifier(IGameActor character, IItem weaponItem, IGameActor target) : base(character)
+    public GetWeaponAttackModifier(IGameActor character, IItem weaponItem, IGameActor target) : base(character)
     {
         this.WeaponItem = weaponItem;
         this.Target = target;

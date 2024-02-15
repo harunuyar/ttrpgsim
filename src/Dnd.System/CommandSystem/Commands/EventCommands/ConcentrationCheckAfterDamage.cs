@@ -25,7 +25,7 @@ public class ConcentrationCheckAfterDamage : DndEventCommand
             return;
         }
 
-        var calculateSavingDC = new CalculateConcentrationSavingDifficultyClass(Actor, DamageTaken);
+        var calculateSavingDC = new GetConcentrationSavingDC(Actor, DamageTaken);
         var savingDCResult = calculateSavingDC.Execute();
 
         if (!savingDCResult.IsSuccess)

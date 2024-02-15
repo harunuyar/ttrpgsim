@@ -56,7 +56,7 @@ public abstract class SpellCastingAbility : AFeat
                 canCastKnownSpell.SetValue(this, true, $"You can cast {canCastKnownSpell.Spell}.");
             }
         }
-        else if (command is CalculateSpellAttackModifier calculateSpellAttackModifier)
+        else if (command is GetSpellAttackModifier calculateSpellAttackModifier)
         {
             var getAttributeModifier = new GetAttributeModifier(command.Actor, SpellCasterClass.SpellCastingAttribute);
             var attributeModifier = getAttributeModifier.Execute();
@@ -87,7 +87,7 @@ public abstract class SpellCastingAbility : AFeat
                 return;
             }
         }
-        else if (command is CalculateSpellSavingDifficultyClass calculateSpellSavingDifficultyClass)
+        else if (command is GetSpellSavingDC calculateSpellSavingDifficultyClass)
         {
             var getAttributeModifier = new GetAttributeModifier(command.Actor, SpellCasterClass.SpellCastingAttribute);
             var attributeModifier = getAttributeModifier.Execute();

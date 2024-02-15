@@ -13,7 +13,7 @@ internal class TwoWeaponFighting : AFeat, IFightingStyle
 
     public override void HandleCommand(ICommand command)
     {
-        if (command is CalculateWeaponDamageModifier calculateWeaponDamageModifier
+        if (command is GetWeaponDamageModifier calculateWeaponDamageModifier
             && calculateWeaponDamageModifier.WeaponItem.ItemDescription is IWeapon weapon
             && calculateWeaponDamageModifier.WeaponItem == command.Actor.Inventory.Equipments.OffHandWeapon)
         {

@@ -3,9 +3,9 @@
 using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Spells;
 
-public class CalculateSpellDamageModifier : DndScoreCommand
+public class GetSpellDamageModifier : DndScoreCommand
 {
-    public CalculateSpellDamageModifier(IGameActor character, ISpell spell) : base(character)
+    public GetSpellDamageModifier(IGameActor character, ISpell spell) : base(character)
     {
         Spell = spell;
     }

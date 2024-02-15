@@ -12,7 +12,7 @@ public class Dueling : AFeat, IFightingStyle
 
     public override void HandleCommand(ICommand command)
     {
-        if (command is CalculateWeaponDamageModifier calculateWeaponDamageModifier
+        if (command is GetWeaponDamageModifier calculateWeaponDamageModifier
             && calculateWeaponDamageModifier.WeaponItem.ItemDescription is IWeapon weapon
             && weapon.WeaponType.IsMelee()
             && !weapon.WeaponProperties.HasFlag(EWeaponProperty.TwoHanded)

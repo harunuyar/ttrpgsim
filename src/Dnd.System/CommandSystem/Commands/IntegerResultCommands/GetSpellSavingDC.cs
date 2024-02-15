@@ -4,9 +4,9 @@ using Dnd.System.Entities;
 using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Spells;
 
-public class CalculateSpellSavingDifficultyClass : DndScoreCommand
+public class GetSpellSavingDC : DndScoreCommand
 {
-    public CalculateSpellSavingDifficultyClass(IGameActor character, ISpell spell) : base(character)
+    public GetSpellSavingDC(IGameActor character, ISpell spell) : base(character)
     {
         Spell = spell;
     }

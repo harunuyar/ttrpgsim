@@ -3,9 +3,9 @@
 using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Items;
 
-public class CalculateWeaponAttackModifierAgainst : DndScoreCommand
+public class GetWeaponAttackModifierAgainst : DndScoreCommand
 {
-    public CalculateWeaponAttackModifierAgainst(IGameActor character, IItem weaponItem, IGameActor attacker) : base(character)
+    public GetWeaponAttackModifierAgainst(IGameActor character, IItem weaponItem, IGameActor attacker) : base(character)
     {
         WeaponItem = weaponItem;
         Attacker = attacker;

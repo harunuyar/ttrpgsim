@@ -23,7 +23,7 @@ public class WeaponProficiency : AFeat
                 hasWeaponProficiency.SetValue(this, true, $"You have {hasWeaponProficiency.WeaponType} proficiency.");
             }
         }
-        else if (command is CalculateWeaponAttackModifier calculateWeaponAttackModifier)
+        else if (command is GetWeaponAttackModifier calculateWeaponAttackModifier)
         {
             if (calculateWeaponAttackModifier.WeaponItem.ItemDescription is IWeapon weapon && WeaponType.HasFlag(weapon.WeaponType))
             {
@@ -39,7 +39,7 @@ public class WeaponProficiency : AFeat
                 calculateWeaponAttackModifier.AddBonus(this, proficiencyBonus.Value);
             }
         }
-        else if (command is CalculateWeaponSavingDifficultyClass calculateWeaponSavingDC)
+        else if (command is GetWeaponSavingDifficultyClass calculateWeaponSavingDC)
         {
             if (calculateWeaponSavingDC.WeaponItem.ItemDescription is IWeapon weapon && WeaponType.HasFlag(weapon.WeaponType))
             {

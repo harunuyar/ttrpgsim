@@ -17,11 +17,11 @@ public class Frightened : AEffect
     {
         base.HandleCommand(command);
 
-        if (command is CalculateWeaponAttackModifier calculateWeaponAttackModifier)
+        if (command is GetWeaponAttackModifier calculateWeaponAttackModifier)
         {
             calculateWeaponAttackModifier.AddAdvantage(this, EAdvantage.Disadvantage);
         }
-        else if (command is CalculateSpellAttackModifier calculateSpellAttackModifier)
+        else if (command is GetSpellAttackModifier calculateSpellAttackModifier)
         {
             calculateSpellAttackModifier.AddAdvantage(this, EAdvantage.Disadvantage);
         }

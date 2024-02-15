@@ -4,9 +4,9 @@ using Dnd.System.Entities;
 using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Spells;
 
-public class CalculateSpellAttackModifier : DndScoreCommand
+public class GetSpellAttackModifier : DndScoreCommand
 {
-    public CalculateSpellAttackModifier(IGameActor character, ISpell spell, IGameActor target) : base(character)
+    public GetSpellAttackModifier(IGameActor character, ISpell spell, IGameActor target) : base(character)
     {
         Spell = spell;
         Target = target;
