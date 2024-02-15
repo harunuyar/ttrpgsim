@@ -5,7 +5,7 @@ using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
 using Dnd.System.CommandSystem.Commands.EventCommands;
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 using Dnd.System.CommandSystem.Commands.ListCommands;
-using Dnd.System.Entities;
+using Dnd.System.CommandSystem.Commands.ValueCommands;
 using Dnd.System.Entities.Classes;
 using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Spells;
@@ -44,77 +44,43 @@ public abstract class SpellCastingAbility : AFeat
         if (command is IsSpellCaster isSpellCaster)
         {
             isSpellCaster.SetValue(this, true, "You are a spell caster.");
+            return;
+        }
+        else if (command is GetSpellCasterAttribute getSpellCasterAttribute)
+        {
+            getSpellCasterAttribute.SetValue(SpellCasterClass.SpellCastingAttribute);
+            return;
         }
         else if (command is CanCastKnownSpell canCastKnownSpell)
         {
             if (canCastKnownSpell.Spell.Level == 0 && Cantrips.Contains(canCastKnownSpell.Spell))
             {
                 canCastKnownSpell.SetValue(this, true, $"You can cast {canCastKnownSpell.Spell}.");
+                return;
             }
-            else if (Spells.Contains(canCastKnownSpell.Spell) && AvailableSpellSlots[canCastKnownSpell.Spell.Level - 1] > 0)
+            else if (Spells.Contains(canCastKnownSpell.Spell))
             {
-                canCastKnownSpell.SetValue(this, true, $"You can cast {canCastKnownSpell.Spell}.");
-            }
-        }
-        else if (command is GetSpellAttackModifier calculateSpellAttackModifier)
-        {
-            var getAttributeModifier = new GetAttributeModifier(command.Actor, SpellCasterClass.SpellCastingAttribute);
-            var attributeModifier = getAttributeModifier.Execute();
+                var spellSlots = new GetAvailableSpellSlots(command.Actor, canCastKnownSpell.Spell.Level).Execute();
 
-            if (attributeModifier.IsSuccess)
-            {
-                if (calculateSpellAttackModifier.Result.BaseValue <= attributeModifier.Value)
+                if (!spellSlots.IsSuccess)
                 {
-                    calculateSpellAttackModifier.SetBaseValue(this, attributeModifier.Value);
+                    canCastKnownSpell.SetErrorAndReturn("GetAvailableSpellSlots: " + spellSlots.ErrorMessage);
+                    return;
                 }
-            }
-            else
-            {
-                calculateSpellAttackModifier.SetErrorAndReturn("GetAttributeModifier: " + attributeModifier.ErrorMessage);
-                return;
-            }
 
-            var getProficiencyBonus = new GetProficiencyBonus(command.Actor);
-            var proficiencyBonus = getProficiencyBonus.Execute();
-
-            if (proficiencyBonus.IsSuccess)
-            {
-                calculateSpellAttackModifier.AddBonus(new CustomDndEntity("Proficiency Bonus"), proficiencyBonus.Value);
-            }
-            else
-            {
-                calculateSpellAttackModifier.SetErrorAndReturn("GetProficiencyBonus: " + proficiencyBonus.ErrorMessage);
-                return;
-            }
-        }
-        else if (command is GetSpellSavingDC calculateSpellSavingDifficultyClass)
-        {
-            var getAttributeModifier = new GetAttributeModifier(command.Actor, SpellCasterClass.SpellCastingAttribute);
-            var attributeModifier = getAttributeModifier.Execute();
-
-            if (attributeModifier.IsSuccess)
-            {
-                if (calculateSpellSavingDifficultyClass.Result.BaseValue <= attributeModifier.Value)
+                if (spellSlots.Value <= 0)
                 {
-                    calculateSpellSavingDifficultyClass.SetBaseValue(this, attributeModifier.Value);
+                    canCastKnownSpell.SetValue(spellSlots.BaseSource ?? this, false, "You don't have spell slots to cast this spell.");
+                    return;
                 }
-            }
-            else
-            {
-                calculateSpellSavingDifficultyClass.SetErrorAndReturn("GetAttributeModifier: " + attributeModifier.ErrorMessage);
+
+                canCastKnownSpell.SetValue(spellSlots.BaseSource ?? this, true, $"You can cast {canCastKnownSpell.Spell}.");
                 return;
             }
-
-            var getProficiencyBonus = new GetProficiencyBonus(command.Actor);
-            var proficiencyBonus = getProficiencyBonus.Execute();
-
-            if (proficiencyBonus.IsSuccess)
-            {
-                calculateSpellSavingDifficultyClass.AddBonus(new CustomDndEntity("Proficiency Bonus"), proficiencyBonus.Value);
-            }
             else
             {
-                calculateSpellSavingDifficultyClass.SetErrorAndReturn(proficiencyBonus.ErrorMessage ?? "Couldn't get proficiency bonus");
+                canCastKnownSpell.SetValue(this, false, "You don't know this spell.");
+                return;
             }
         }
         else if (command is GetMaxKnownCantripsCount getCantripsCount)

@@ -1,5 +1,7 @@
 ﻿namespace Dnd.Predefined.Feats.Proficiency;
 
+using Dnd.System.CommandSystem.Commands;
+using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
 using Dnd.System.Entities.Items.Tools;
 
 public class ToolProficiency : AFeat
@@ -10,6 +12,17 @@ public class ToolProficiency : AFeat
     }
 
     public EToolType ToolType { get; }
+
+    public override void HandleCommand(ICommand command)
+    {
+        if (command is HasToolProficiency hasToolProficiency)
+        {
+            if (hasToolProficiency.ToolType.HasFlag(ToolType))
+            {
+                hasToolProficiency.SetValue(this, true, $"You have proficiency on {ToolType}");
+            }
+        }
+    }
 
     private static string GetDescription(EToolType toolType)
     {

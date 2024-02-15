@@ -64,6 +64,21 @@ public class IntegerResultWithBonus : ICommandResult
         BonusCollection.Reset();
     }
 
+    public void AddAsBonus(string source, IntegerResultWithBonus other)
+    {
+        AddAsBonus(new CustomDndEntity(source), other);
+    }
+
+    public void AddAsBonus(IDndEntity source, IntegerResultWithBonus other)
+    {
+        BonusCollection.AddBonus(other.BaseSource ?? source, other.BaseValue);
+
+        foreach (var (bonusSource, bonusValue) in other.BonusCollection.Values)
+        {
+            BonusCollection.AddBonus(bonusSource, bonusValue);
+        }
+    }
+
     public override string ToString()
     {
         return IsSuccess ? $"{BaseSource}: {Value}" + Environment.NewLine + BonusCollection.ToString() : ErrorMessage ?? "Unknown error";

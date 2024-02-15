@@ -1,5 +1,6 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 
+using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
 using Dnd.System.Entities;
 using Dnd.System.Entities.Attributes;
 using Dnd.System.Entities.GameActors;
@@ -63,5 +64,26 @@ public class GetWeaponAttackModifier : DndScoreCommand
         }
 
         Result.SetBaseValue(usedAttribute, attributeModifier);
+
+        var hasProficiency = new HasWeaponProficiency(this.Actor, weapon.WeaponType).Execute();
+
+        if (!hasProficiency.IsSuccess)
+        {
+            SetErrorAndReturn("HasWeaponProficiency: " + hasProficiency.ErrorMessage);
+            return;
+        }
+
+        if (hasProficiency.Value)
+        {
+            var proficiencyBonus = new GetProficiencyBonus(Actor).Execute();
+
+            if (!proficiencyBonus.IsSuccess)
+            {
+                SetErrorAndReturn("GetProficiencyBonus: " + proficiencyBonus.ErrorMessage);
+                return;
+            }
+
+            Result.AddAsBonus("Proficiency Bonus", proficiencyBonus);
+        }
     }
 }

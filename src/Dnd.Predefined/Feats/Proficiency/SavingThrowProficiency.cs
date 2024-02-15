@@ -2,7 +2,6 @@
 
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
-using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 using Dnd.System.Entities.Attributes;
 
 public class SavingThrowProficiency : AFeat
@@ -24,20 +23,6 @@ public class SavingThrowProficiency : AFeat
         if (command is HasSavingThrowProficiency hasSavingThrowProficiency && AttributeTypes.HasFlag(hasSavingThrowProficiency.AttributeType))
         {
             hasSavingThrowProficiency.SetValue(this, true, $"You have saving throw proficieny for {hasSavingThrowProficiency.AttributeType}");
-        }
-        else if (command is GetSavingThrowModifier getSavingThrowModifier && AttributeTypes.HasFlag(getSavingThrowModifier.AttributeType))
-        {
-            var getProficiencyBonus = new GetProficiencyBonus(getSavingThrowModifier.Actor);
-            var proficiencyBonusResult = getProficiencyBonus.Execute();
-
-            if (proficiencyBonusResult.IsSuccess)
-            {
-                getSavingThrowModifier.AddBonus(this, ProficiencyType.GetProficiencyModifier(proficiencyBonusResult.Value));
-            }
-            else
-            {
-                getSavingThrowModifier.SetErrorAndReturn("Couldn't get proficiency bonus: " + proficiencyBonusResult.ErrorMessage);
-            }
         }
     }
 

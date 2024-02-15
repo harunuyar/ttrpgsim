@@ -2,8 +2,6 @@
 
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
-using Dnd.System.CommandSystem.Commands.EventCommands;
-using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 using Dnd.System.Entities.Skills;
 
 public class SkillProficiency : AFeat
@@ -12,46 +10,69 @@ public class SkillProficiency : AFeat
     {
         Skill = skill;
         ProficiencyType = proficiencyType;
-        IsOverridden = false;
     }
 
     public ISkill Skill { get; }
 
     public EProficiencyType ProficiencyType { get; private set; }
 
-    private bool IsOverridden { get; set; }
-
     public override string Description => $"You are proficient at {Skill.Name} with {ProficiencyType}";
 
     public override void HandleCommand(ICommand command)
     {
-        if (command is AddLevel addLevel)
+        if (command is HasSkillHalfProficiency hasSkillHalfProficiency)
         {
-            if (IsOverridden)
+            if (hasSkillHalfProficiency.Skill == Skill && ProficiencyType == EProficiencyType.HalfProficiency)
             {
-                return;
-            }
+                var hasSkillProficiency = new HasSkillProficiency(hasSkillHalfProficiency.Actor, Skill).Execute();
 
-            var newSkillProficiencies = addLevel.Level.Feats
-                .Where(feat => feat is SkillProficiency skillProficiency && skillProficiency.Skill == Skill)
-                .Select(feat => (SkillProficiency)feat);
-            
-            foreach (var newSkillProficiency in newSkillProficiencies)
-            {
-                if (newSkillProficiency.ProficiencyType >= ProficiencyType)
+                if (!hasSkillProficiency.IsSuccess)
                 {
-                    IsOverridden = true;
+                    hasSkillHalfProficiency.SetErrorAndReturn("HasSkillProficiency: " + hasSkillProficiency.ErrorMessage);
+                    return;
                 }
-                else 
+
+                if (hasSkillProficiency.Value)
                 {
-                    newSkillProficiency.IsOverridden = true;
+                    hasSkillHalfProficiency.SetValueAndReturn(this, false, $"You already have proficiency on {Skill.Name}");
+                    return;
                 }
+
+                var hasSkillExpertise = new HasSkillExpertise(hasSkillHalfProficiency.Actor, Skill).Execute();
+
+                if (!hasSkillExpertise.IsSuccess)
+                {
+                    hasSkillHalfProficiency.SetErrorAndReturn("HasSkillExpertise: " + hasSkillExpertise.ErrorMessage);
+                    return;
+                }
+
+                if (hasSkillExpertise.Value)
+                {
+                    hasSkillHalfProficiency.SetValue(this, false, $"You already have expertise on {Skill.Name}");
+                    return;
+                }
+
+                hasSkillHalfProficiency.SetValue(this, true, $"You have half proficiency on {Skill.Name}");
             }
         }
         else if (command is HasSkillProficiency hasSkillProficiency)
         {
             if (hasSkillProficiency.Skill == Skill && ProficiencyType == EProficiencyType.FullProficiency)
             {
+                var hasSkillExpertise = new HasSkillExpertise(hasSkillProficiency.Actor, Skill).Execute();
+
+                if (!hasSkillExpertise.IsSuccess)
+                {
+                    hasSkillProficiency.SetErrorAndReturn("HasSkillExpertise: " + hasSkillExpertise.ErrorMessage);
+                    return;
+                }
+
+                if (hasSkillExpertise.Value)
+                {
+                    hasSkillProficiency.SetValue(this, false, $"You already have expertise on {Skill.Name}");
+                    return;
+                }
+
                 hasSkillProficiency.SetValue(this, true, $"You have proficiency on {Skill.Name}");
             }
         }
@@ -60,32 +81,6 @@ public class SkillProficiency : AFeat
             if (hasSkillExpertise.Skill == Skill && ProficiencyType == EProficiencyType.Expertise)
             {
                 hasSkillExpertise.SetValue(this, true, $"You have expertise on {Skill.Name}");
-            }
-        }
-        else if (command is HasSkillHalfProficiency hasSkillHalfProficiency)
-        {
-            if (hasSkillHalfProficiency.Skill == Skill && ProficiencyType == EProficiencyType.HalfProficiency)
-            {
-                hasSkillHalfProficiency.SetValue(this, true, $"You have half proficiency on {Skill.Name}");
-            }
-        }
-        else if (command is GetSkillModifier getSkillModifier && getSkillModifier.Skill == Skill)
-        {
-            if (IsOverridden)
-            {
-                return;
-            }
-
-            var getProficiencyBonus = new GetProficiencyBonus(getSkillModifier.Actor);
-            var proficiencyBonusResult = getProficiencyBonus.Execute();
-
-            if (proficiencyBonusResult.IsSuccess)
-            {
-                getSkillModifier.AddBonus(this, ProficiencyType.GetProficiencyModifier(proficiencyBonusResult.Value));
-            }
-            else
-            {
-                getSkillModifier.SetErrorAndReturn("Couldn't get proficiency bonus: " + proficiencyBonusResult.ErrorMessage);
             }
         }
     }
