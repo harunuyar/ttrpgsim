@@ -8,6 +8,7 @@ using Dnd.GameManagers.Dice;
 using Dnd.System.Entities.Classes;
 using Dnd.Predefined.Skills;
 using Dnd.System.Entities.GameActors;
+using Dnd.System.Entities.Items.Tools;
 
 public class Rogue : IClass
 {
@@ -48,9 +49,11 @@ public class Rogue : IClass
 
     public EAttributeType SpellCastingAttribute => EAttributeType.None;
 
-    private Rogue() { }
+    public EToolType ToolProficiencies => EToolType.Thieves;
 
-    public static readonly Rogue Instance = new Rogue();
+    public EToolType MulticlassToolProficiencies => EToolType.Thieves;
+
+    public Rogue() { }
 
     public bool MeetsPrerequisites(AttributeSet attributeSet)
     {

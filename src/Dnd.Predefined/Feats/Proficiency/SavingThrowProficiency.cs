@@ -23,7 +23,7 @@ public class SavingThrowProficiency : AFeat
     {
         if (command is HasSavingThrowProficiency hasSavingThrowProficiency && AttributeTypes.HasFlag(hasSavingThrowProficiency.AttributeType))
         {
-            hasSavingThrowProficiency.SetValue(this, true);
+            hasSavingThrowProficiency.SetValue(this, true, $"You have saving throw proficieny for {hasSavingThrowProficiency.AttributeType}");
         }
         else if (command is GetSavingThrowModifier getSavingThrowModifier && AttributeTypes.HasFlag(getSavingThrowModifier.AttributeType))
         {

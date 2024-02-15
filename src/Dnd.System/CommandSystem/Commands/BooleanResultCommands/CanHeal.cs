@@ -10,6 +10,6 @@ public class CanHeal : DndBooleanCommand
 
     protected override void InitializeResult()
     {
-        Result.SetValue("Default", true);
+        SetValue(true, "By default, you can heal.");
     }
 }

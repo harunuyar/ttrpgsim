@@ -9,29 +9,34 @@ public class BonusCollection
     {
         Values = new();
         Advantages = new();
+        RollSuccesses = new();
     }
 
-    public Dictionary<IDndEntity, int> Values { get; }
+    public List<(IDndEntity Source, int Value)> Values { get; }
 
-    public Dictionary<IDndEntity, EAdvantage> Advantages { get; }
+    public List<(IDndEntity Source, EAdvantage Advantage)> Advantages { get; }
+
+    public List<(IDndEntity Source, ERollSuccess RollSuccess)> RollSuccesses { get; }
 
     public int TotalValue => Values.Sum(x => x.Value);
 
-    public EAdvantage Advantage => Advantages.Count == 0 ? EAdvantage.None : Advantages.Select(a => a.Value).Aggregate((a, b) => a | b);
+    public EAdvantage Advantage => Advantages.Count == 0 ? EAdvantage.None : Advantages.Select(a => a.Advantage).Aggregate((a, b) => a | b);
 
-    public bool AddBonus(IDndEntity source, int value)
+    public ERollSuccess RollSuccess => RollSuccesses.Count == 0 ? ERollSuccess.Regular : RollSuccesses.Select(a => a.RollSuccess).Aggregate((a, b) => a | b);
+
+    public void AddBonus(IDndEntity source, int value)
     {
-        return Values.TryAdd(source, value);
+        Values.Add((source, value));
     }
 
-    public bool AddBonus(string source, int value)
+    public void AddBonus(string source, int value)
     {
-        return AddBonus(new CustomDndEntity(source), value);
+        AddBonus(new CustomDndEntity(source), value);
     }
 
     public int GetBonus(IDndEntity source)
     {
-        return Values.TryGetValue(source, out var value) ? value : 0;
+        return Values.Where(x => x.Source == source).Select(x => x.Value).FirstOrDefault();
     }
 
     public int GetBonus(string source)
@@ -39,25 +44,36 @@ public class BonusCollection
         return GetBonus(new CustomDndEntity(source));
     }
 
-    public bool AddAdvantage(IDndEntity source, EAdvantage advantage)
+    public void AddAdvantage(IDndEntity source, EAdvantage advantage)
     {
-        return Advantages.TryAdd(source, advantage);
+        Advantages.Add((source, advantage));
     }
 
-    public bool AddAdvantage(string source, EAdvantage advantage)
+    public void AddAdvantage(string source, EAdvantage advantage)
     {
-        return AddAdvantage(new CustomDndEntity(source), advantage);
+        AddAdvantage(new CustomDndEntity(source), advantage);
+    }
+
+    public void AddRollSuccess(IDndEntity source, ERollSuccess rollSuccess)
+    {
+        RollSuccesses.Add((source, rollSuccess));
+    }
+
+    public void AddRollSuccess(string source, ERollSuccess rollSuccess)
+    {
+        AddRollSuccess(new CustomDndEntity(source), rollSuccess);
     }
 
     public void Reset()
     {
         Values.Clear();
         Advantages.Clear();
+        RollSuccesses.Clear();
     }
 
     public override string ToString()
     {
-        return string.Join(Environment.NewLine, Values.Select(e => e.Key.Name + ": " + e.Value)) 
+        return string.Join(Environment.NewLine, Values.Select(e => e.Source.Name + ": " + e.Value)) 
             + (Advantage.HasAdvantage() ? Environment.NewLine + "(Advantage)" : (Advantage.HasDisadvantage() ? Environment.NewLine + "(Disadvantage)" : string.Empty));
     }
 }

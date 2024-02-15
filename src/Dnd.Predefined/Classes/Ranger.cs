@@ -8,6 +8,7 @@ using Dnd.GameManagers.Dice;
 using Dnd.System.Entities.Classes;
 using Dnd.Predefined.Skills;
 using Dnd.System.Entities.GameActors;
+using Dnd.System.Entities.Items.Tools;
 
 public class Ranger : IClass
 {
@@ -45,9 +46,11 @@ public class Ranger : IClass
 
     public EAttributeType SpellCastingAttribute => EAttributeType.Wisdom;
 
-    private Ranger() { }
+    public EToolType ToolProficiencies => EToolType.None;
 
-    public static readonly Ranger Instance = new Ranger();
+    public EToolType MulticlassToolProficiencies => EToolType.None;
+
+    public Ranger() { }
 
     public bool MeetsPrerequisites(AttributeSet attributeSet)
     {

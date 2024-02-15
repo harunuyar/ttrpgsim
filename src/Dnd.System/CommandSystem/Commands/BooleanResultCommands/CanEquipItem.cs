@@ -16,12 +16,12 @@ public class CanEquipItem : DndBooleanCommand
     {
         if (Item.IsEquipped)
         {
-            Result.SetValue("Already equiped", false);
+            SetValue(false, "Item is already equiped by someone.");
             ForceComplete();
         }
         else
         {
-            Result.SetValue("Base", true);
+            SetValue(true, "By default, you can equip this item.");
             Item.ItemDescription.HandleCommand(this);
         }
     }

@@ -28,4 +28,28 @@ public class DiceRoll
 
         return rolls;
     }
+
+    public int[] MaxRoll()
+    {
+        int[] rolls = new int[NumberOfDice];
+
+        for (int i = 0; i < NumberOfDice; i++)
+        {
+            rolls[i] = (int)DiceType;
+        }
+
+        return rolls;
+    }
+
+    public int[] MinRoll()
+    {
+        int[] rolls = new int[NumberOfDice];
+
+        for (int i = 0; i < NumberOfDice; i++)
+        {
+            rolls[i] = 1;
+        }
+
+        return rolls;
+    }
 }

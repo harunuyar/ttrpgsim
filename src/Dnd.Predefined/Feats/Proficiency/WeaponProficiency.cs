@@ -20,7 +20,7 @@ public class WeaponProficiency : AFeat
         {
             if (WeaponType.HasFlag(hasWeaponProficiency.WeaponType))
             {
-                hasWeaponProficiency.SetValue(this, true);
+                hasWeaponProficiency.SetValue(this, true, $"You have {hasWeaponProficiency.WeaponType} proficiency.");
             }
         }
         else if (command is CalculateWeaponAttackModifier calculateWeaponAttackModifier)

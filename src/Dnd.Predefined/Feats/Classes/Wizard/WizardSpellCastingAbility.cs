@@ -1,8 +1,6 @@
 ﻿namespace Dnd.Predefined.Feats.Classes.Wizard;
 
-using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
-using Dnd.System.Entities.Attributes;
-using Dnd.System.Entities.GameActors;
+using Predefined.Classes;
 
 public class WizardSpellCastingAbility : SpellCastingAbility
 {
@@ -32,54 +30,25 @@ public class WizardSpellCastingAbility : SpellCastingAbility
         [4, 3, 3, 3, 3, 2, 2, 1, 1], // Level 20
     ];
 
-    public WizardSpellCastingAbility() 
+    public WizardSpellCastingAbility(Wizard wizardClass) 
         : base("Wizard Spell Casting Ability", 
             "As a student of arcane magic, you have a spellbook containing spells that show the first glimmerings of your true power.",
-            EAttributeType.Intelligence)
+            wizardClass)
     {
     }
 
-    public override int GetMaxCantripsCount(IGameActor actor)
+    public override int MaxKnownCantripsCount(int spellCasterLevel)
     {
-        int wizardLevel = actor.LevelInfo.GetLevelsInClass(Predefined.Classes.Wizard.Instance);
-
-        if (wizardLevel < 1 || wizardLevel > 20)
-        {
-            return 0;
-        }
-
-        return CantripsKnownPerLevel[wizardLevel - 1];
+        return CantripsKnownPerLevel[spellCasterLevel - 1];
     }
 
-    public override int GetMaxSpellsCount(IGameActor actor)
+    public override int MaxKnownSpellsCount(int spellCasterLevel, int attributeModifier)
     {
-        var getIntelligenceModifier = new GetAttributeModifier(actor, EAttributeType.Intelligence);
-        var intelligenceModifier = getIntelligenceModifier.Execute();
-
-        if (!intelligenceModifier.IsSuccess)
-        {
-            return 0;
-        }
-
-        int wizardLevel = actor.LevelInfo.GetLevelsInClass(Predefined.Classes.Wizard.Instance);
-
-        if (wizardLevel < 1 || wizardLevel > 20)
-        {
-            return 0;
-        }
-
-        return Math.Max(1, wizardLevel + intelligenceModifier.Value);
+        return Math.Max(1, spellCasterLevel + attributeModifier);
     }
 
-    public override int GetMaxSpellSlotsCount(IGameActor actor, int spellLevel)
+    public override int MaxSpellSlotsCount(int spellCasterLevel, int spellLevel)
     {
-        int wizardLevel = actor.LevelInfo.GetLevelsInClass(Predefined.Classes.Wizard.Instance);
-
-        if (wizardLevel < 1 || wizardLevel > 20)
-        {
-            return 0;
-        }
-
-        return SpellSlotsPerSpellLevel[wizardLevel - 1][spellLevel - 1];
+        return SpellSlotsPerSpellLevel[spellCasterLevel - 1][spellLevel - 1];
     }
 }

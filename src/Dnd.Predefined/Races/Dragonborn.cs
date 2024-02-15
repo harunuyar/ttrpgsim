@@ -5,12 +5,11 @@ using Dnd.Predefined.CreatureTypes;
 using Dnd.Predefined.Sizes;
 using Dnd.Predefined.Traits.Dragonborn;
 using Dnd.System.Entities.Traits;
+using Dnd.System.Entities.Units;
 
 public class Dragonborn : IRace
 {
-    public static readonly Dragonborn Instance = new Dragonborn();
-
-    private Dragonborn()
+    public Dragonborn()
     {
     }
 
@@ -23,4 +22,6 @@ public class Dragonborn : IRace
     public ISize Size => Medium.Instance;
 
     public List<ITrait> RaceTraits { get; } = new List<ITrait>() { AbilityScoreIncrease.Instance };
+
+    public Distance Speed => Distance.OfFeet(30);
 }

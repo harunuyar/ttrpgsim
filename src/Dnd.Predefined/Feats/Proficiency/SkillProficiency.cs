@@ -52,21 +52,21 @@ public class SkillProficiency : AFeat
         {
             if (hasSkillProficiency.Skill == Skill && ProficiencyType == EProficiencyType.FullProficiency)
             {
-                hasSkillProficiency.SetValue(this, true);
+                hasSkillProficiency.SetValue(this, true, $"You have proficiency on {Skill.Name}");
             }
         }
         else if (command is HasSkillExpertise hasSkillExpertise)
         {
             if (hasSkillExpertise.Skill == Skill && ProficiencyType == EProficiencyType.Expertise)
             {
-                hasSkillExpertise.SetValue(this, true);
+                hasSkillExpertise.SetValue(this, true, $"You have expertise on {Skill.Name}");
             }
         }
         else if (command is HasSkillHalfProficiency hasSkillHalfProficiency)
         {
             if (hasSkillHalfProficiency.Skill == Skill && ProficiencyType == EProficiencyType.HalfProficiency)
             {
-                hasSkillHalfProficiency.SetValue(this, true);
+                hasSkillHalfProficiency.SetValue(this, true, $"You have half proficiency on {Skill.Name}");
             }
         }
         else if (command is GetSkillModifier getSkillModifier && getSkillModifier.Skill == Skill)

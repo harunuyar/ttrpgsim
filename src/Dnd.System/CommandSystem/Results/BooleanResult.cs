@@ -15,7 +15,7 @@ public class BooleanResult : ICommandResult
     public BooleanResult(bool success, string? errorMsg, IDndEntity? source, bool value)
     {
         IsSuccess = success;
-        ErrorMessage = errorMsg;
+        Message = errorMsg;
         Source = source;
         Value = value;
     }
@@ -24,39 +24,40 @@ public class BooleanResult : ICommandResult
 
     public bool Value { get; private set; }
 
+    public string? Message { get; private set; }
+
     public bool IsSuccess { get; private set; }
 
-    public string? ErrorMessage { get; private set; }
+    public string? ErrorMessage => IsSuccess ? null : Message;
 
     public void SetError(string errorMessage)
     {
         IsSuccess = false;
-        ErrorMessage = errorMessage;
+        Message = errorMessage;
     }
 
-    public void SetValue(IDndEntity source, bool value)
+    public void SetValue(IDndEntity? source, bool value, string message)
     {
         Source = source;
         Value = value;
+        Message = message ?? string.Empty;
     }
 
-    public void SetValue(string source, bool value)
+    public void SetValue(bool value, string message)
     {
-        SetValue(new CustomDndEntity(source), value);
+        SetValue(null, value, message);
     }
 
     public void Reset()
     {
         IsSuccess = true;
-        ErrorMessage = null;
+        Message = null;
         Source = null;
         Value = false;
     }
 
     public override string ToString()
     {
-        return IsSuccess
-            ? (Source == null ? Value.ToString() : $"{Source}: {Value}")
-            : ErrorMessage ?? "Unknown error";
+        return IsSuccess ? $"{Source}: {Message}. {Value}" : ErrorMessage ?? "Unknown error";
     }
 }

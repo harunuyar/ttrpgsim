@@ -8,6 +8,7 @@ using Dnd.GameManagers.Dice;
 using Dnd.System.Entities.Classes;
 using Dnd.Predefined.Skills;
 using Dnd.System.Entities.GameActors;
+using Dnd.System.Entities.Items.Tools;
 
 public class Fighter : IClass
 {
@@ -45,9 +46,11 @@ public class Fighter : IClass
 
     public EAttributeType SpellCastingAttribute => EAttributeType.None;
 
-    private Fighter() { }
+    public EToolType ToolProficiencies => EToolType.None;
 
-    public static readonly Fighter Instance = new Fighter();
+    public EToolType MulticlassToolProficiencies => EToolType.None;
+
+    public Fighter() { }
 
     public bool MeetsPrerequisites(AttributeSet attributeSet)
     {

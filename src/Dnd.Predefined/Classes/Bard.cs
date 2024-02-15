@@ -8,6 +8,7 @@ using Dnd.GameManagers.Dice;
 using Dnd.System.Entities.Classes;
 using Dnd.Predefined.Skills;
 using Dnd.System.Entities.GameActors;
+using Dnd.System.Entities.Items.Tools;
 
 public class Bard : IClass
 {
@@ -55,9 +56,13 @@ public class Bard : IClass
 
     public EAttributeType SpellCastingAttribute => EAttributeType.Charisma;
 
-    private Bard() { }
+    // three musical instruments of your choice
+    public EToolType ToolProficiencies => EToolType.None;
 
-    public static readonly Bard Instance = new Bard();
+    // one musical instrument of your choice
+    public EToolType MulticlassToolProficiencies => EToolType.None;
+
+    public Bard() { }
 
     public bool MeetsPrerequisites(AttributeSet attributeSet)
     {

@@ -14,6 +14,6 @@ public class HasSavingThrowProficiency : DndBooleanCommand
 
     protected override void InitializeResult()
     {
-        Result.SetValue("Base", false);
+        Result.SetValue(false, "By default, you don't have saving throw proficiency.");
     }
 }

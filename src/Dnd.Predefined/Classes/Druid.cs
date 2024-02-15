@@ -8,6 +8,7 @@ using Dnd.GameManagers.Dice;
 using Dnd.System.Entities.Classes;
 using Dnd.Predefined.Skills;
 using Dnd.System.Entities.GameActors;
+using Dnd.System.Entities.Items.Tools;
 
 public class Druid : IClass
 {
@@ -45,9 +46,11 @@ public class Druid : IClass
 
     public EAttributeType SpellCastingAttribute => EAttributeType.Wisdom;
 
-    private Druid() { }
+    public EToolType ToolProficiencies => EToolType.HerbalismKit;
 
-    public static readonly Druid Instance = new Druid();
+    public EToolType MulticlassToolProficiencies => EToolType.None;
+
+    public Druid() { }
 
     public bool MeetsPrerequisites(AttributeSet attributeSet)
     {

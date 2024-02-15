@@ -7,6 +7,7 @@ using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 using Dnd.System.CommandSystem.Commands.RollCommands;
 using Dnd.System.CommandSystem.Results;
 using Dnd.System.Entities;
+using Dnd.System.Entities.Advantage;
 using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Items;
 using Dnd.System.Entities.Items.Equipments.Weapons;
@@ -101,19 +102,24 @@ public class AttackEvent : AEvent
 
         foreach (var pair in calculateWeaponAttackAgainstModifiersResult.BonusCollection.Advantages)
         {
-            calculateWeaponAttackModifiersResult.BonusCollection.Advantages.Add(pair.Key, pair.Value);
+            calculateWeaponAttackModifiersResult.BonusCollection.Advantages.Add(pair);
+        }
+
+        foreach (var pair in calculateWeaponAttackAgainstModifiersResult.BonusCollection.RollSuccesses)
+        {
+            calculateWeaponAttackModifiersResult.BonusCollection.RollSuccesses.Add(pair);
         }
 
         foreach (var pair in calculateWeaponAttackAgainstModifiersResult.BonusCollection.Values)
         {
-            calculateWeaponAttackModifiersResult.BonusCollection.Values.Add(pair.Key, pair.Value);
+            calculateWeaponAttackModifiersResult.BonusCollection.Values.Add(pair);
         }
 
         if (calculateWeaponAttackAgainstModifiersResult.BaseValue != 0)
         {
-            calculateWeaponAttackModifiersResult.BonusCollection.Values.Add(
+            calculateWeaponAttackModifiersResult.BonusCollection.Values.Add((
                 calculateWeaponAttackAgainstModifiersResult.BaseSource ?? new CustomDndEntity("Target Base"), 
-                calculateWeaponAttackAgainstModifiersResult.BaseValue);
+                calculateWeaponAttackAgainstModifiersResult.BaseValue));
         }
 
         attackRollModifiers = calculateWeaponAttackModifiersResult;
@@ -190,6 +196,32 @@ public class AttackEvent : AEvent
             return BooleanResult.Failure("IsValid failed: " + isValid.ErrorMessage);
         }
 
+        var isCriticalHit = new IsCriticalSuccess(Attacker, attackRollWithoutModifiers);
+        var isCriticalHitResult = isCriticalHit.Execute();
+
+        if (!isCriticalHitResult.IsSuccess)
+        {
+            return BooleanResult.Failure("IsCriticalHit failed: " + isCriticalHitResult.ErrorMessage);
+        }
+
+        if (isCriticalHitResult.Value)
+        {
+            return BooleanResult.Success("Critical Hit", true);
+        }
+
+        var isCriticalMiss = new IsCriticalFailure(Attacker, attackRollWithoutModifiers);
+        var isCriticalMissResult = isCriticalMiss.Execute();
+
+        if (!isCriticalMissResult.IsSuccess)
+        {
+            return BooleanResult.Failure("IsCriticalMiss failed: " + isCriticalMissResult.ErrorMessage);
+        }
+
+        if (isCriticalMissResult.Value)
+        {
+            return BooleanResult.Success("Critical Miss", false);
+        }
+
         var attackRollModifiers = GetAttackRollModifiers();
         if (!attackRollModifiers.IsSuccess)
         {
@@ -205,7 +237,7 @@ public class AttackEvent : AEvent
         return BooleanResult.Success("Result", attackRollWithoutModifiers + attackRollModifiers.Value >= armorClass.Value);
     }
 
-    public RollResult RollDamageDice()
+    public RollResult RollDamageDice(ERollSuccess attackRollSuccess)
     {
         if (WeaponItem.ItemDescription is not IWeapon weapon)
         {
@@ -224,8 +256,28 @@ public class AttackEvent : AEvent
         }
 
         IntegerResultWithBonus damageModifiers = GetWeaponDamageModifiers();
+        
         var rollAttack = new RollDamage(EventListener, Attacker, damageModifiers.BonusCollection.Advantage, damageDie);
-        return rollAttack.Execute();
+        var rollResult = rollAttack.Execute();
+
+        if (!rollResult.IsSuccess)
+        {
+            return RollResult.Failure("RollDamage failed: " + rollResult.ErrorMessage);
+        }
+
+        if (attackRollSuccess == ERollSuccess.CriticalSuccess)
+        {
+            var secondRollResult = rollAttack.Execute();
+
+            if (!secondRollResult.IsSuccess)
+            {
+                return RollResult.Failure("RollDamage failed: " + secondRollResult.ErrorMessage);
+            }
+
+            return rollResult.CreateMergedResult(secondRollResult);
+        }
+
+        return rollResult;
     }
 
     public IntegerResultWithBonus GetTotalDamage(int damageRollWithoutModifiers)
@@ -280,24 +332,51 @@ public class AttackEvent : AEvent
             return EventResult.Failure("Attack is not valid: " + isValid.ErrorMessage);
         }
 
-        var attackRoll = RollAttackDice();
-        if (!attackRoll.IsSuccess)
+        var attackRollModifiers = GetAttackRollModifiers();
+
+        if (!attackRollModifiers.IsSuccess)
         {
-            return EventResult.Failure("RollAttackDice failed: " + attackRoll.ErrorMessage);
+            return EventResult.Failure("GetAttackRollModifiers failed: " + attackRollModifiers.ErrorMessage);
         }
 
-        var canHit = CanHit(attackRoll.Value);
-        if (!canHit.IsSuccess)
+        if (attackRollModifiers.RollSuccess == ERollSuccess.CriticalFailure)
         {
-            return EventResult.Failure("CanHit failed: " + canHit.ErrorMessage);
+            return EventResult.Success("Attack missed due to critical failure");
         }
 
-        if (!canHit.Value)
+        bool isCriticalHit = attackRollModifiers.RollSuccess == ERollSuccess.CriticalSuccess;
+
+        if (!isCriticalHit)
         {
-            return EventResult.Success("Attack missed");
+            var attackRoll = RollAttackDice();
+            if (!attackRoll.IsSuccess)
+            {
+                return EventResult.Failure("RollAttackDice failed: " + attackRoll.ErrorMessage);
+            }
+
+            var canHitCommand = CanHit(attackRoll.Value);
+            if (!canHitCommand.IsSuccess)
+            {
+                return EventResult.Failure("CanHit failed: " + canHitCommand.ErrorMessage);
+            }
+
+            if (!canHitCommand.Value)
+            {
+                return EventResult.Success("Attack missed");
+            }
+
+            var IsCriticalSuccess = new IsCriticalSuccess(Attacker, attackRoll.Value);
+            var IsCriticalSuccessResult = IsCriticalSuccess.Execute();
+
+            if (!IsCriticalSuccessResult.IsSuccess)
+            {
+                return EventResult.Failure("IsCriticalHit failed: " + IsCriticalSuccessResult.ErrorMessage);
+            }
+
+            isCriticalHit = IsCriticalSuccessResult.Value;
         }
 
-        var damageRoll = RollDamageDice();
+        var damageRoll = RollDamageDice(isCriticalHit ? ERollSuccess.CriticalSuccess : ERollSuccess.Regular);
         if (!damageRoll.IsSuccess)
         {
             return EventResult.Failure("RollDamageDice failed: " + damageRoll.ErrorMessage);

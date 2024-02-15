@@ -10,6 +10,6 @@ public class IsSpellCaster : DndBooleanCommand
 
     protected override void InitializeResult()
     {
-        Result.SetValue("Default", false);
+        Result.SetValue(false, "By default, you are not a spell caster.");
     }
 }

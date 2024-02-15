@@ -2,6 +2,7 @@
 
 using Dnd.Predefined.Alignments;
 using Dnd.Predefined.Characters;
+using Dnd.Predefined.Classes;
 using Dnd.Predefined.Feats.Classes.Fighter.Level1.FightingStyle;
 using Dnd.Predefined.Levels.FighterLevels;
 using Dnd.Predefined.Races;
@@ -18,8 +19,8 @@ public class GetArmorProficiencyTest
     [TestInitialize]
     public void TestInitialize()
     {
-        character = new CustomCharacter("Test", Human.Instance, ChaoticGood.Instance);
-        character.LevelInfo.AddLevel(new FighterLevel1(Athletics.Instance, Intimidation.Instance, Defense.Instance));
+        character = new CustomCharacter("Test", new Human(), ChaoticGood.Instance);
+        character.LevelInfo.AddLevel(new FighterLevel1(new Fighter(), Athletics.Instance, Intimidation.Instance, Defense.Instance));
     }
 
     [TestMethod]

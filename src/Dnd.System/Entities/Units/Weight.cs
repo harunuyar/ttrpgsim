@@ -3,6 +3,7 @@
 public class Weight
 {
     public double Pounds { get; set; }
+
     public double Kilograms => Pounds * 0.45359237;
 
     public Weight()
@@ -10,28 +11,18 @@ public class Weight
         Pounds = 0;
     }
 
-    public Weight(double amount, EWeightUnit weightUnit)
+    private Weight(double pounds)
     {
-        Pounds = ConvertToPounds(amount, weightUnit);
-    }
-
-    private double ConvertToPounds(double amount, EWeightUnit weightUnit)
-    {
-        return weightUnit switch
-        {
-            EWeightUnit.Pound => amount,
-            EWeightUnit.Kilogram => amount * 2.20462,
-            _ => throw new ArgumentException("Unknown weight unit: " + weightUnit),
-        };
+        Pounds = pounds;
     }
 
     public static Weight OfPounds(double amount)
     {
-        return new Weight(amount, EWeightUnit.Pound);
+        return new Weight(amount);
     }
 
     public static Weight OfKilograms(double amount)
     {
-        return new Weight(amount, EWeightUnit.Kilogram);
+        return new Weight(amount * 2.20462);
     }
 }

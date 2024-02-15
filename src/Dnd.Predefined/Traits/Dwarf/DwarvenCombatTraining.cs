@@ -20,7 +20,7 @@ public class DwarvenCombatTraining : ATrait
         {
             if (WeaponProficiency.HasFlag(getWeaponProficiency.WeaponType))
             {
-                getWeaponProficiency.SetValue(this, true);
+                getWeaponProficiency.SetValue(this, true, $"You have {getWeaponProficiency.WeaponType} proficiency.");
             }
         }
     }

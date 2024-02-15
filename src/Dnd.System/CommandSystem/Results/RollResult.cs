@@ -62,4 +62,25 @@ public class RollResult : ICommandResult
         IsSuccess = true;
         ErrorMessage = null;
     }
+
+    public RollResult CreateMergedResult(RollResult other)
+    {
+        RollResult newResult = RollResult.Empty();
+
+        if (IsSuccess && other.IsSuccess)
+        {
+            for (int i = 0; i < Rolls.Count && i < other.Rolls.Count; i++)
+            {
+                newResult.AddRoll(Rolls[i].Concat(other.Rolls[i]).ToArray());
+            }
+
+            newResult.Advantage = Advantage | other.Advantage;
+        }
+        else
+        {
+            newResult.SetError(ErrorMessage ?? other.ErrorMessage ?? "Unknown error");
+        }
+
+        return newResult;
+    }
 }

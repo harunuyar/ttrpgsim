@@ -8,6 +8,7 @@ using Dnd.GameManagers.Dice;
 using Dnd.System.Entities.Classes;
 using Dnd.Predefined.Skills;
 using Dnd.System.Entities.GameActors;
+using Dnd.System.Entities.Items.Tools;
 
 public class Cleric : IClass
 {
@@ -42,9 +43,11 @@ public class Cleric : IClass
 
     public EAttributeType SpellCastingAttribute => EAttributeType.Wisdom;
 
-    private Cleric() { }
+    public EToolType ToolProficiencies => EToolType.None;
 
-    public static readonly Cleric Instance = new Cleric();
+    public EToolType MulticlassToolProficiencies => EToolType.None;
+
+    public Cleric() { }
 
     public bool MeetsPrerequisites(AttributeSet attributeSet)
     {

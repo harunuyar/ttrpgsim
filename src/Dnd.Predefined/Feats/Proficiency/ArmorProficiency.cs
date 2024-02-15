@@ -17,7 +17,7 @@ public class ArmorProficiency : AFeat
     {
         if (command is HasArmorProficiency hasArmorProficiency && ArmorType.HasFlag(hasArmorProficiency.ArmorType))
         {
-            hasArmorProficiency.SetValue(this, true);
+            hasArmorProficiency.SetValue(this, true, $"You have armor proficieny for {hasArmorProficiency.ArmorType}");
         }
     }
 

@@ -6,12 +6,11 @@ using Dnd.System.Entities.Traits;
 using Dnd.Predefined.CreatureTypes;
 using Dnd.Predefined.Sizes;
 using Dnd.Predefined.Traits.HalfElf;
+using Dnd.System.Entities.Units;
 
 public class HalfElf : IRace
 {
-    public static HalfElf Instance(EAttributeType attribute1, EAttributeType attribute2) => new HalfElf(attribute1, attribute2);
-
-    private HalfElf(EAttributeType attribute1, EAttributeType attribute2)
+    public HalfElf(EAttributeType attribute1, EAttributeType attribute2)
     {
         RaceTraits.Add(AbilityScoreIncrease.Instance(attribute1, attribute2));
     }
@@ -25,4 +24,6 @@ public class HalfElf : IRace
     public ISize Size => Medium.Instance;
 
     public List<ITrait> RaceTraits { get; } = new List<ITrait>();
+
+    public Distance Speed => Distance.OfFeet(30);
 }

@@ -5,12 +5,11 @@ using Dnd.System.Entities.Traits;
 using Dnd.Predefined.CreatureTypes;
 using Dnd.Predefined.Sizes;
 using Dnd.Predefined.Traits.Dwarf;
+using Dnd.System.Entities.Units;
 
 public class Dwarf : IRace
 {
-    public static readonly Dwarf Instance = new Dwarf();
-
-    private Dwarf()
+    public Dwarf()
     {
     }
 
@@ -28,4 +27,6 @@ public class Dwarf : IRace
         DwarvenResilience.Instance, 
         DwarvenCombatTraining.Instance 
     };
+
+    public Distance Speed => Distance.OfFeet(25);
 }

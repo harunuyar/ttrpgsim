@@ -37,6 +37,8 @@ public abstract class ADndCommand<T> : ICommand where T : ICommandResult
     {
         Result.Reset();
 
+        FirstAction();
+
         InitializeResult();
 
         if (!IsForceCompleted && ShouldVisitEntities && Result.IsSuccess)
@@ -65,6 +67,8 @@ public abstract class ADndCommand<T> : ICommand where T : ICommandResult
     protected virtual void InitializeResult() { }
 
     protected virtual void FinalizeResult() { }
+
+    protected virtual void FirstAction() { }
 
     protected virtual void FinalAction() { }
 

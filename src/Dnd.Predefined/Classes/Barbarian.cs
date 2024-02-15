@@ -8,6 +8,7 @@ using Dnd.GameManagers.Dice;
 using Dnd.System.Entities.Classes;
 using Dnd.Predefined.Skills;
 using Dnd.System.Entities.GameActors;
+using Dnd.System.Entities.Items.Tools;
 
 public class Barbarian : IClass
 {
@@ -43,9 +44,11 @@ public class Barbarian : IClass
 
     public EAttributeType SpellCastingAttribute => EAttributeType.None;
 
-    private Barbarian() { }
+    public EToolType ToolProficiencies => EToolType.None;
 
-    public static readonly Barbarian Instance = new Barbarian();
+    public EToolType MulticlassToolProficiencies => EToolType.None;
+
+    public Barbarian() { }
 
     public bool MeetsPrerequisites(AttributeSet attributeSet)
     {

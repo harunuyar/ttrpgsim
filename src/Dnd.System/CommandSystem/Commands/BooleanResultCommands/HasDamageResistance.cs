@@ -15,6 +15,6 @@ public class HasDamageResistance : DndBooleanCommand
 
     protected override void InitializeResult()
     {
-        Result.SetValue("Base", false);
+        Result.SetValue(false, "By default, you don't have any resistance.");
     }
 }

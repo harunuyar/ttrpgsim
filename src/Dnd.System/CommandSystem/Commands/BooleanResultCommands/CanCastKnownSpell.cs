@@ -14,6 +14,6 @@ public class CanCastKnownSpell : DndBooleanCommand
 
     protected override void InitializeResult()
     {
-        Result.SetValue("Default", false);
+        SetValue(false, "By default, you can't cast a spell.");
     }
 }

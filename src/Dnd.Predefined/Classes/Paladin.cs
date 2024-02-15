@@ -8,6 +8,7 @@ using Dnd.GameManagers.Dice;
 using Dnd.System.Entities.Classes;
 using Dnd.Predefined.Skills;
 using Dnd.System.Entities.GameActors;
+using Dnd.System.Entities.Items.Tools;
 
 public class Paladin : IClass
 {
@@ -43,9 +44,11 @@ public class Paladin : IClass
 
     public EAttributeType SpellCastingAttribute => EAttributeType.Charisma;
 
-    private Paladin() { }
+    public EToolType ToolProficiencies => EToolType.None;
 
-    public static readonly Paladin Instance = new Paladin();
+    public EToolType MulticlassToolProficiencies => EToolType.None;
+
+    public Paladin() { }
 
     public bool MeetsPrerequisites(AttributeSet attributeSet)
     {

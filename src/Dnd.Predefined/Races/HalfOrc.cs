@@ -4,12 +4,11 @@ using Dnd.System.Entities.Races;
 using Dnd.System.Entities.Traits;
 using Dnd.Predefined.CreatureTypes;
 using Dnd.Predefined.Sizes;
+using Dnd.System.Entities.Units;
 
 public class HalfOrc : IRace
 {
-    public static readonly HalfOrc Instance = new HalfOrc();
-
-    private HalfOrc()
+    public HalfOrc()
     {
     }
 
@@ -22,4 +21,6 @@ public class HalfOrc : IRace
     public ISize Size => Medium.Instance;
 
     public List<ITrait> RaceTraits { get; } = new List<ITrait>();
+
+    public Distance Speed => Distance.OfFeet(30);
 }

@@ -3,12 +3,13 @@
 using Dnd.Predefined.Feats.Proficiency;
 using Dnd.System.Entities.Classes;
 using Dnd.System.Entities.Feats;
+using Dnd.System.Entities.Items.Tools;
 using Dnd.System.Entities.Levels;
 using Dnd.System.Entities.Skills;
 
 public abstract class SharedLevel1 : ILevel
 {
-    public SharedLevel1(IClass dndClass, string name, bool multiclass, List<ISkill> proficientSkills)
+    public SharedLevel1(IClass dndClass, string name, bool multiclass, List<ISkill> proficientSkills, EToolType toolProficiencies = EToolType.None)
     {
         Class = dndClass;
         Name = name;
@@ -19,6 +20,7 @@ public abstract class SharedLevel1 : ILevel
             {
                 new ArmorProficiency(dndClass.MulticlassArmorProficiencies),
                 new WeaponProficiency(dndClass.MulticlassWeaponProficiencies),
+                new ToolProficiency(dndClass.MulticlassToolProficiencies),
             };
         }
         else
@@ -28,7 +30,8 @@ public abstract class SharedLevel1 : ILevel
                 new ProficiencyBonus(),
                 new ArmorProficiency(dndClass.ArmorProficiencies),
                 new WeaponProficiency(dndClass.WeaponProficiencies),
-                new SavingThrowProficiency(dndClass.SavingThrowProficiencies)
+                new SavingThrowProficiency(dndClass.SavingThrowProficiencies),
+                new ToolProficiency(dndClass.ToolProficiencies | toolProficiencies),
             };
         }
 

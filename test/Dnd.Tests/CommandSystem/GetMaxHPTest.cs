@@ -16,11 +16,12 @@ public class GetMaxHPTest
     [TestMethod]
     public void TestGetMaxHitPoints()
     {
-        IGameActor character = new CustomCharacter("Test", Human.Instance);
+        IGameActor character = new CustomCharacter("Test", new Human());
         character.AttributeSet.Constitution.Score = 14; // +1 from human racial bonus
 
-        character.LevelInfo.AddLevel(new FighterLevel1(Athletics.Instance, Intimidation.Instance, Defense.Instance));
-        character.HitPoints.AddHitPointRoll((int)Fighter.Instance.HitDie);
+        var fighter = new Fighter();
+        character.LevelInfo.AddLevel(new FighterLevel1(fighter, Athletics.Instance, Intimidation.Instance, Defense.Instance));
+        character.HitPoints.AddHitPointRoll((int)fighter.HitDie);
 
         var getMaxHitPointsCommand = new GetMaxHP(character!);
         var result = getMaxHitPointsCommand.Execute();

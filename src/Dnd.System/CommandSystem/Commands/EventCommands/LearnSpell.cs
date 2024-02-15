@@ -3,9 +3,9 @@
 using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Spells;
 
-public class AddKnownSpell : DndEventCommand
+public class LearnSpell : DndEventCommand
 {
-    public AddKnownSpell(IEventListener eventListener, IGameActor character, ISpell spell) : base(eventListener, character)
+    public LearnSpell(IEventListener eventListener, IGameActor character, ISpell spell) : base(eventListener, character)
     {
         Spell = spell;
     }

@@ -5,12 +5,11 @@ using Dnd.System.Entities.Traits;
 using Dnd.Predefined.CreatureTypes;
 using Dnd.Predefined.Sizes;
 using Dnd.Predefined.Traits.Human;
+using Dnd.System.Entities.Units;
 
 public class Human : IRace
 {
-    public static readonly Human Instance = new Human();
-
-    private Human()
+    public Human()
     {
     }
 
@@ -23,4 +22,6 @@ public class Human : IRace
     public ISize Size => Medium.Instance;
 
     public List<ITrait> RaceTraits { get; } = new List<ITrait>() { AbilityScoreIncrease.Instance };
+
+    public Distance Speed => Distance.OfFeet(30);
 }

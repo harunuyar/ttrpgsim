@@ -8,6 +8,7 @@ using Dnd.GameManagers.Dice;
 using Dnd.Predefined.Skills;
 using Dnd.System.Entities.Classes;
 using Dnd.System.Entities.GameActors;
+using Dnd.System.Entities.Items.Tools;
 
 public class Artificer : IClass
 {
@@ -36,7 +37,7 @@ public class Artificer : IClass
 
     public int NumberOfSkillProficiencies => 2;
 
-    public EArmorType MulticlassArmorProficiencies =>  EArmorType.Light | EArmorType.Medium | EArmorType.Shield;
+    public EArmorType MulticlassArmorProficiencies => EArmorType.Light | EArmorType.Medium | EArmorType.Shield;
 
     public EWeaponType MulticlassWeaponProficiencies => EWeaponType.None;
 
@@ -44,9 +45,11 @@ public class Artificer : IClass
 
     public EAttributeType SpellCastingAttribute => EAttributeType.Intelligence;
 
-    private Artificer() { }
+    public EToolType ToolProficiencies => EToolType.Thieves | EToolType.Tinker;
 
-    public static readonly Artificer Instance = new Artificer();
+    public EToolType MulticlassToolProficiencies => EToolType.Thieves | EToolType.Tinker;
+
+    public Artificer() { }
 
     public bool MeetsPrerequisites(AttributeSet attributeSet)
     {

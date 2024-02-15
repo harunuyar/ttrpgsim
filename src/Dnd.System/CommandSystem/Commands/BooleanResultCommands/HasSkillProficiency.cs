@@ -14,6 +14,6 @@ public class HasSkillProficiency : DndBooleanCommand
 
     protected override void InitializeResult()
     {
-        Result.SetValue("Default", false);
+        Result.SetValue(false, "By default, you don't have skill proficiency.");
     }
 }

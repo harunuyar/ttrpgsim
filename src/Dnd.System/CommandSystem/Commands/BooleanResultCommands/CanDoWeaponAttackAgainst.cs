@@ -24,6 +24,6 @@ internal class CanDoWeaponAttackAgainst : DndBooleanCommand
             return;
         }
 
-        Result.SetValue("Default", true);
+        SetValue(true, "By default, anyone can do a weapon attack on you.");
     }
 }

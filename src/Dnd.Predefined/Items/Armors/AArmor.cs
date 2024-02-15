@@ -81,7 +81,7 @@ public abstract class AArmor : IArmor
 
             if (strengthScore.IsSuccess && strengthScore.Value < StrengthRequirement)
             {
-                canEquipItem.SetValue(this, false);
+                canEquipItem.SetValue(this, false, "You don't have enough strength to wear this armor.");
             }
         }
     }

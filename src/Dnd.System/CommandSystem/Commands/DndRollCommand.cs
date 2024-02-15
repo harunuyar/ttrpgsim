@@ -12,17 +12,14 @@ public abstract class DndRollCommand : ADndCommand<RollResult>
         EventListener = eventListener;
         DiceRoll = diceRoll;
         Advantage = advantage;
-
-        Result = RollResult.Success(RollDice());
-        if (Advantage.HasAdvantage() || Advantage.HasDisadvantage())
-        {
-            Result.AddAdvantageRoll(Advantage, RollDice());
-        }
+        Result = RollResult.Empty();
     }
 
     public IEventListener EventListener { get; }
 
     public EAdvantage Advantage { get; }
+
+    public ERollSuccess RollSuccess { get; }
 
     public DiceRoll DiceRoll { get; }
 
@@ -47,6 +44,16 @@ public abstract class DndRollCommand : ADndCommand<RollResult>
         {
             Result.Set(advantage, rolls);
             ForceComplete();
+        }
+    }
+
+    protected override void FirstAction()
+    {
+        Result.AddRoll(DiceRoll.Roll());
+
+        if (Advantage.HasAdvantage() || Advantage.HasDisadvantage())
+        {
+            Result.AddAdvantageRoll(Advantage, RollDice());
         }
     }
 }

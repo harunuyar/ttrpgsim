@@ -24,6 +24,6 @@ public class CanDoWeaponAttack : DndBooleanCommand
             return;
         }
 
-        Result.SetValue("Default", true);
+        SetValue(true, "By default, you can do weapon attack.");
     }
 }

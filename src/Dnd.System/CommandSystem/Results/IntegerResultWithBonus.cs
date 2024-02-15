@@ -9,6 +9,8 @@ public class IntegerResultWithBonus : ICommandResult
 
     public static IntegerResultWithBonus Success(IDndEntity source, int baseValue, BonusCollection bonuses) => new IntegerResultWithBonus(true, null, source, baseValue, bonuses);
 
+    public static IntegerResultWithBonus Success(string source, int baseValue) => new IntegerResultWithBonus(true, null, new CustomDndEntity(source), baseValue, new BonusCollection());
+
     public static IntegerResultWithBonus Failure(string errorMessage) => new IntegerResultWithBonus(false, errorMessage, null, 0, new BonusCollection());
 
     private IntegerResultWithBonus(bool success, string? errorMessage, IDndEntity? source, int baseValue, BonusCollection bonusCollection)
@@ -23,6 +25,8 @@ public class IntegerResultWithBonus : ICommandResult
     public BonusCollection BonusCollection { get; }
 
     public EAdvantage Advantage => BonusCollection.Advantage;
+
+    public ERollSuccess RollSuccess => BonusCollection.RollSuccess;
 
     public int Value => BaseValue + BonusCollection.TotalValue;
 

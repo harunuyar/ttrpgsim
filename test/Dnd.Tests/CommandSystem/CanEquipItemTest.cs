@@ -17,7 +17,7 @@ public class CanEquipItemTest
     [TestInitialize]
     public void TestInitialize()
     {
-        character = new CustomCharacter("Test", Human.Instance, ChaoticGood.Instance);
+        character = new CustomCharacter("Test", new Human(), ChaoticGood.Instance);
         armor = new Item(ChainMailArmor.Instance);
     }
 

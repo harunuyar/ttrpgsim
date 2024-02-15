@@ -8,6 +8,7 @@ using Dnd.GameManagers.Dice;
 using Dnd.System.Entities.Classes;
 using Dnd.Predefined.Skills;
 using Dnd.System.Entities.GameActors;
+using Dnd.System.Entities.Items.Tools;
 
 public class Monk : IClass
 {
@@ -43,9 +44,12 @@ public class Monk : IClass
 
     public EAttributeType SpellCastingAttribute => EAttributeType.None;
 
-    private Monk() { }
+    // one type of artisan’s tools or one musical instrument
+    public EToolType ToolProficiencies => EToolType.None;
 
-    public static readonly Monk Instance = new Monk();
+    public EToolType MulticlassToolProficiencies => EToolType.None;
+
+    public Monk() { }
 
     public bool MeetsPrerequisites(AttributeSet attributeSet)
     {

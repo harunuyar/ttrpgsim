@@ -1,6 +1,7 @@
 ﻿namespace Dnd.Tests.CommandSystem;
 
 using Dnd.Predefined.Characters;
+using Dnd.Predefined.Classes;
 using Dnd.Predefined.Feats.Classes.Fighter.Level1.FightingStyle;
 using Dnd.Predefined.Levels.FighterLevels;
 using Dnd.Predefined.Races;
@@ -16,10 +17,10 @@ public class GetSkillProficiencyTest
     [TestInitialize]
     public void TestInitialize()
     {
-        character = new CustomCharacter("Test", Dragonborn.Instance);
+        character = new CustomCharacter("Test", new Dragonborn());
         character.AttributeSet.Set(strength: 15, dexterity: 10, constitution: 14, intelligence: 8, wisdom: 12, charisma: 13);
 
-        character.LevelInfo.AddLevel(new FighterLevel1(Athletics.Instance, Intimidation.Instance, Defense.Instance));
+        character.LevelInfo.AddLevel(new FighterLevel1(new Fighter(), Athletics.Instance, Intimidation.Instance, Defense.Instance));
     }
 
     [TestMethod]

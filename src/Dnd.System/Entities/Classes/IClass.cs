@@ -6,6 +6,7 @@ using Dnd.System.Entities.Items.Equipments.Weapons;
 using Dnd.System.Entities.Skills;
 using Dnd.GameManagers.Dice;
 using Dnd.System.Entities.GameActors;
+using Dnd.System.Entities.Items.Tools;
 
 public interface IClass : IDndEntity
 {
@@ -20,6 +21,10 @@ public interface IClass : IDndEntity
     EArmorType ArmorProficiencies { get; }
 
     EWeaponType WeaponProficiencies { get; }
+
+    EToolType ToolProficiencies { get; }
+
+    EToolType MulticlassToolProficiencies { get; }
 
     EArmorType MulticlassArmorProficiencies { get; }
 

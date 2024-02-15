@@ -20,7 +20,7 @@ public class Resistance : ATrait
         {
             if (DamageType.HasFlag(hasDamageResistance.DamageType))
             {
-                hasDamageResistance.SetValue(this, true);
+                hasDamageResistance.SetValue(this, true, $"You have damage resistance for {hasDamageResistance.DamageType}.");
             }
         }
         else if (command is CalculateDamage calculateDamage)

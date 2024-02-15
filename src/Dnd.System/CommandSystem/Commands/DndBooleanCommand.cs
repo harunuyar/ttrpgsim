@@ -14,19 +14,36 @@ public abstract class DndBooleanCommand : ADndCommand<BooleanResult>
 
     public override BooleanResult Result { get; }
 
-    public void SetValue(IBonusProvider bonusProvider, bool value)
+    public void SetValue(IDndEntity? bonusProvider, bool value, string message)
     {
         if (!IsForceCompleted)
         {
-            Result.SetValue(bonusProvider, value);
+            Result.SetValue(bonusProvider, value, message);
         }
     }
 
-    public void SetValueAndReturn(IBonusProvider bonusProvider, bool value)
+    public void SetValueAndReturn(IDndEntity? bonusProvider, bool value, string message)
     {
         if (!IsForceCompleted)
         {
-            Result.SetValue(bonusProvider, value);
+            Result.SetValue(bonusProvider, value, message);
+            ForceComplete();
+        }
+    }
+
+    public void SetValue(bool value, string message)
+    {
+        if (!IsForceCompleted)
+        {
+            Result.SetValue(null, value, message);
+        }
+    }
+
+    public void SetValueAndReturn(bool value, string message)
+    {
+        if (!IsForceCompleted)
+        {
+            Result.SetValue(null, value, message);
             ForceComplete();
         }
     }

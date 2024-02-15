@@ -17,6 +17,6 @@ public class CanDoSpellAttackAgainst : DndBooleanCommand
 
     protected override void InitializeResult()
     {
-        Result.SetValue("Default", true);
+        SetValue(true, "By default, anyone can cast a spell on you.");
     }
 }
