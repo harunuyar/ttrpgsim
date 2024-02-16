@@ -14,6 +14,6 @@ public class CanLearnSpell : DndBooleanCommand
 
     protected override void InitializeResult()
     {
-        Result.SetValue(false, "Default value");
+        Result.SetValue(false, $"{Actor.Name} can't learn {Spell.Name}.");
     }
 }

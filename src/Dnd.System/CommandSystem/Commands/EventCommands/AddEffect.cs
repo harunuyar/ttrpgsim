@@ -15,6 +15,6 @@ public class AddEffect : DndEventCommand
     protected override void FinalizeResult()
     {
         Effect.StartEffect();
-        Result.SetMessage($"Applied {Effect.Name} to {Effect.Target.Name}");
+        Result.SetMessage($"Applied {Effect.Name} to {Effect.Target.Name}.");
     }
 }

@@ -10,6 +10,6 @@ public class EndTurn : DndEventCommand
 
     protected override void FinalizeResult()
     {
-        Result.SetMessage($"{Actor.Name} has ended their turn");
+        Result.SetMessage($"{Actor.Name} has ended their turn.");
     }
 }

@@ -5,6 +5,7 @@ using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
 using Dnd.System.CommandSystem.Commands.EventCommands;
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 using Dnd.System.CommandSystem.Commands.RollCommands;
+using Dnd.System.CommandSystem.Commands.ValueCommands;
 using Dnd.System.CommandSystem.Results;
 using Dnd.System.Entities;
 using Dnd.System.Entities.Advantage;
@@ -47,33 +48,31 @@ public class WeaponAttackEvent : AEvent
             return valid;
         }
 
-        var canDoWeaponAttack = new CanDoWeaponAttack(Attacker, WeaponItem, Target);
-        var canDoWeaponAttackResult = canDoWeaponAttack.Execute();
+        var canAttack = new CanAttackTarget(Attacker, WeaponItem, Target).Execute();
 
-        if (!canDoWeaponAttackResult.IsSuccess)
+        if (!canAttack.IsSuccess)
         {
-            return BooleanResult.Failure("CanDoWeaponAttack failed: " + canDoWeaponAttackResult.ErrorMessage);
+            return BooleanResult.Failure("CanAttackTarget failed: " + canAttack.ErrorMessage);
         }
 
-        if (!canDoWeaponAttackResult.Value)
+        if (!canAttack.Value)
         {
-            return canDoWeaponAttackResult;
+            return canAttack;
         }
 
-        var canDoWeaponAttackAgainst = new CanDoWeaponAttackAgainst(Target, WeaponItem, Attacker);
-        var canDoWeaponAttackAgainstResult = canDoWeaponAttackAgainst.Execute();
+        var canBeTargeted = new CanBeTargeted(Target, Attacker).Execute();
 
-        if (!canDoWeaponAttackAgainstResult.IsSuccess)
+        if (!canBeTargeted.IsSuccess)
         {
-            return BooleanResult.Failure("CanDoWeaponAttackAgainst failed: " + canDoWeaponAttackAgainstResult.ErrorMessage);
+            return BooleanResult.Failure("CanBeTargeted failed: " + canBeTargeted.ErrorMessage);
         }
 
-        if (!canDoWeaponAttackAgainstResult.Value)
+        if (!canBeTargeted.Value)
         {
-            return canDoWeaponAttackAgainstResult;
+            return canBeTargeted;
         }
 
-        valid = canDoWeaponAttackAgainstResult;
+        valid = canBeTargeted;
         return valid;
     }
 
@@ -84,45 +83,23 @@ public class WeaponAttackEvent : AEvent
             return attackRollModifiers;
         }
 
-        var calculateWeaponAttackModifiers = new GetWeaponAttackModifier(Attacker, WeaponItem, Target);
-        var calculateWeaponAttackModifiersResult = calculateWeaponAttackModifiers.Execute();
+        var attackModifiers = new GetWeaponAttackModifier(Attacker, WeaponItem, Target).Execute();
 
-        if (!calculateWeaponAttackModifiersResult.IsSuccess)
+        if (!attackModifiers.IsSuccess)
         {
-            return IntegerResultWithBonus.Failure("CalculateWeaponAttackModifier failed: " + calculateWeaponAttackModifiersResult.ErrorMessage);
+            return IntegerResultWithBonus.Failure("CalculateWeaponAttackModifier failed: " + attackModifiers.ErrorMessage);
         }
 
-        var calculateWeaponAttackAgainstModifiers = new GetWeaponAttackModifierAgainst(Target, WeaponItem, Attacker);
-        var calculateWeaponAttackAgainstModifiersResult = calculateWeaponAttackAgainstModifiers.Execute();
+        var attackModifiersAgainst = new GetWeaponAttackModifierAgainst(Target, WeaponItem, Attacker).Execute();
 
-        if (!calculateWeaponAttackAgainstModifiersResult.IsSuccess)
+        if (!attackModifiersAgainst.IsSuccess)
         {
-            return IntegerResultWithBonus.Failure("CalculateWeaponAttackModifierAgainst failed: " + calculateWeaponAttackAgainstModifiersResult.ErrorMessage);
+            return IntegerResultWithBonus.Failure("CalculateWeaponAttackModifierAgainst failed: " + attackModifiersAgainst.ErrorMessage);
         }
 
-        foreach (var pair in calculateWeaponAttackAgainstModifiersResult.BonusCollection.Advantages)
-        {
-            calculateWeaponAttackModifiersResult.BonusCollection.Advantages.Add(pair);
-        }
+        attackModifiers.AddAsBonus(new CustomDndEntity("Target Base"), attackModifiersAgainst);
 
-        foreach (var pair in calculateWeaponAttackAgainstModifiersResult.BonusCollection.RollSuccesses)
-        {
-            calculateWeaponAttackModifiersResult.BonusCollection.RollSuccesses.Add(pair);
-        }
-
-        foreach (var pair in calculateWeaponAttackAgainstModifiersResult.BonusCollection.Values)
-        {
-            calculateWeaponAttackModifiersResult.BonusCollection.Values.Add(pair);
-        }
-
-        if (calculateWeaponAttackAgainstModifiersResult.BaseValue != 0)
-        {
-            calculateWeaponAttackModifiersResult.BonusCollection.Values.Add((
-                calculateWeaponAttackAgainstModifiersResult.BaseSource ?? new CustomDndEntity("Target Base"), 
-                calculateWeaponAttackAgainstModifiersResult.BaseValue));
-        }
-
-        attackRollModifiers = calculateWeaponAttackModifiersResult;
+        attackRollModifiers = attackModifiers;
         return attackRollModifiers;
     }
 
@@ -172,6 +149,16 @@ public class WeaponAttackEvent : AEvent
             return 0;
         }
 
+        if (attackRollModifiers.RollResult.IsSuccess())
+        {
+            return 100;
+        }
+
+        if (attackRollModifiers.RollResult.IsFailure())
+        {
+            return 0;
+        }
+
         var armorClass = GetArmorClass();
         if (!armorClass.IsSuccess)
         {
@@ -188,60 +175,37 @@ public class WeaponAttackEvent : AEvent
         return rollAttack.Execute();
     }
 
-    public BooleanResult CanHit(int attackRollWithoutModifiers)
+    public ValueResult<ERollResult> GetRollResult(int roll)
     {
-        var isValid = IsValid();
-        if (!isValid.IsSuccess)
+        var armorClass = GetArmorClass();
+
+        if (!armorClass.IsSuccess)
         {
-            return BooleanResult.Failure("IsValid failed: " + isValid.ErrorMessage);
-        }
-
-        var isCriticalHit = new IsCriticalSuccess(Attacker, attackRollWithoutModifiers);
-        var isCriticalHitResult = isCriticalHit.Execute();
-
-        if (!isCriticalHitResult.IsSuccess)
-        {
-            return BooleanResult.Failure("IsCriticalHit failed: " + isCriticalHitResult.ErrorMessage);
-        }
-
-        if (isCriticalHitResult.Value)
-        {
-            return BooleanResult.Success("Critical Hit", true);
-        }
-
-        var isCriticalMiss = new IsCriticalFailure(Attacker, attackRollWithoutModifiers);
-        var isCriticalMissResult = isCriticalMiss.Execute();
-
-        if (!isCriticalMissResult.IsSuccess)
-        {
-            return BooleanResult.Failure("IsCriticalMiss failed: " + isCriticalMissResult.ErrorMessage);
-        }
-
-        if (isCriticalMissResult.Value)
-        {
-            return BooleanResult.Success("Critical Miss", false);
+            return ValueResult<ERollResult>.Failure("GetArmorClass failed: " + armorClass.ErrorMessage);
         }
 
         var attackRollModifiers = GetAttackRollModifiers();
+
         if (!attackRollModifiers.IsSuccess)
         {
-            return BooleanResult.Failure("GetAttackRollModifiers failed: " + attackRollModifiers.ErrorMessage);
+            return ValueResult<ERollResult>.Failure("GetArmorClass failed: " + armorClass.ErrorMessage);
         }
 
-        var armorClass = GetArmorClass();
-        if (!armorClass.IsSuccess)
-        {
-            return BooleanResult.Failure("GetArmorClass failed: " + armorClass.ErrorMessage);
-        }
+        var rollSuccess = new GetRollSuccess(Attacker, armorClass.Value, roll, attackRollModifiers.Value).Execute();
 
-        return BooleanResult.Success("Result", attackRollWithoutModifiers + attackRollModifiers.Value >= armorClass.Value);
+        return rollSuccess;
     }
 
-    public RollResult RollDamageDice(ERollSuccess attackRollSuccess)
+    public RollResult RollDamageDice(ERollResult attackRollSuccess)
     {
         if (WeaponItem.ItemDescription is not IWeapon weapon)
         {
-            return RollResult.Failure("Item is not a weapon");
+            return RollResult.Failure("Item is not a weapon.");
+        }
+
+        if (attackRollSuccess.IsFailure())
+        {
+            return RollResult.Empty();
         }
 
         if (weapon.DamageCalculationType == EDamageCalculationType.Constant)
@@ -257,24 +221,12 @@ public class WeaponAttackEvent : AEvent
 
         IntegerResultWithBonus damageModifiers = GetWeaponDamageModifiers();
         
-        var rollAttack = new RollDamage(EventListener, Attacker, damageModifiers.BonusCollection.Advantage, damageDie);
+        var rollAttack = new RollDamage(EventListener, Attacker, damageModifiers.Advantage, damageDie, attackRollSuccess.IsCriticalSuccess());
         var rollResult = rollAttack.Execute();
 
         if (!rollResult.IsSuccess)
         {
             return RollResult.Failure("RollDamage failed: " + rollResult.ErrorMessage);
-        }
-
-        if (attackRollSuccess == ERollSuccess.CriticalSuccess)
-        {
-            var secondRollResult = rollAttack.Execute();
-
-            if (!secondRollResult.IsSuccess)
-            {
-                return RollResult.Failure("RollDamage failed: " + secondRollResult.ErrorMessage);
-            }
-
-            return rollResult.CreateMergedResult(secondRollResult);
         }
 
         return rollResult;
@@ -294,8 +246,7 @@ public class WeaponAttackEvent : AEvent
             return IntegerResultWithBonus.Failure("GetWeaponDamageModifier failed: " + damageModifiers.ErrorMessage);
         }
 
-        var calculateDamage = new CalculateDamage(Target, damageRollWithoutModifiers + damageModifiers.Value, ((IWeapon)WeaponItem.ItemDescription).DamageType);
-        var calculateDamageResult = calculateDamage.Execute();
+        var calculateDamageResult = new CalculateDamage(Target, damageRollWithoutModifiers + damageModifiers.Value, ((IWeapon)WeaponItem.ItemDescription).DamageType).Execute();
 
         if (!calculateDamageResult.IsSuccess)
         {
@@ -339,14 +290,14 @@ public class WeaponAttackEvent : AEvent
             return EventResult.Failure("GetAttackRollModifiers failed: " + attackRollModifiers.ErrorMessage);
         }
 
-        if (attackRollModifiers.RollSuccess == ERollSuccess.CriticalFailure)
+        ERollResult rollResult = attackRollModifiers.RollResult;
+
+        if (rollResult.IsFailure())
         {
             return EventResult.Success("Attack missed due to critical failure");
         }
 
-        bool isCriticalHit = attackRollModifiers.RollSuccess == ERollSuccess.CriticalSuccess;
-
-        if (!isCriticalHit)
+        if (!rollResult.IsSuccess())
         {
             var attackRoll = RollAttackDice();
             if (!attackRoll.IsSuccess)
@@ -354,29 +305,17 @@ public class WeaponAttackEvent : AEvent
                 return EventResult.Failure("RollAttackDice failed: " + attackRoll.ErrorMessage);
             }
 
-            var canHitCommand = CanHit(attackRoll.Value);
-            if (!canHitCommand.IsSuccess)
+            var rollCommandResult = GetRollResult(attackRoll.Value);
+
+            if (!rollCommandResult.IsSuccess)
             {
-                return EventResult.Failure("CanHit failed: " + canHitCommand.ErrorMessage);
+                return EventResult.Failure("GetRollResult failed: " + rollCommandResult.ErrorMessage);
             }
 
-            if (!canHitCommand.Value)
-            {
-                return EventResult.Success("Attack missed");
-            }
-
-            var IsCriticalSuccess = new IsCriticalSuccess(Attacker, attackRoll.Value);
-            var IsCriticalSuccessResult = IsCriticalSuccess.Execute();
-
-            if (!IsCriticalSuccessResult.IsSuccess)
-            {
-                return EventResult.Failure("IsCriticalHit failed: " + IsCriticalSuccessResult.ErrorMessage);
-            }
-
-            isCriticalHit = IsCriticalSuccessResult.Value;
+            rollResult = rollCommandResult.Value;
         }
 
-        var damageRoll = RollDamageDice(isCriticalHit ? ERollSuccess.CriticalSuccess : ERollSuccess.Regular);
+        var damageRoll = RollDamageDice(rollResult);
         if (!damageRoll.IsSuccess)
         {
             return EventResult.Failure("RollDamageDice failed: " + damageRoll.ErrorMessage);

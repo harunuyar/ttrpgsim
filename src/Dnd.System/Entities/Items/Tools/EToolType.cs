@@ -1,5 +1,6 @@
 ﻿namespace Dnd.System.Entities.Items.Tools;
 
+[Flags]
 public enum EToolType : long
 {
     None            = 0x0000000000000000,

@@ -1,5 +1,6 @@
 ﻿namespace Dnd.System.Entities.Items.Equipments.Weapons;
 
+[Flags]
 public enum EWeaponType : long
 {
     None                = 0x0000000000000000,

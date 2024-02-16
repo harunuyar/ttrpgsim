@@ -21,6 +21,8 @@ public class GetWeaponAttackModifier : DndScoreCommand
 
     protected override void InitializeResult()
     {
+        Result.SetBaseValue("Base", 0);
+
         if (WeaponItem.ItemDescription is not IWeapon weapon)
         {
             SetErrorAndReturn("Item is not a weapon");
@@ -33,8 +35,7 @@ public class GetWeaponAttackModifier : DndScoreCommand
             return;
         }
 
-        var getStrengthModifier = new GetAttributeModifier(this.Actor, EAttributeType.Strength);
-        var strengthModifier = getStrengthModifier.Execute();
+        var strengthModifier = new GetAttributeModifier(this.Actor, EAttributeType.Strength).Execute();
 
         if (!strengthModifier.IsSuccess)
         {
@@ -43,7 +44,7 @@ public class GetWeaponAttackModifier : DndScoreCommand
         }
 
         IAttribute usedAttribute = this.Actor.AttributeSet.GetAttribute(EAttributeType.Strength);
-        int attributeModifier = strengthModifier.Value;
+        var attributeModifier = strengthModifier;
 
         if (weapon.WeaponProperties.HasFlag(EWeaponProperty.Finesse | EWeaponProperty.Range))
         {
@@ -56,14 +57,14 @@ public class GetWeaponAttackModifier : DndScoreCommand
                 return;
             }
 
-            if (dexterityModifier.Value > attributeModifier)
+            if (dexterityModifier.Value > attributeModifier.Value)
             {
-                attributeModifier = dexterityModifier.Value;
+                attributeModifier = dexterityModifier;
                 usedAttribute = this.Actor.AttributeSet.GetAttribute(EAttributeType.Dexterity);
             }
         }
 
-        Result.SetBaseValue(usedAttribute, attributeModifier);
+        Result.AddAsBonus(usedAttribute, attributeModifier);
 
         var hasProficiency = new HasWeaponProficiency(this.Actor, weapon.WeaponType).Execute();
 

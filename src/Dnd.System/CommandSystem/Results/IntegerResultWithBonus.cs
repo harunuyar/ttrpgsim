@@ -26,7 +26,7 @@ public class IntegerResultWithBonus : ICommandResult
 
     public EAdvantage Advantage => BonusCollection.Advantage;
 
-    public ERollSuccess RollSuccess => BonusCollection.RollSuccess;
+    public ERollResult RollResult => BonusCollection.RollSuccess;
 
     public int Value => BaseValue + BonusCollection.TotalValue;
 
@@ -55,13 +55,34 @@ public class IntegerResultWithBonus : ICommandResult
         SetBaseValue(new CustomDndEntity(source), value);
     }
 
-    public void Reset()
+    public void Set(IntegerResultWithBonus other)
     {
-        IsSuccess = true;
-        ErrorMessage = null;
-        BaseSource = null;
-        BaseValue = 0;
-        BonusCollection.Reset();
+        if (other.IsSuccess)
+        {
+            IsSuccess = true;
+            BaseSource = other.BaseSource;
+            BaseValue = other.BaseValue;
+
+            foreach (var (bonusSource, bonusValue) in other.BonusCollection.Values)
+            {
+                BonusCollection.AddBonus(bonusSource, bonusValue);
+            }
+
+            foreach (var (advantageSource, advantage) in other.BonusCollection.Advantages)
+            {
+                BonusCollection.AddAdvantage(advantageSource, advantage);
+            }
+
+            foreach (var (rollSuccessSource, rollSuccess) in other.BonusCollection.RollSuccesses)
+            {
+                BonusCollection.AddRollSuccess(rollSuccessSource, rollSuccess);
+            }
+        }
+        else
+        {
+            IsSuccess = false;
+            ErrorMessage = other.ErrorMessage;
+        }
     }
 
     public void AddAsBonus(string source, IntegerResultWithBonus other)
@@ -77,6 +98,25 @@ public class IntegerResultWithBonus : ICommandResult
         {
             BonusCollection.AddBonus(bonusSource, bonusValue);
         }
+
+        foreach (var (advantageSource, advantage) in other.BonusCollection.Advantages)
+        {
+            BonusCollection.AddAdvantage(advantageSource, advantage);
+        }
+
+        foreach (var (rollSuccessSource, rollSuccess) in other.BonusCollection.RollSuccesses)
+        {
+            BonusCollection.AddRollSuccess(rollSuccessSource, rollSuccess);
+        }
+    }
+
+    public void Reset()
+    {
+        IsSuccess = true;
+        ErrorMessage = null;
+        BaseSource = null;
+        BaseValue = 0;
+        BonusCollection.Reset();
     }
 
     public override string ToString()

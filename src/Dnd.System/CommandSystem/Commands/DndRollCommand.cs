@@ -19,7 +19,7 @@ public abstract class DndRollCommand : ADndCommand<RollResult>
 
     public EAdvantage Advantage { get; }
 
-    public ERollSuccess RollSuccess { get; }
+    public ERollResult RollSuccess { get; }
 
     public DiceRoll DiceRoll { get; }
 

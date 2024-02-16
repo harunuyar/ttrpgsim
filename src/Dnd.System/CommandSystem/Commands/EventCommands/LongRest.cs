@@ -24,6 +24,6 @@ public class LongRest : DndEventCommand
 
     protected override void FinalizeResult()
     {
-        Result.SetMessage($"You have rested for {TimeSpent.TotalHours} hours.");
+        Result.SetMessage($"{Actor.Name} has rested for {TimeSpent.TotalHours} hours.");
     }
 }

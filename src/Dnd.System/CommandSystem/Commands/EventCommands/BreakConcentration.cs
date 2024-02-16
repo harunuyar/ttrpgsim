@@ -13,7 +13,7 @@ public class BreakConcentration : DndEventCommand
         if (Actor.EffectsTable.Concentration != null)
         {
             Actor.EffectsTable.RemoveConcentration();
-            Result.SetMessage($"{Actor.Name} has lost concentration");
+            Result.SetMessage($"{Actor.Name} has lost concentration.");
         }
     }
 }

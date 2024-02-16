@@ -16,6 +16,8 @@ public class GetSkillModifier : DndScoreCommand
 
     protected override void InitializeResult()
     {
+        Result.SetBaseValue("Base", 0);
+
         var attributeModifierResult = new GetAttributeModifier(Actor, Skill.AttributeType).Execute();
 
         if (!attributeModifierResult.IsSuccess)
@@ -24,7 +26,7 @@ public class GetSkillModifier : DndScoreCommand
             return;
         }
 
-        Result.SetBaseValue(attributeModifierResult.BaseSource ?? Actor.AttributeSet.GetAttribute(Skill.AttributeType), attributeModifierResult.Value);
+        Result.AddAsBonus(Actor.AttributeSet.GetAttribute(Skill.AttributeType), attributeModifierResult);
 
         var proficiencyBonus = new GetProficiencyBonus(Actor).Execute();
 

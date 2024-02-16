@@ -14,6 +14,8 @@ public class GetUnarmedAttackModifier : DndScoreCommand
 
     protected override void InitializeResult()
     {
+        Result.SetBaseValue("Base", 0);
+
         var strengthModifier = new GetAttributeModifier(Actor, EAttributeType.Strength).Execute();
 
         if (!strengthModifier.IsSuccess)
@@ -23,7 +25,7 @@ public class GetUnarmedAttackModifier : DndScoreCommand
         }
 
         IAttribute usedAttribute = Actor.AttributeSet.GetAttribute(EAttributeType.Strength);
-        int attributeModifier = strengthModifier.Value;
+        var attributeModifier = strengthModifier;
 
         var dexterityModifier = new GetAttributeModifier(Actor, EAttributeType.Dexterity).Execute();
 
@@ -33,13 +35,13 @@ public class GetUnarmedAttackModifier : DndScoreCommand
             return;
         }
 
-        if (dexterityModifier.Value > attributeModifier)
+        if (dexterityModifier.Value > attributeModifier.Value)
         {
-            attributeModifier = dexterityModifier.Value;
+            attributeModifier = dexterityModifier;
             usedAttribute = Actor.AttributeSet.GetAttribute(EAttributeType.Dexterity);
         }
 
-        Result.SetBaseValue(usedAttribute, attributeModifier);
+        Result.AddAsBonus(usedAttribute, attributeModifier);
 
         var proficiencyBonus = new GetProficiencyBonus(Actor).Execute();
 

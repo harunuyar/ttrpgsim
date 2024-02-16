@@ -14,6 +14,6 @@ public class HasSkillHalfProficiency : DndBooleanCommand
 
     protected override void InitializeResult()
     {
-        Result.SetValue(false, "By default, you don't have skill half proficiency.");
+        Result.SetValue(false, $"{Actor.Name} doesn't have {Skill.Name} skill half proficiency.");
     }
 }

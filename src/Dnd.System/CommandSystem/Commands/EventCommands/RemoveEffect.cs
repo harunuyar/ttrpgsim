@@ -15,6 +15,6 @@ internal class RemoveEffect : DndEventCommand
     protected override void FinalizeResult()
     {
         Effect.RemoveEffect();
-        Result.SetMessage($"Removed {Effect.Name} from {Effect.Target.Name}");
+        Result.SetMessage($"Removed {Effect.Name} from {Effect.Target.Name}.");
     }
 }

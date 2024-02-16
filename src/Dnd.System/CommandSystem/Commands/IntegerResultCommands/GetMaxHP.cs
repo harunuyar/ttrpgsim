@@ -16,8 +16,7 @@ public class GetMaxHP : DndScoreCommand
     {
         Result.SetBaseValue("Base", Actor.HitPoints.HitPointRolls.Sum());
 
-        var getConstModifier = new GetAttributeModifier(Actor, EAttributeType.Constitution);
-        var constModifierResult = getConstModifier.Execute();
+        var constModifierResult = new GetAttributeModifier(Actor, EAttributeType.Constitution).Execute();
 
         if (!constModifierResult.IsSuccess)
         {

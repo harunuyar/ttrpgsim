@@ -24,6 +24,6 @@ public class ShortRest : DndEventCommand
 
     protected override void FinalizeResult()
     {
-        Result.SetMessage($"You have rested for {TimeSpent.TotalMinutes} minutes.");
+        Result.SetMessage($"{Actor.Name} have rested for {TimeSpent.TotalMinutes} minutes.");
     }
 }

@@ -13,6 +13,6 @@ public class PassTime : DndEventCommand
 
     protected override void FinalizeResult()
     {
-        Result.SetMessage($"{TimeSpan} has passed");
+        Result.SetMessage($"{TimeSpan} has passed.");
     }
 }

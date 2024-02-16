@@ -2,6 +2,8 @@
 
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 using Dnd.System.CommandSystem.Commands.RollCommands;
+using Dnd.System.CommandSystem.Commands.ValueCommands;
+using Dnd.System.Entities.Advantage;
 using Dnd.System.Entities.Damage;
 using Dnd.System.Entities.GameActors;
 
@@ -43,6 +45,18 @@ public class ConcentrationCheckAfterDamage : DndEventCommand
             return;
         }
 
+        if (savingThrowModifierResult.RollResult.IsCriticalSuccess())
+        {
+            Result.SetMessage($"{Actor.Name} has guaranteed critical success to maintain concentration.");
+            return;
+        }
+        else if (savingThrowModifierResult.RollResult.IsCriticalFailure())
+        {
+            Result.SetMessage($"{Actor.Name} has guaranteed critical failure to maintain concentration.");
+            Actor.EffectsTable.RemoveConcentration();
+            return;
+        }
+
         var rollConcentrationSavingThrow = new RollConcentrationSavingThrow(EventListener, Actor, savingThrowModifierResult.BonusCollection.Advantage);
         var rollResult = rollConcentrationSavingThrow.Execute();
 
@@ -52,7 +66,15 @@ public class ConcentrationCheckAfterDamage : DndEventCommand
             return;
         }
 
-        if (rollResult.Value + savingThrowModifierResult.Value < savingDCResult.Value)
+        var rollSuccess = new GetRollSuccess(Actor, savingDCResult.Value, rollResult.Value, savingThrowModifierResult.Value).Execute();
+
+        if (!rollSuccess.IsSuccess)
+        {
+            Result.SetError($"{Actor.Name} could not roll a concentration check. GetRollResult: " + rollResult.ErrorMessage);
+            return;
+        }
+
+        if (rollSuccess.Value.IsFailure())
         {
             Result.SetMessage($"{Actor.Name} failed their concentration check and lost concentration. Rolled: {rollResult.Value} + Constitution saving throw modifier: {savingThrowModifierResult.Value} against {savingDCResult.Value} DC");
             Actor.EffectsTable.RemoveConcentration();

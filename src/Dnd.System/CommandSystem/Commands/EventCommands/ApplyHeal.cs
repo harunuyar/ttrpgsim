@@ -14,6 +14,6 @@ public class ApplyHeal : DndEventCommand
     protected override void FinalizeResult()
     {
         Actor.HitPoints.Heal(Amount);
-        Result.SetMessage($"Healed {Actor.Name} by {Amount}");
+        Result.SetMessage($"Healed {Actor.Name} by {Amount}.");
     }
 }

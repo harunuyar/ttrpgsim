@@ -1,5 +1,6 @@
 ﻿namespace Dnd.System.Entities.Items.Equipments.Weapons;
 
+[Flags]
 public enum EWeaponProperty : int
 {
     Ammunition      = 0x0001,

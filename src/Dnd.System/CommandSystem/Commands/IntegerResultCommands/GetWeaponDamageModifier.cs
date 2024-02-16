@@ -26,8 +26,9 @@ public class GetWeaponDamageModifier : DndScoreCommand
             return;
         }
 
-        var getStrengthModifier = new GetAttributeModifier(this.Actor, EAttributeType.Strength);
-        var strengthModifier = getStrengthModifier.Execute();
+        Result.SetBaseValue("Base", 0);
+
+        var strengthModifier = new GetAttributeModifier(this.Actor, EAttributeType.Strength).Execute();
 
         if (!strengthModifier.IsSuccess)
         {
@@ -36,12 +37,11 @@ public class GetWeaponDamageModifier : DndScoreCommand
         }
 
         IAttribute usedAttribute = this.Actor.AttributeSet.GetAttribute(EAttributeType.Strength);
-        int attributeModifier = strengthModifier.Value;
+        var attributeModifier = strengthModifier;
 
         if (weapon.WeaponProperties.HasFlag(EWeaponProperty.Finesse | EWeaponProperty.Range))
         {
-            var getDexterityModifier = new GetAttributeModifier(this.Actor, EAttributeType.Dexterity);
-            var dexterityModifier = getDexterityModifier.Execute();
+            var dexterityModifier = new GetAttributeModifier(this.Actor, EAttributeType.Dexterity).Execute();
 
             if (!dexterityModifier.IsSuccess)
             {
@@ -49,20 +49,16 @@ public class GetWeaponDamageModifier : DndScoreCommand
                 return;
             }
 
-            if (dexterityModifier.Value > attributeModifier)
+            if (dexterityModifier.Value > attributeModifier.Value)
             {
-                attributeModifier = dexterityModifier.Value;
+                attributeModifier = dexterityModifier;
                 usedAttribute = this.Actor.AttributeSet.GetAttribute(EAttributeType.Dexterity);
             }
         }
 
-        if (WeaponItem == Actor.Inventory.Equipments.MainHandWeapon || attributeModifier < 0)
+        if (WeaponItem == Actor.Inventory.Equipments.MainHandWeapon || attributeModifier.Value < 0)
         {
-            Result.SetBaseValue(usedAttribute, attributeModifier);
-        }
-        else
-        {
-            Result.SetBaseValue("Base", 0);
+            Result.AddAsBonus(usedAttribute, attributeModifier);
         }
     }
 }

@@ -8,12 +8,12 @@ using Dnd.System.Entities.Spells;
 
 public class GetSpellSavingDC : DndScoreCommand
 {
-    public GetSpellSavingDC(IGameActor character, ISpell spell) : base(character)
+    public GetSpellSavingDC(IGameActor character, IAttackingSpell spell) : base(character)
     {
         Spell = spell;
     }
 
-    public ISpell Spell { get; }
+    public IAttackingSpell Spell { get; }
 
     protected override void InitializeResult()
     {

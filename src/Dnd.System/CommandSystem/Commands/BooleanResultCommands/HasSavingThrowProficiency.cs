@@ -14,6 +14,6 @@ public class HasSavingThrowProficiency : DndBooleanCommand
 
     protected override void InitializeResult()
     {
-        Result.SetValue(false, "By default, you don't have saving throw proficiency.");
+        Result.SetValue(false, $"{Actor.Name} doesn't have {AttributeType} saving throw proficiency.");
     }
 }

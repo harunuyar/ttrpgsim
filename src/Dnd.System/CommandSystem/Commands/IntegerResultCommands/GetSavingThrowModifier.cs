@@ -19,6 +19,8 @@ public class GetSavingThrowModifier : DndScoreCommand
 
     protected override void InitializeResult()
     {
+        Result.SetBaseValue("Base", 0);
+
         var attributeModifierResult = new GetAttributeModifier(Actor, AttributeType).Execute();
 
         if (!attributeModifierResult.IsSuccess)
@@ -27,7 +29,7 @@ public class GetSavingThrowModifier : DndScoreCommand
             return;
         }
 
-        Result.SetBaseValue(Actor.AttributeSet.GetAttribute(AttributeType), attributeModifierResult.Value);
+        Result.AddAsBonus(Actor.AttributeSet.GetAttribute(AttributeType), attributeModifierResult);
 
         var hasSavingThrowProficiency = new HasSavingThrowProficiency(Actor, AttributeType).Execute();
 

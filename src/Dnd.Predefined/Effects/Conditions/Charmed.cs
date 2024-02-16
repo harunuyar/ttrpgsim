@@ -19,13 +19,9 @@ public class Charmed : AEffect
     {
         base.HandleCommand(command);
 
-        if (command is CanDoWeaponAttack canDoWeaponAttack && canDoWeaponAttack.Target == Charmer)
+        if (command is CanAttackTarget canAttackTarget && canAttackTarget.Target == Charmer)
         {
-            canDoWeaponAttack.SetValue(this, false, "You can't directly harm your charmer.");
-        }
-        else if (command is CanDoSpellAttack canDoSpellAttack && canDoSpellAttack.Target == Charmer)
-        {
-            canDoSpellAttack.SetValue(this, false, "You can't directly harm your charmer.");
+            canAttackTarget.SetValue(this, false, "You can't directly harm your charmer.");
         }
     }
 }

@@ -16,7 +16,7 @@ public class LearnSpell : DndEventCommand
     {
         if (Result.Message == null)
         {
-            Result.SetError("Failed to add spell to known spells.");
+            Result.SetError($"{Actor.Name} has failed to add {Spell.Name} to known spells.");
         }
     }
 }

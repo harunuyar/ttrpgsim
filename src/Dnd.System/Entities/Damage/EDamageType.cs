@@ -1,5 +1,6 @@
 ﻿namespace Dnd.System.Entities.Damage;
 
+[Flags]
 public enum EDamageType : ushort
 {
     None            = 0x0000,

@@ -14,6 +14,6 @@ public class HasArmorProficiency : DndBooleanCommand
 
     protected override void InitializeResult()
     {
-        Result.SetValue(false, "By default, you don't have armor proficiency.");
+        Result.SetValue(false, $"{Actor.Name} doesn't have {ArmorType} proficiency.");
     }
 }

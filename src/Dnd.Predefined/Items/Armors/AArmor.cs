@@ -57,9 +57,12 @@ public abstract class AArmor : IArmor
 
     public virtual void HandleCommand(ICommand command)
     {
-        if (command is GetSkillModifier getSkillModifier && DisadvantageToStealth && getSkillModifier.Skill == Stealth.Instance)
+        if (command is GetSkillModifier getSkillModifier)
         {
-            getSkillModifier.AddAdvantage(this, EAdvantage.Disadvantage);
+            if (DisadvantageToStealth && getSkillModifier.Skill == Stealth.Instance)
+            {
+                getSkillModifier.AddAdvantage(this, EAdvantage.Disadvantage);
+            }
         }
         else if (command is GetArmorClass getArmorClass)
         {
@@ -74,14 +77,35 @@ public abstract class AArmor : IArmor
                 getArmorClass.AddBonus(this, dexterityBonusDifference);
             }
         }
-        else if (command is CanEquipItem canEquipItem && canEquipItem.Item.ItemDescription == this)
+        else if (command is CanEquipItem canEquipItem)
         {
-            var getStrengthScore = new GetAttributeScore(canEquipItem.Actor, EAttributeType.Strength);
-            var strengthScore = getStrengthScore.Execute();
-
-            if (strengthScore.IsSuccess && strengthScore.Value < StrengthRequirement)
+            if (canEquipItem.Item.ItemDescription == this)
             {
-                canEquipItem.SetValue(this, false, "You don't have enough strength to wear this armor.");
+                var getStrengthScore = new GetAttributeScore(canEquipItem.Actor, EAttributeType.Strength);
+                var strengthScore = getStrengthScore.Execute();
+
+                if (strengthScore.IsSuccess && strengthScore.Value < StrengthRequirement)
+                {
+                    canEquipItem.SetValue(this, false, "You don't have enough strength to wear this armor.");
+                }
+            }
+        }
+        else if (command is GetAttributeModifier getAttributeModifier)
+        {
+            if ((getAttributeModifier.AttributeType & (EAttributeType.Strength | EAttributeType.Dexterity)) != EAttributeType.None)
+            {
+                var hasArmorProficiency = new HasArmorProficiency(getAttributeModifier.Actor, ArmorType).Execute();
+
+                if (!hasArmorProficiency.IsSuccess)
+                {
+                    getAttributeModifier.SetErrorAndReturn("HasArmorProficiency: " + hasArmorProficiency.ErrorMessage);
+                    return;
+                }
+
+                if (!hasArmorProficiency.Value)
+                {
+                    getAttributeModifier.AddAdvantage(this, EAdvantage.Disadvantage);
+                }
             }
         }
     }

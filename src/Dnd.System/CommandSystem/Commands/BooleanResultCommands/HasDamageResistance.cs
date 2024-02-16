@@ -15,6 +15,6 @@ public class HasDamageResistance : DndBooleanCommand
 
     protected override void InitializeResult()
     {
-        Result.SetValue(false, "By default, you don't have any resistance.");
+        Result.SetValue(false, $"{Actor.Name} doesn't have resistance to {DamageType}");
     }
 }

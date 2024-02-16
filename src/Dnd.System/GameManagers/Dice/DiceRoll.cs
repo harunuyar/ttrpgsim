@@ -52,4 +52,9 @@ public class DiceRoll
 
         return rolls;
     }
+
+    public static DiceRoll operator*(DiceRoll diceRoll, int multiplier)
+    {
+        return new DiceRoll(diceRoll.NumberOfDice * multiplier, diceRoll.DiceType);
+    }
 }

@@ -11,8 +11,9 @@ public class GetInitiativeModifier : DndScoreCommand
 
     protected override void InitializeResult()
     {
-        var getDexterityModifierCommand = new GetAttributeModifier(Actor, EAttributeType.Dexterity);
-        var dexterityModifierResult = getDexterityModifierCommand.Execute();
+        Result.SetBaseValue("Base Initiative", 0);
+
+        var dexterityModifierResult = new GetAttributeModifier(Actor, EAttributeType.Dexterity).Execute();
 
         if (!dexterityModifierResult.IsSuccess)
         {
@@ -20,6 +21,6 @@ public class GetInitiativeModifier : DndScoreCommand
             return;
         }
 
-        Result.SetBaseValue(Actor.AttributeSet.Dexterity, dexterityModifierResult.Value);
+        Result.AddAsBonus(Actor.AttributeSet.Dexterity, dexterityModifierResult);
     }
 }

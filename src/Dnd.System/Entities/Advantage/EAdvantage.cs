@@ -1,5 +1,6 @@
 ﻿namespace Dnd.System.Entities.Advantage;
 
+[Flags]
 public enum EAdvantage : byte
 {
     None = 0,

@@ -7,18 +7,20 @@ using Dnd.System.Entities.Spells;
 
 public class GetSpellAttackModifier : DndScoreCommand
 {
-    public GetSpellAttackModifier(IGameActor character, ISpell spell, IGameActor target) : base(character)
+    public GetSpellAttackModifier(IGameActor character, IAttackingSpell spell, IGameActor target) : base(character)
     {
         Spell = spell;
         Target = target;
     }
 
-    public ISpell Spell { get; }
+    public IAttackingSpell Spell { get; }
 
     public IGameActor Target { get; }
 
     protected override void InitializeResult()
     {
+        Result.SetBaseValue("Base", 0);
+
         if (Spell.SuccessMeasuringType != ESuccessMeasuringType.AttackRoll)
         {
             SetErrorAndReturn("Spell doesn't use attack roll");
@@ -47,7 +49,7 @@ public class GetSpellAttackModifier : DndScoreCommand
             return;
         }
             
-        Result.SetBaseValue(attributeModifier.BaseSource ?? Actor.AttributeSet.GetAttribute(spellCasterAttribute.Value), attributeModifier.Value);
+        Result.AddAsBonus(attributeModifier.BaseSource ?? Actor.AttributeSet.GetAttribute(spellCasterAttribute.Value), attributeModifier);
         
         var proficiencyBonus = new GetProficiencyBonus(Actor).Execute();
 

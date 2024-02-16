@@ -16,8 +16,7 @@ public class GetPassiveSkillValue : DndScoreCommand
     {
         Result.SetBaseValue("Base", 10);
 
-        var getSkillModifierCommand = new GetSkillModifier(Actor, Skill);
-        var skillModifierResult = getSkillModifierCommand.Execute();
+        var skillModifierResult = new GetSkillModifier(Actor, Skill).Execute();
 
         if (!skillModifierResult.IsSuccess)
         {
@@ -25,6 +24,6 @@ public class GetPassiveSkillValue : DndScoreCommand
             return;
         }
 
-        Result.BonusCollection.AddBonus(Skill, skillModifierResult.Value);
+        Result.AddAsBonus(Skill, skillModifierResult);
     }
 }

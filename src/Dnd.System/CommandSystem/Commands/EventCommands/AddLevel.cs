@@ -18,13 +18,13 @@ public class AddLevel : DndEventCommand
 
         if (currentLevel + 1 != Level.Level)
         {
-            SetErrorAndReturn($"{Actor.Name} is not ready to become {Level.Name}");
+            SetErrorAndReturn($"{Actor.Name} is not ready to become {Level.Name}.");
         }
     }
 
     protected override void FinalizeResult()
     {
         Actor.LevelInfo.AddLevel(Level);
-        Result.SetMessage($"{Actor.Name} has become {Level.Name}");
+        Result.SetMessage($"{Actor.Name} has become {Level.Name}.");
     }
 }

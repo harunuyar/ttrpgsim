@@ -1,6 +1,6 @@
 ﻿namespace Dnd.GameManagers.Dice;
 
-public enum EDiceType
+public enum EDiceType : byte
 {
     d4 = 4,
     d6 = 6,

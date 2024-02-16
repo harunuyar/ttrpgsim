@@ -1,5 +1,6 @@
 ﻿namespace Dnd.System.Entities.Attributes;
 
+[Flags]
 public enum EAttributeType : byte
 {
     None = 0,

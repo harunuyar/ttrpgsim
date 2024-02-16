@@ -7,6 +7,4 @@ public interface ISpell : IDndEntity
     int Level { get; }
 
     TimeSpan CastingTime { get; }
-
-    ESuccessMeasuringType SuccessMeasuringType { get; }
 }

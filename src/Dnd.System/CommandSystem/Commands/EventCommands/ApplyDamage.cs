@@ -18,6 +18,6 @@ public class ApplyDamage : DndEventCommand
     protected override void FinalizeResult()
     {
         Actor.HitPoints.Damage(Damage);
-        Result.SetMessage($"Dealt {Damage} damage to {Actor.Name}");
+        Result.SetMessage($"Dealt {Damage} damage to {Actor.Name}.");
     }
 }

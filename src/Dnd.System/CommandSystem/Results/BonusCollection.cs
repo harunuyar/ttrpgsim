@@ -16,13 +16,13 @@ public class BonusCollection
 
     public List<(IDndEntity Source, EAdvantage Advantage)> Advantages { get; }
 
-    public List<(IDndEntity Source, ERollSuccess RollSuccess)> RollSuccesses { get; }
+    public List<(IDndEntity Source, ERollResult RollSuccess)> RollSuccesses { get; }
 
     public int TotalValue => Values.Sum(x => x.Value);
 
     public EAdvantage Advantage => Advantages.Count == 0 ? EAdvantage.None : Advantages.Select(a => a.Advantage).Aggregate((a, b) => a | b);
 
-    public ERollSuccess RollSuccess => RollSuccesses.Count == 0 ? ERollSuccess.Regular : RollSuccesses.Select(a => a.RollSuccess).Aggregate((a, b) => a | b);
+    public ERollResult RollSuccess => RollSuccesses.Count == 0 ? ERollResult.None : RollSuccesses.Select(a => a.RollSuccess).Aggregate((a, b) => a | b);
 
     public void AddBonus(IDndEntity source, int value)
     {
@@ -54,12 +54,12 @@ public class BonusCollection
         AddAdvantage(new CustomDndEntity(source), advantage);
     }
 
-    public void AddRollSuccess(IDndEntity source, ERollSuccess rollSuccess)
+    public void AddRollSuccess(IDndEntity source, ERollResult rollSuccess)
     {
         RollSuccesses.Add((source, rollSuccess));
     }
 
-    public void AddRollSuccess(string source, ERollSuccess rollSuccess)
+    public void AddRollSuccess(string source, ERollResult rollSuccess)
     {
         AddRollSuccess(new CustomDndEntity(source), rollSuccess);
     }

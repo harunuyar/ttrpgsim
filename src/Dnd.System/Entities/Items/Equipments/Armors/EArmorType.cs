@@ -1,5 +1,6 @@
 ﻿namespace Dnd.System.Entities.Items.Equipments.Armors;
 
+[Flags]
 public enum EArmorType : byte
 {
     None = 0,

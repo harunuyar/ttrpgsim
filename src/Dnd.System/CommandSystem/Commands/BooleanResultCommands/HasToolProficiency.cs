@@ -14,6 +14,6 @@ public class HasToolProficiency : DndBooleanCommand
 
     protected override void InitializeResult()
     {
-        Result.SetValue(null, false, $"By default, you don't have proficiency on {ToolType}");
+        Result.SetValue(null, false, $"{Actor.Name} doesn't have {ToolType} proficiency.");
     }
 }

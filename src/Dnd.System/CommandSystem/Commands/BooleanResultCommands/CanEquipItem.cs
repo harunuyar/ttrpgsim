@@ -14,14 +14,18 @@ public class CanEquipItem : DndBooleanCommand
 
     protected override void InitializeResult()
     {
+        if (!Item.ItemDescription.IsEquippable)
+        {
+            SetValue(false, $"Item {Item.Name} is not equippable.");
+        }
         if (Item.IsEquipped)
         {
-            SetValue(false, "Item is already equiped by someone.");
+            SetValue(false, $"Item {Item.Name} is already equiped by someone.");
             ForceComplete();
         }
         else
         {
-            SetValue(true, "By default, you can equip this item.");
+            SetValue(true, $"{Actor.Name} can equip {Item.Name}.");
             Item.ItemDescription.HandleCommand(this);
         }
     }
