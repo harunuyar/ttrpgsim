@@ -1,6 +1,6 @@
 ﻿namespace Dnd.Predefined.Feats;
 
-using Dnd.System.CommandSystem.Commands;
+using Dnd.System.CommandSystem.Commands.BaseCommands;
 using Dnd.System.Entities.Feats;
 
 public abstract class AFeat : IFeat

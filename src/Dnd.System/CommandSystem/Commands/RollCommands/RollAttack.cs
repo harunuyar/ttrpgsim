@@ -1,8 +1,10 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.RollCommands;
 
 using Dnd.GameManagers.Dice;
+using Dnd.System.CommandSystem.Commands.BaseCommands;
 using Dnd.System.Entities.Advantage;
 using Dnd.System.Entities.GameActors;
+using Dnd.System.Events.EventListener;
 
 public class RollAttack : DndRollCommand
 {

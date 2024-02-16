@@ -1,11 +1,11 @@
 ﻿namespace Dnd.System.Events;
 
-using Dnd.System.CommandSystem.Commands;
 using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
 using Dnd.System.CommandSystem.Commands.EventCommands;
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 using Dnd.System.CommandSystem.Results;
 using Dnd.System.Entities.GameActors;
+using Dnd.System.Events.EventListener;
 
 public class HealEvent : AEvent
 {

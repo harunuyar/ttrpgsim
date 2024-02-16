@@ -1,6 +1,6 @@
 ﻿namespace Dnd.System.Entities.Items;
 
-using Dnd.System.CommandSystem.Commands;
+using Dnd.System.CommandSystem.Commands.BaseCommands;
 
 public class AItem : IItem
 {

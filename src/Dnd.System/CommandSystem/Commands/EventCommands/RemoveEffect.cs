@@ -2,6 +2,8 @@
 
 using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Effects;
+using Dnd.System.CommandSystem.Commands.BaseCommands;
+using Dnd.System.Events.EventListener;
 
 internal class RemoveEffect : DndEventCommand
 {

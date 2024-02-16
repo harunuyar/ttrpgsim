@@ -1,6 +1,5 @@
 ﻿namespace Dnd.System.Events;
 
-using Dnd.System.CommandSystem.Commands;
 using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
 using Dnd.System.CommandSystem.Commands.EventCommands;
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
@@ -12,6 +11,7 @@ using Dnd.System.Entities.Advantage;
 using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Items;
 using Dnd.System.Entities.Items.Equipments.Weapons;
+using Dnd.System.Events.EventListener;
 using Dnd.System.GameManagers;
 
 public class WeaponAttackEvent : AEvent

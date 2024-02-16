@@ -1,9 +1,9 @@
 ﻿namespace Dnd.Predefined.Effects;
 
-using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Effects;
 using Dnd.System.Entities.Effects.Duration;
+using Dnd.System.CommandSystem.Commands.BaseCommands;
 
 public class AEffect : IEffect
 {

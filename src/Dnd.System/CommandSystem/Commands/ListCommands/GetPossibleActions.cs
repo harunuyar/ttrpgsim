@@ -1,5 +1,6 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.ListCommands;
 
+using Dnd.System.CommandSystem.Commands.BaseCommands;
 using Dnd.System.Entities.Actions;
 using Dnd.System.Entities.GameActors;
 

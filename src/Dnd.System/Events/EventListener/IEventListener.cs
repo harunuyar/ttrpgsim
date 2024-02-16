@@ -1,4 +1,4 @@
-﻿namespace Dnd.System.CommandSystem.Commands;
+﻿namespace Dnd.System.Events.EventListener;
 
 using Dnd.System.CommandSystem.Results;
 

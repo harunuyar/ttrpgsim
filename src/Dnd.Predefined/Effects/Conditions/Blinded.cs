@@ -1,9 +1,9 @@
 ﻿namespace Dnd.Predefined.Effects.Conditions;
 
-using Dnd.System.CommandSystem.Commands;
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Effects.Duration;
+using Dnd.System.CommandSystem.Commands.BaseCommands;
 
 public class Blinded : AEffect
 {

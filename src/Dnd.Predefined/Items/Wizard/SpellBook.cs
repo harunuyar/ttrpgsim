@@ -1,6 +1,6 @@
 ﻿namespace Dnd.Predefined.Items.Wizard;
 
-using Dnd.System.CommandSystem.Commands;
+using Dnd.System.CommandSystem.Commands.BaseCommands;
 using Dnd.System.Entities.Items;
 using Dnd.System.Entities.Spells;
 

@@ -1,7 +1,7 @@
 ﻿namespace Dnd.Predefined.Items.Armors;
 
 using Dnd.Predefined.Skills;
-using Dnd.System.CommandSystem.Commands;
+using Dnd.System.CommandSystem.Commands.BaseCommands;
 using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 using Dnd.System.Entities.Advantage;

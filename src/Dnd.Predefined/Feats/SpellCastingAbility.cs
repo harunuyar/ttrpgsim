@@ -1,6 +1,6 @@
 ﻿namespace Dnd.Predefined.Feats;
 
-using Dnd.System.CommandSystem.Commands;
+using Dnd.System.CommandSystem.Commands.BaseCommands;
 using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
 using Dnd.System.CommandSystem.Commands.EventCommands;
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands;

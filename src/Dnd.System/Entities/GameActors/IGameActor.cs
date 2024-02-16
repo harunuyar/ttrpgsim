@@ -1,6 +1,6 @@
 ﻿namespace Dnd.System.Entities.GameActors;
 
-using Dnd.System.CommandSystem.Commands;
+using Dnd.System.CommandSystem.Commands.BaseCommands;
 using Dnd.System.Entities;
 using Dnd.System.Entities.Allignments;
 using Dnd.System.Entities.Races;

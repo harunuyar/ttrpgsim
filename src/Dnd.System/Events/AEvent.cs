@@ -1,7 +1,7 @@
 ﻿namespace Dnd.System.Events;
 
-using Dnd.System.CommandSystem.Commands;
 using Dnd.System.CommandSystem.Results;
+using Dnd.System.Events.EventListener;
 
 public abstract class AEvent
 {

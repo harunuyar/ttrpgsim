@@ -1,7 +1,8 @@
-﻿namespace Dnd.System.CommandSystem.Commands;
+﻿namespace Dnd.System.CommandSystem.Commands.BaseCommands;
 
 using Dnd.System.CommandSystem.Results;
 using Dnd.System.Entities.GameActors;
+using Dnd.System.Events.EventListener;
 
 public abstract class DndEventCommand : ADndCommand<EventResult>
 {

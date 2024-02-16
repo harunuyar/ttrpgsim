@@ -1,6 +1,6 @@
 ﻿namespace Dnd.Predefined.Feats.Proficiency;
 
-using Dnd.System.CommandSystem.Commands;
+using Dnd.System.CommandSystem.Commands.BaseCommands;
 using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
 using Dnd.System.Entities.Items.Tools;
 

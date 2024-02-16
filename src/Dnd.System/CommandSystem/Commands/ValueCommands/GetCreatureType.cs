@@ -1,5 +1,6 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.ValueCommands;
 
+using Dnd.System.CommandSystem.Commands.BaseCommands;
 using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Races;
 

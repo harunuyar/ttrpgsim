@@ -1,6 +1,6 @@
 ﻿namespace Dnd.Predefined.Traits;
 
-using Dnd.System.CommandSystem.Commands;
+using Dnd.System.CommandSystem.Commands.BaseCommands;
 using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
 using Dnd.System.Entities.Damage;
 

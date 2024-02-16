@@ -1,6 +1,6 @@
 ﻿namespace Dnd.System.Entities.GameActors;
 
-using Dnd.System.CommandSystem.Commands;
+using Dnd.System.CommandSystem.Commands.BaseCommands;
 using Dnd.System.CommandSystem.Commands.EventCommands;
 using Dnd.System.Entities.Effects;
 using Dnd.System.Entities.Spells;

@@ -1,7 +1,7 @@
 ﻿namespace Dnd.Predefined.Feats.Classes.Fighter.Level1.FightingStyle;
 
 using Dnd.Predefined.Feats;
-using Dnd.System.CommandSystem.Commands;
+using Dnd.System.CommandSystem.Commands.BaseCommands;
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 
 public class Defense : AFeat, IFightingStyle

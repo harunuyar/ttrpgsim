@@ -1,6 +1,6 @@
 ﻿namespace Dnd.System.Entities.Effects.Duration;
 
-using Dnd.System.CommandSystem.Commands;
+using Dnd.System.CommandSystem.Commands.BaseCommands;
 using global::System;
 
 public class UntilTriggered : IEffectDuration

@@ -1,6 +1,6 @@
 ﻿namespace Dnd.Predefined.Feats.Classes.Fighter.Level1.FightingStyle;
 
-using Dnd.System.CommandSystem.Commands;
+using Dnd.System.CommandSystem.Commands.BaseCommands;
 
 public class GreatWeaponFighting : AFeat, IFightingStyle
 {

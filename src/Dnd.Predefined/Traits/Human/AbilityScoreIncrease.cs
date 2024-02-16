@@ -1,6 +1,6 @@
 ﻿namespace Dnd.Predefined.Traits.Human;
 
-using Dnd.System.CommandSystem.Commands;
+using Dnd.System.CommandSystem.Commands.BaseCommands;
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 
 public class AbilityScoreIncrease : ATrait

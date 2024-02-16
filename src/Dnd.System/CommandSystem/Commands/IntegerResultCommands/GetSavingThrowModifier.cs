@@ -1,5 +1,6 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 
+using Dnd.System.CommandSystem.Commands.BaseCommands;
 using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
 using Dnd.System.Entities.Attributes;
 using Dnd.System.Entities.Damage;

@@ -1,6 +1,6 @@
 ﻿namespace Dnd.Predefined.Items.Armors;
 
-using Dnd.System.CommandSystem.Commands;
+using Dnd.System.CommandSystem.Commands.BaseCommands;
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 using Dnd.System.Entities.Items.Equipments.Armors;
 using Dnd.System.Entities.Units;
