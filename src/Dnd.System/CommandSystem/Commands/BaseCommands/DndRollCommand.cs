@@ -2,7 +2,7 @@
 
 using Dnd.GameManagers.Dice;
 using Dnd.System.CommandSystem.Results;
-using Dnd.System.Entities.Advantage;
+using Dnd.System.Entities.DiceModifiers;
 using Dnd.System.Entities.GameActors;
 using Dnd.System.Events.EventListener;
 

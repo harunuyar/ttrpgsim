@@ -1,21 +1,17 @@
-﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands;
+﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands.Modifiers;
 
-using Dnd.System.CommandSystem.Commands.BaseCommands;
 using Dnd.System.Entities.Attributes;
 using Dnd.System.Entities.GameActors;
 
-public class GetUnarmedAttackModifier : DndScoreCommand
+public class GetUnarmedAttackModifier : GetAttackModifier
 {
-    public GetUnarmedAttackModifier(IGameActor character, IGameActor target) : base(character)
+    public GetUnarmedAttackModifier(IGameActor character, IGameActor target) : base(character, target)
     {
-        Target = target;
     }
-
-    public IGameActor Target { get; }
 
     protected override void InitializeResult()
     {
-        Result.SetBaseValue("Base", 0);
+        base.InitializeResult();
 
         var strengthModifier = new GetAttributeModifier(Actor, EAttributeType.Strength).Execute();
 

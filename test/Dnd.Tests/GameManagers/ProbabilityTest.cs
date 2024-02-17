@@ -1,7 +1,7 @@
 ﻿namespace Dnd.Tests.GameManagers;
 
 using Dnd.GameManagers.Dice;
-using Dnd.System.Entities.Advantage;
+using Dnd.System.Entities.DiceModifiers;
 using Dnd.System.GameManagers;
 
 [TestClass]

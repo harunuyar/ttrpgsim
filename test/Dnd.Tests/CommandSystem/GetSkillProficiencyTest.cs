@@ -3,7 +3,7 @@
 using Dnd.Predefined.Characters;
 using Dnd.Predefined.Classes;
 using Dnd.Predefined.Feats.Classes.Fighter.Level1.FightingStyle;
-using Dnd.Predefined.Levels.FighterLevels;
+using Dnd.Predefined.Levels.Fighter;
 using Dnd.Predefined.Races;
 using Dnd.Predefined.Skills;
 using Dnd.System.CommandSystem.Commands.BooleanResultCommands;

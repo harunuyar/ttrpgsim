@@ -1,6 +1,7 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 
 using Dnd.System.CommandSystem.Commands.BaseCommands;
+using Dnd.System.CommandSystem.Commands.IntegerResultCommands.Modifiers;
 using Dnd.System.CommandSystem.Commands.ValueCommands;
 using Dnd.System.Entities;
 using Dnd.System.Entities.Attributes;

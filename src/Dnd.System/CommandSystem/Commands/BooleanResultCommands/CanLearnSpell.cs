@@ -16,5 +16,19 @@ public class CanLearnSpell : DndBooleanCommand
     protected override void InitializeResult()
     {
         Result.SetValue(false, $"{Actor.Name} can't learn {Spell.Name}.");
+
+        var canTakeAnyAction = new CanTakeAnyAction(Actor).Execute();
+
+        if (!canTakeAnyAction.IsSuccess)
+        {
+            SetErrorAndReturn("CanTakeAnyAction: " + canTakeAnyAction.ErrorMessage);
+            return;
+        }
+
+        if (!canTakeAnyAction.Value)
+        {
+            Result.Set(canTakeAnyAction);
+            return;
+        }
     }
 }

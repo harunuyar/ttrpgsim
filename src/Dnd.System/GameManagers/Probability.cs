@@ -1,7 +1,7 @@
 ﻿namespace Dnd.System.GameManagers;
 
 using Dnd.GameManagers.Dice;
-using Dnd.System.Entities.Advantage;
+using Dnd.System.Entities.DiceModifiers;
 
 public static class Probability
 {

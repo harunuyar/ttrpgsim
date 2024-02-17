@@ -1,4 +1,4 @@
-﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands;
+﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands.Modifiers;
 
 using Dnd.System.CommandSystem.Commands.BaseCommands;
 using Dnd.System.Entities.Attributes;

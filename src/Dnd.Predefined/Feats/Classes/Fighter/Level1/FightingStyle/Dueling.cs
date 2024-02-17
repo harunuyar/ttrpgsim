@@ -1,7 +1,7 @@
 ﻿namespace Dnd.Predefined.Feats.Classes.Fighter.Level1.FightingStyle;
 
 using Dnd.System.CommandSystem.Commands.BaseCommands;
-using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
+using Dnd.System.CommandSystem.Commands.IntegerResultCommands.Modifiers;
 using Dnd.System.Entities.Items.Equipments.Weapons;
 
 public class Dueling : AFeat, IFightingStyle

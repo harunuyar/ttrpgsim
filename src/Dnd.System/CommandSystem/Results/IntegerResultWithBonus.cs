@@ -1,7 +1,7 @@
 ﻿namespace Dnd.System.CommandSystem.Results;
 
 using Dnd.System.Entities;
-using Dnd.System.Entities.Advantage;
+using Dnd.System.Entities.DiceModifiers;
 
 public class IntegerResultWithBonus : ICommandResult
 {
@@ -27,6 +27,8 @@ public class IntegerResultWithBonus : ICommandResult
     public EAdvantage Advantage => BonusCollection.Advantage;
 
     public ERollResult RollResult => BonusCollection.RollSuccess;
+
+    public EHitResult HitResult => BonusCollection.HitResult;
 
     public int Value => BaseValue + BonusCollection.TotalValue;
 

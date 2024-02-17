@@ -1,6 +1,5 @@
-﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands;
+﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands.Modifiers;
 
-using Dnd.System.CommandSystem.Commands.BaseCommands;
 using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
 using Dnd.System.Entities;
 using Dnd.System.Entities.Attributes;
@@ -8,21 +7,18 @@ using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Items;
 using Dnd.System.Entities.Items.Equipments.Weapons;
 
-public class GetWeaponAttackModifier : DndScoreCommand
+public class GetWeaponAttackModifier : GetAttackModifier
 {
-    public GetWeaponAttackModifier(IGameActor character, IItem weaponItem, IGameActor target) : base(character)
+    public GetWeaponAttackModifier(IGameActor character, IItem weaponItem, IGameActor? target) : base(character, target)
     {
-        this.WeaponItem = weaponItem;
-        this.Target = target;
+        WeaponItem = weaponItem;
     }
 
     public IItem WeaponItem { get; }
 
-    public IGameActor Target { get; }
-
     protected override void InitializeResult()
     {
-        Result.SetBaseValue("Base", 0);
+        base.InitializeResult();
 
         if (WeaponItem.ItemDescription is not IWeapon weapon)
         {
@@ -36,7 +32,7 @@ public class GetWeaponAttackModifier : DndScoreCommand
             return;
         }
 
-        var strengthModifier = new GetAttributeModifier(this.Actor, EAttributeType.Strength).Execute();
+        var strengthModifier = new GetAttributeModifier(Actor, EAttributeType.Strength).Execute();
 
         if (!strengthModifier.IsSuccess)
         {
@@ -44,12 +40,12 @@ public class GetWeaponAttackModifier : DndScoreCommand
             return;
         }
 
-        IAttribute usedAttribute = this.Actor.AttributeSet.GetAttribute(EAttributeType.Strength);
+        IAttribute usedAttribute = Actor.AttributeSet.GetAttribute(EAttributeType.Strength);
         var attributeModifier = strengthModifier;
 
         if (weapon.WeaponProperties.HasFlag(EWeaponProperty.Finesse | EWeaponProperty.Range))
         {
-            var getDexterityModifier = new GetAttributeModifier(this.Actor, EAttributeType.Dexterity);
+            var getDexterityModifier = new GetAttributeModifier(Actor, EAttributeType.Dexterity);
             var dexterityModifier = getDexterityModifier.Execute();
 
             if (!dexterityModifier.IsSuccess)
@@ -61,13 +57,13 @@ public class GetWeaponAttackModifier : DndScoreCommand
             if (dexterityModifier.Value > attributeModifier.Value)
             {
                 attributeModifier = dexterityModifier;
-                usedAttribute = this.Actor.AttributeSet.GetAttribute(EAttributeType.Dexterity);
+                usedAttribute = Actor.AttributeSet.GetAttribute(EAttributeType.Dexterity);
             }
         }
 
         Result.AddAsBonus(usedAttribute, attributeModifier);
 
-        var hasProficiency = new HasWeaponProficiency(this.Actor, weapon.WeaponType).Execute();
+        var hasProficiency = new HasWeaponProficiency(Actor, weapon.WeaponType).Execute();
 
         if (!hasProficiency.IsSuccess)
         {
@@ -86,6 +82,19 @@ public class GetWeaponAttackModifier : DndScoreCommand
             }
 
             Result.AddAsBonus("Proficiency Bonus", proficiencyBonus);
+        }
+
+        if (Target != null)
+        {
+            var attackModifierAgainst = new GetWeaponAttackModifierAgainst(Target, WeaponItem, Actor).Execute();
+
+            if (!attackModifierAgainst.IsSuccess)
+            {
+                SetErrorAndReturn("GetWeaponAttackModifierAgainst: " + attackModifierAgainst.ErrorMessage);
+                return;
+            }
+
+            Result.AddAsBonus("Attack Modifier From Target", attackModifierAgainst);
         }
     }
 }

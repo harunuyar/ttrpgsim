@@ -3,11 +3,12 @@
 using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
 using Dnd.System.CommandSystem.Commands.EventCommands;
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
+using Dnd.System.CommandSystem.Commands.IntegerResultCommands.Modifiers;
 using Dnd.System.CommandSystem.Commands.RollCommands;
 using Dnd.System.CommandSystem.Commands.ValueCommands;
 using Dnd.System.CommandSystem.Results;
 using Dnd.System.Entities;
-using Dnd.System.Entities.Advantage;
+using Dnd.System.Entities.DiceModifiers;
 using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Items;
 using Dnd.System.Entities.Items.Equipments.Weapons;
@@ -313,6 +314,11 @@ public class WeaponAttackEvent : AEvent
             }
 
             rollResult = rollCommandResult.Value;
+        }
+
+        if (attackRollModifiers.HitResult == EHitResult.CriticalHit)
+        {
+            rollResult = ERollResult.CriticalSuccess;
         }
 
         var damageRoll = RollDamageDice(rollResult);

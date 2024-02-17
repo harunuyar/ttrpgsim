@@ -1,4 +1,4 @@
-﻿namespace Dnd.System.Entities.Advantage;
+﻿namespace Dnd.System.Entities.DiceModifiers;
 
 [Flags]
 public enum EAdvantage : byte

@@ -1,4 +1,4 @@
-﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands;
+﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands.Modifiers;
 
 using Dnd.System.CommandSystem.Commands.BaseCommands;
 using Dnd.System.Entities.Attributes;
@@ -29,7 +29,7 @@ public class GetWeaponDamageModifier : DndScoreCommand
 
         Result.SetBaseValue("Base", 0);
 
-        var strengthModifier = new GetAttributeModifier(this.Actor, EAttributeType.Strength).Execute();
+        var strengthModifier = new GetAttributeModifier(Actor, EAttributeType.Strength).Execute();
 
         if (!strengthModifier.IsSuccess)
         {
@@ -37,12 +37,12 @@ public class GetWeaponDamageModifier : DndScoreCommand
             return;
         }
 
-        IAttribute usedAttribute = this.Actor.AttributeSet.GetAttribute(EAttributeType.Strength);
+        IAttribute usedAttribute = Actor.AttributeSet.GetAttribute(EAttributeType.Strength);
         var attributeModifier = strengthModifier;
 
         if (weapon.WeaponProperties.HasFlag(EWeaponProperty.Finesse | EWeaponProperty.Range))
         {
-            var dexterityModifier = new GetAttributeModifier(this.Actor, EAttributeType.Dexterity).Execute();
+            var dexterityModifier = new GetAttributeModifier(Actor, EAttributeType.Dexterity).Execute();
 
             if (!dexterityModifier.IsSuccess)
             {
@@ -53,7 +53,7 @@ public class GetWeaponDamageModifier : DndScoreCommand
             if (dexterityModifier.Value > attributeModifier.Value)
             {
                 attributeModifier = dexterityModifier;
-                usedAttribute = this.Actor.AttributeSet.GetAttribute(EAttributeType.Dexterity);
+                usedAttribute = Actor.AttributeSet.GetAttribute(EAttributeType.Dexterity);
             }
         }
 

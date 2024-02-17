@@ -1,9 +1,9 @@
 ﻿namespace Dnd.Predefined.Effects.Conditions;
 
-using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Effects.Duration;
 using Dnd.System.CommandSystem.Commands.BaseCommands;
+using Dnd.System.CommandSystem.Commands.IntegerResultCommands.Modifiers;
 
 public class Blinded : AEffect
 {
@@ -18,19 +18,19 @@ public class Blinded : AEffect
 
         if (command is GetWeaponAttackModifier calculateWeaponAttackModifier)
         {
-            calculateWeaponAttackModifier.AddAdvantage(this, System.Entities.Advantage.EAdvantage.Disadvantage);
+            calculateWeaponAttackModifier.AddAdvantage(this, System.Entities.DiceModifiers.EAdvantage.Disadvantage);
         }
         else if (command is GetSpellAttackModifier calculateSpellAttackModifier)
         {
-            calculateSpellAttackModifier.AddAdvantage(this, System.Entities.Advantage.EAdvantage.Disadvantage);
+            calculateSpellAttackModifier.AddAdvantage(this, System.Entities.DiceModifiers.EAdvantage.Disadvantage);
         }
         else if (command is GetWeaponAttackModifierAgainst calculateWeaponAttackModifierAgainstCharacter)
         {
-            calculateWeaponAttackModifierAgainstCharacter.AddAdvantage(this, System.Entities.Advantage.EAdvantage.Advantage);
+            calculateWeaponAttackModifierAgainstCharacter.AddAdvantage(this, System.Entities.DiceModifiers.EAdvantage.Advantage);
         }
         else if (command is GetSpellAttackModifierAgainst calculateSpellAttackModifierAgainstCharacter)
         {
-            calculateSpellAttackModifierAgainstCharacter.AddAdvantage(this, System.Entities.Advantage.EAdvantage.Advantage);
+            calculateSpellAttackModifierAgainstCharacter.AddAdvantage(this, System.Entities.DiceModifiers.EAdvantage.Advantage);
         }
     }
 }

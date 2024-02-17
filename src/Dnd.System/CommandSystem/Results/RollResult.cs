@@ -1,6 +1,6 @@
 ﻿namespace Dnd.System.CommandSystem.Results;
 
-using Dnd.System.Entities.Advantage;
+using Dnd.System.Entities.DiceModifiers;
 
 public class RollResult : ICommandResult
 {

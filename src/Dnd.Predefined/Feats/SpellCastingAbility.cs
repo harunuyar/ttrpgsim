@@ -4,6 +4,7 @@ using Dnd.System.CommandSystem.Commands.BaseCommands;
 using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
 using Dnd.System.CommandSystem.Commands.EventCommands;
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
+using Dnd.System.CommandSystem.Commands.IntegerResultCommands.Modifiers;
 using Dnd.System.CommandSystem.Commands.ListCommands;
 using Dnd.System.CommandSystem.Commands.ValueCommands;
 using Dnd.System.Entities.Classes;

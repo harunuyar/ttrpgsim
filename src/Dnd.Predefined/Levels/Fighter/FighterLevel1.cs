@@ -1,4 +1,4 @@
-﻿namespace Dnd.Predefined.Levels.FighterLevels;
+﻿namespace Dnd.Predefined.Levels.Fighter;
 
 using Dnd.Predefined.Classes;
 using Dnd.Predefined.Feats.Classes.Fighter.Level1;
@@ -7,6 +7,7 @@ using Dnd.System.Entities.Skills;
 
 public class FighterLevel1 : SharedLevel1
 {
+    // For multiclassing
     public FighterLevel1(Fighter fighterClass, IFightingStyle fightingStyle) : base(fighterClass, "Fighter Level 1", true, []) 
     {
         Feats.Add(fightingStyle);

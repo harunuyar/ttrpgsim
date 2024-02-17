@@ -1,7 +1,7 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.ValueCommands;
 
 using Dnd.System.CommandSystem.Commands.BaseCommands;
-using Dnd.System.Entities.Advantage;
+using Dnd.System.Entities.DiceModifiers;
 using Dnd.System.Entities.GameActors;
 
 public class GetRollSuccess : DndValueCommand<ERollResult>

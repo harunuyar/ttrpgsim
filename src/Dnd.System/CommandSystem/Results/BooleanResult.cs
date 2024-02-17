@@ -48,6 +48,14 @@ public class BooleanResult : ICommandResult
         SetValue(null, value, message);
     }
 
+    public void Set(BooleanResult other)
+    {
+        Source = other.Source;
+        Value = other.Value;
+        Message = other.Message;
+        IsSuccess = other.IsSuccess;
+    }
+
     public void Reset()
     {
         IsSuccess = true;

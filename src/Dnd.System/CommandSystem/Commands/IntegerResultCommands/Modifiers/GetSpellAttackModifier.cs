@@ -1,26 +1,22 @@
-﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands;
+﻿namespace Dnd.System.CommandSystem.Commands.IntegerResultCommands.Modifiers;
 
-using Dnd.System.CommandSystem.Commands.BaseCommands;
 using Dnd.System.CommandSystem.Commands.ValueCommands;
 using Dnd.System.Entities;
 using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Spells;
 
-public class GetSpellAttackModifier : DndScoreCommand
+public class GetSpellAttackModifier : GetAttackModifier
 {
-    public GetSpellAttackModifier(IGameActor character, IAttackingSpell spell, IGameActor target) : base(character)
+    public GetSpellAttackModifier(IGameActor character, IAttackingSpell spell, IGameActor? target) : base(character, target)
     {
         Spell = spell;
-        Target = target;
     }
 
     public IAttackingSpell Spell { get; }
 
-    public IGameActor Target { get; }
-
     protected override void InitializeResult()
     {
-        Result.SetBaseValue("Base", 0);
+        base.InitializeResult();
 
         if (Spell.SuccessMeasuringType != ESuccessMeasuringType.AttackRoll)
         {
@@ -49,9 +45,9 @@ public class GetSpellAttackModifier : DndScoreCommand
             SetErrorAndReturn("GetAttributeModifier: " + attributeModifier.ErrorMessage);
             return;
         }
-            
+
         Result.AddAsBonus(attributeModifier.BaseSource ?? Actor.AttributeSet.GetAttribute(spellCasterAttribute.Value), attributeModifier);
-        
+
         var proficiencyBonus = new GetProficiencyBonus(Actor).Execute();
 
         if (!proficiencyBonus.IsSuccess)
@@ -61,5 +57,18 @@ public class GetSpellAttackModifier : DndScoreCommand
         }
 
         Result.AddAsBonus("Proficiency Bonus", proficiencyBonus);
+
+        if (Target != null)
+        {
+            var attackModifierAgainst = new GetSpellAttackModifierAgainst(Target, Spell, Actor).Execute();
+
+            if (!attackModifierAgainst.IsSuccess)
+            {
+                SetErrorAndReturn("GetSpellAttackModifierAgainst: " + attackModifierAgainst.ErrorMessage);
+                return;
+            }
+
+            Result.AddAsBonus("Attack Modifier From Target", attackModifierAgainst);
+        }
     }
 }

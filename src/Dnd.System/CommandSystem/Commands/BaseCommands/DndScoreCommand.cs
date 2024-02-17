@@ -2,7 +2,7 @@
 
 using Dnd.System.CommandSystem.Results;
 using Dnd.System.Entities;
-using Dnd.System.Entities.Advantage;
+using Dnd.System.Entities.DiceModifiers;
 using Dnd.System.Entities.GameActors;
 
 public abstract class DndScoreCommand : ADndCommand<IntegerResultWithBonus>
@@ -35,6 +35,22 @@ public abstract class DndScoreCommand : ADndCommand<IntegerResultWithBonus>
         if (!IsForceCompleted)
         {
             Result.SetBaseValue(bonusProvider, value);
+        }
+    }
+
+    public void SetAutoSuccess(IDndEntity bonusProvider)
+    {
+        if (!IsForceCompleted)
+        {
+            Result.BonusCollection.AddRollSuccess(bonusProvider, ERollResult.CriticalSuccess);
+        }
+    }
+
+    public void SetAutoFailure(IDndEntity bonusProvider)
+    {
+        if (!IsForceCompleted)
+        {
+            Result.BonusCollection.AddRollSuccess(bonusProvider, ERollResult.CriticalFailure);
         }
     }
 

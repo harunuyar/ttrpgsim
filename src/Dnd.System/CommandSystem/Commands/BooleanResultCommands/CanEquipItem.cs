@@ -17,17 +17,30 @@ public class CanEquipItem : DndBooleanCommand
     {
         if (!Item.ItemDescription.IsEquippable)
         {
-            SetValue(false, $"Item {Item.Name} is not equippable.");
+            SetValueAndReturn(false, $"Item {Item.Name} is not equippable.");
+            return;
         }
         if (Item.IsEquipped)
         {
-            SetValue(false, $"Item {Item.Name} is already equiped by someone.");
-            ForceComplete();
+            SetValueAndReturn(false, $"Item {Item.Name} is already equiped by someone.");
+            return;
         }
-        else
+
+        var canTakeAnyAction = new CanTakeAnyAction(Actor).Execute();
+
+        if (!canTakeAnyAction.IsSuccess)
         {
-            SetValue(true, $"{Actor.Name} can equip {Item.Name}.");
-            Item.ItemDescription.HandleCommand(this);
+            SetErrorAndReturn("CanTakeAnyAction: " + canTakeAnyAction.ErrorMessage);
+            return;
         }
+
+        if (!canTakeAnyAction.Value)
+        {
+            Result.Set(canTakeAnyAction);
+            return;
+        }
+
+        SetValue(true, $"{Actor.Name} can equip {Item.Name}.");
+        Item.ItemDescription.HandleCommand(this);
     }
 }

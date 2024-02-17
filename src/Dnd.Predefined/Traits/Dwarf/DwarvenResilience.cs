@@ -1,8 +1,8 @@
 ﻿namespace Dnd.Predefined.Traits.Dwarf;
 
 using Dnd.System.CommandSystem.Commands.BaseCommands;
-using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
-using Dnd.System.Entities.Advantage;
+using Dnd.System.CommandSystem.Commands.IntegerResultCommands.Modifiers;
+using Dnd.System.Entities.DiceModifiers;
 using Dnd.System.Entities.Damage;
 
 public class DwarvenResilience : ATrait
