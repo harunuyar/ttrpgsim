@@ -105,39 +105,6 @@ public class WeaponAttack : ATouchAction, IAttackAction
                 getAttackModifier.Result.AddAsBonus("Proficiency Bonus", proficiencyBonus);
             }
         }
-        else if (command is GetSavingDC getSavingDC)
-        {
-            if (getSavingDC.AttackAction != this)
-            {
-                return;
-            }
-
-            if (SuccessMeasuringType != ESuccessMeasuringType.SavingThrow)
-            {
-                return;
-            }
-
-            var hasProficiency = new HasWeaponProficiency(command.Actor, Weapon.WeaponType).Execute();
-
-            if (!hasProficiency.IsSuccess)
-            {
-                getSavingDC.SetErrorAndReturn("HasWeaponProficiency: " + hasProficiency.ErrorMessage);
-                return;
-            }
-
-            if (hasProficiency.Value)
-            {
-                var proficiencyBonus = new GetProficiencyBonus(command.Actor).Execute();
-
-                if (!proficiencyBonus.IsSuccess)
-                {
-                    getSavingDC.SetErrorAndReturn("GetProficiencyBonus: " + proficiencyBonus.ErrorMessage);
-                    return;
-                }
-
-                getSavingDC.Result.AddAsBonus("Proficiency", proficiencyBonus);
-            }
-        }
         else if (command is GetDamageModifier getDamageModifier)
         {
             if (getDamageModifier.AttackAction != this)

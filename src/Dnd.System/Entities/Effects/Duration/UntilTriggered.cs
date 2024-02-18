@@ -1,7 +1,6 @@
 ﻿namespace Dnd.System.Entities.Effects.Duration;
 
 using Dnd.System.CommandSystem.Commands.BaseCommands;
-using global::System;
 
 public class UntilTriggered : IEffectDuration
 {
@@ -14,6 +13,11 @@ public class UntilTriggered : IEffectDuration
     public int Times { get; set; }
 
     public int TimesTriggered { get; set; }
+
+    public void Trigger()
+    {
+        TimesTriggered++;
+    }
 
     public void HandleCommand(ICommand command)
     {

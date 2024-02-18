@@ -19,7 +19,6 @@ public abstract class AWeapon : IWeapon
         EDamageCalculationType damageCalculationType, 
         EDamageType damageType, 
         EWeaponProperty weaponProperties, 
-        ESuccessMeasuringType actionType, 
         int? constantDamage = null, 
         DiceRoll? damageDie = null, 
         DiceRoll? versatileDamageDie = null)
@@ -33,7 +32,6 @@ public abstract class AWeapon : IWeapon
         VersatileDamageDie = versatileDamageDie;
         DamageType = damageType;
         WeaponProperties = weaponProperties;
-        SuccessMeasuringType = actionType;
         ConstantDamage = constantDamage;
         DamageCalculationType = damageCalculationType;
     }
@@ -66,7 +64,7 @@ public abstract class AWeapon : IWeapon
 
     public EWeaponProperty WeaponProperties { get; }
 
-    public ESuccessMeasuringType SuccessMeasuringType { get; }
+    public ESuccessMeasuringType SuccessMeasuringType => ESuccessMeasuringType.AttackRoll;
 
     public EAttributeType? SavingThrowAttribute => null;
 

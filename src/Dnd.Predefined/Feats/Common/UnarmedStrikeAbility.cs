@@ -1,4 +1,4 @@
-﻿namespace Dnd.Predefined.Feats;
+﻿namespace Dnd.Predefined.Feats.Common;
 
 using Dnd.System.CommandSystem.Commands.BaseCommands;
 using Dnd.System.CommandSystem.Commands.ListCommands;

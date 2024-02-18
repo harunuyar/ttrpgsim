@@ -18,24 +18,28 @@ public abstract class AAction : IAction
 
     public string Description { get; }
 
-    public EActionType ActionType { get; }
+    public EActionType ActionType { get; set; }
 
     public List<UsageLimitation> UsageLimitations { get; }
 
     public Range Range { get; }
 
-    public bool IsAvailable => UsageLimitations.All(x => x.IsAvailable());
-
-    public bool Use()
+    public virtual bool IsAvailable(IGameActor gameActor)
     {
-        if (!IsAvailable)
+        if ((ActionType.HasFlag(EActionType.MainAction) && gameActor.ActionCounter.ActionPoints > 1)
+            || (ActionType.HasFlag(EActionType.BonusAction) && gameActor.ActionCounter.BonusActionPoints > 1)
+            || (ActionType.HasFlag(EActionType.Reaction) && gameActor.ActionCounter.ReactionPoints > 1)
+            || ActionType.HasFlag(EActionType.FreeAction))
         {
-            return false;
+            return UsageLimitations.All(x => x.IsAvailable());
         }
 
-        UsageLimitations.ForEach(x => x.Use());
+        return false;
+    }
 
-        return true;
+    public virtual void Use()
+    {
+        UsageLimitations.ForEach(x => x.Use());
     }
 
     public virtual void HandleCommand(ICommand command)

@@ -21,7 +21,7 @@ public class Dragonborn : IRace
 
     public ISize Size => Medium.Instance;
 
-    public List<ITrait> RaceTraits { get; } = new List<ITrait>() { AbilityScoreIncrease.Instance };
+    public List<ITrait> RaceTraits { get; } = new List<ITrait>() { new AbilityScoreIncrease() };
 
     public Distance Speed => Distance.OfFeet(30);
 }

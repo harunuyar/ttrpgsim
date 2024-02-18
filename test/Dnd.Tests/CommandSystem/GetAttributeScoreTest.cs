@@ -21,7 +21,7 @@ public class GetAttributeScoreTest
         IGameActor character = new CustomCharacter("Test", new Human());
         character.AttributeSet.Set(strength: 15, dexterity: 10, constitution: 14, intelligence: 8, wisdom: 12, charisma: 13);
 
-        var getAttributeScoreCommand = new GetAttributeScore(character!, attribute);
+        var getAttributeScoreCommand = new GetTotalAttributeScore(character!, attribute);
         var result = getAttributeScoreCommand.Execute();
 
         Assert.IsTrue(result.IsSuccess);
@@ -40,7 +40,7 @@ public class GetAttributeScoreTest
         IGameActor character = new CustomCharacter("Test", new Dragonborn());
         character.AttributeSet.Set(strength: 15, dexterity: 10, constitution: 14, intelligence: 8, wisdom: 12, charisma: 13);
 
-        var getAttributeScoreCommand = new GetAttributeScore(character!, attribute);
+        var getAttributeScoreCommand = new GetTotalAttributeScore(character!, attribute);
         var result = getAttributeScoreCommand.Execute();
 
         Assert.IsTrue(result.IsSuccess);

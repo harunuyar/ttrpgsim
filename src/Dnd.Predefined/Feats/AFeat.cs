@@ -2,6 +2,7 @@
 
 using Dnd.System.CommandSystem.Commands.BaseCommands;
 using Dnd.System.Entities.Feats;
+using Dnd.System.Entities.GameActors;
 
 public abstract class AFeat : IFeat
 {
@@ -17,5 +18,10 @@ public abstract class AFeat : IFeat
 
     public virtual void HandleCommand(ICommand command)
     {
+    }
+
+    public virtual bool IsEligible(IGameActor actor)
+    {
+        return true;
     }
 }

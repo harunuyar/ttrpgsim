@@ -15,7 +15,7 @@ public class ApplyDamage : DndEventCommand
 
     public EDamageType DamageType { get; }
 
-    public int Damage { get; }
+    public int Damage { get; set; }
 
     protected override void FinalizeResult()
     {

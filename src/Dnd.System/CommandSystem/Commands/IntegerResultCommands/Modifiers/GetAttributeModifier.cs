@@ -15,12 +15,12 @@ public class GetAttributeModifier : DndScoreCommand
 
     protected override void InitializeResult()
     {
-        var getAttributeScoreCommand = new GetAttributeScore(Actor, AttributeType);
+        var getAttributeScoreCommand = new GetTotalAttributeScore(Actor, AttributeType);
         var attributeScoreResult = getAttributeScoreCommand.Execute();
 
         if (!attributeScoreResult.IsSuccess)
         {
-            SetErrorAndReturn("GetAttributeScore: " + attributeScoreResult.ErrorMessage);
+            SetErrorAndReturn("GetTotalAttributeScore: " + attributeScoreResult.ErrorMessage);
             return;
         }
 

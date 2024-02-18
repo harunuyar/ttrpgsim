@@ -6,11 +6,11 @@ using Dnd.Predefined.Characters;
 using Dnd.Predefined.Races;
 using Dnd.Predefined.Skills;
 using Dnd.System.Entities.Items;
-using Dnd.Predefined.Feats.Classes.Fighter.Level1.FightingStyle;
 using Dnd.Predefined.Items.Armors.HeavyArmor;
 using Dnd.Predefined.Classes;
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands.Modifiers;
 using Dnd.Predefined.Levels.Fighter;
+using Dnd.Predefined.Feats.Classes.Fighter.FightingStyle;
 
 [TestClass]
 public class GetSkillModifierTest

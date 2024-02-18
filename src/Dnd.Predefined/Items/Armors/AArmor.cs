@@ -82,7 +82,7 @@ public abstract class AArmor : IArmor
         {
             if (canEquipItem.Item.ItemDescription == this)
             {
-                var getStrengthScore = new GetAttributeScore(canEquipItem.Actor, EAttributeType.Strength);
+                var getStrengthScore = new GetTotalAttributeScore(canEquipItem.Actor, EAttributeType.Strength);
                 var strengthScore = getStrengthScore.Execute();
 
                 if (strengthScore.IsSuccess && strengthScore.Value < StrengthRequirement)

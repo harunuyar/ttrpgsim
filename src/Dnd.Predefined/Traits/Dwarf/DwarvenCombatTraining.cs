@@ -6,9 +6,7 @@ using Dnd.System.Entities.Items.Equipments.Weapons;
 
 public class DwarvenCombatTraining : ATrait
 {
-    public static readonly DwarvenCombatTraining Instance = new DwarvenCombatTraining();
-
-    private DwarvenCombatTraining() : base("Dwarven Combat Training", "You have proficiency with the battleaxe, handaxe, light hammer, and warhammer.")
+    public DwarvenCombatTraining() : base("Dwarven Combat Training", "You have proficiency with the battleaxe, handaxe, light hammer, and warhammer.")
     {
     }
 

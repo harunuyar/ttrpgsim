@@ -7,9 +7,7 @@ using Dnd.System.Entities.Damage;
 
 public class DwarvenResilience : ATrait
 {
-    public static readonly DwarvenResilience Instance = new DwarvenResilience();
-
-    private DwarvenResilience() : base("Dwarven Resilience", "You have advantage on saving throws against poison, and you have resistance against poison damage.")
+    public DwarvenResilience() : base("Dwarven Resilience", "You have advantage on saving throws against poison, and you have resistance against poison damage.")
     {
         PoisonResistance = new Resistance(EDamageType.Poison);
     }

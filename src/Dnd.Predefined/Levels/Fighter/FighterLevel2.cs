@@ -1,7 +1,7 @@
 ﻿namespace Dnd.Predefined.Levels.Fighter;
 
 using Dnd.Predefined.Classes;
-using Dnd.Predefined.Feats.Classes.Fighter.Level2;
+using Dnd.Predefined.Feats.Classes.Fighter;
 using Dnd.System.Entities.Classes;
 using Dnd.System.Entities.Feats;
 using Dnd.System.Entities.Levels;

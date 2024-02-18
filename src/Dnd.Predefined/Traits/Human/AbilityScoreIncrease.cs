@@ -5,9 +5,7 @@ using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
 
 public class AbilityScoreIncrease : ATrait
 {
-    public static readonly AbilityScoreIncrease Instance = new AbilityScoreIncrease();
-
-    private AbilityScoreIncrease() : base("Ability Score Increase", "Your ability scores each increase by 1.")
+    public AbilityScoreIncrease() : base("Ability Score Increase", "Your ability scores each increase by 1.")
     {
     }
 
@@ -15,9 +13,9 @@ public class AbilityScoreIncrease : ATrait
     {
         base.HandleCommand(command);
 
-        if (command is GetAttributeScore getAttributeScoreCommand)
+        if (command is GetBaseAttributeScore getAttributeScore)
         {
-            getAttributeScoreCommand.AddBonus(this, 1);
+            getAttributeScore.AddBonus(this, 1);
         }
     }
 }

@@ -4,9 +4,9 @@ using Dnd.System.CommandSystem.Commands.BaseCommands;
 using Dnd.System.Entities.Attributes;
 using Dnd.System.Entities.GameActors;
 
-public class GetAttributeScore : DndScoreCommand
+public class GetBaseAttributeScore : DndScoreCommand
 {
-    public GetAttributeScore(IGameActor character, EAttributeType attributeType) : base(character)
+    public GetBaseAttributeScore(IGameActor character, EAttributeType attributeType) : base(character)
     {
         AttributeType = attributeType;
     }

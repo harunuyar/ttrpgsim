@@ -23,9 +23,9 @@ public class Dwarf : IRace
 
     public List<ITrait> RaceTraits { get; } = new List<ITrait>() 
     { 
-        AbilityScoreIncrease.Instance, 
-        DwarvenResilience.Instance, 
-        DwarvenCombatTraining.Instance 
+        new AbilityScoreIncrease(), 
+        new DwarvenResilience(), 
+        new DwarvenCombatTraining()
     };
 
     public Distance Speed => Distance.OfFeet(25);

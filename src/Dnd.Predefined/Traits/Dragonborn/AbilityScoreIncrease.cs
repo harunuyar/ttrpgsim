@@ -6,23 +6,21 @@ using Dnd.System.Entities.Attributes;
 
 public class AbilityScoreIncrease : ATrait
 {
-    public static readonly AbilityScoreIncrease Instance = new AbilityScoreIncrease();
-
-    private AbilityScoreIncrease() : base("Ability Score Increase", "Your Strength score increases by 2, and your Charisma score increases by 1.")
+    public AbilityScoreIncrease() : base("Ability Score Increase", "Your Strength score increases by 2, and your Charisma score increases by 1.")
     {
     }
 
     public override void HandleCommand(ICommand command)
     {
-        if (command is GetAttributeScore getAttributeScoreCommand)
+        if (command is GetBaseAttributeScore getBaseAttributeScore)
         {
-            if (getAttributeScoreCommand.AttributeType == EAttributeType.Strength)
+            if (getBaseAttributeScore.AttributeType == EAttributeType.Strength)
             {
-                getAttributeScoreCommand.AddBonus(this, 2);
+                getBaseAttributeScore.AddBonus(this, 2);
             }
-            else if (getAttributeScoreCommand.AttributeType == EAttributeType.Charisma)
+            else if (getBaseAttributeScore.AttributeType == EAttributeType.Charisma)
             {
-                getAttributeScoreCommand.AddBonus(this, 1);
+                getBaseAttributeScore.AddBonus(this, 1);
             }
         }
     }

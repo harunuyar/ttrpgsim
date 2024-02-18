@@ -12,7 +12,7 @@ public class HalfElf : IRace
 {
     public HalfElf(EAttributeType attribute1, EAttributeType attribute2)
     {
-        RaceTraits.Add(AbilityScoreIncrease.Instance(attribute1, attribute2));
+        RaceTraits.Add(new AbilityScoreIncrease(attribute1, attribute2));
     }
 
     public string Name => "Half-Elf";

@@ -12,9 +12,9 @@ public interface IAction : IBonusProvider
 
     Range Range { get; }
 
-    bool IsAvailable { get; }
+    bool IsAvailable(IGameActor gameActor);
 
-    bool Use();
+    void Use();
 
     void Apply(IGameActor actor, IEnumerable<IGameActor> targets);
 }

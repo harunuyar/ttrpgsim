@@ -1,5 +1,6 @@
 ﻿namespace Dnd.Predefined.Feats.Classes.Wizard;
 
+using Dnd.Predefined.Feats.Common;
 using Predefined.Classes;
 
 public class WizardSpellCastingAbility : SpellCastingAbility

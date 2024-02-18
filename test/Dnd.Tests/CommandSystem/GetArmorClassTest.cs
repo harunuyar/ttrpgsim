@@ -3,7 +3,7 @@ namespace Dnd.Tests.CommandSystem;
 using Dnd.Predefined.Alignments;
 using Dnd.Predefined.Characters;
 using Dnd.Predefined.Classes;
-using Dnd.Predefined.Feats.Classes.Fighter.Level1.FightingStyle;
+using Dnd.Predefined.Feats.Classes.Fighter.FightingStyle;
 using Dnd.Predefined.Items.Armors.HeavyArmor;
 using Dnd.Predefined.Items.Armors.Shield;
 using Dnd.Predefined.Levels.Fighter;
