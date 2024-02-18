@@ -2,6 +2,7 @@
 
 using Dnd.System.CommandSystem.Commands.BaseCommands;
 using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
+using Dnd.System.Entities.Actions;
 using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Items;
 using Dnd.System.Entities.Items.Equipments.Weapons;
@@ -23,7 +24,7 @@ public class GetWeaponSavingDC : DndScoreCommand
             return;
         }
 
-        if (weapon.SuccessMeasuringType != Entities.ESuccessMeasuringType.SavingThrow)
+        if (weapon.SuccessMeasuringType != ESuccessMeasuringType.SavingThrow)
         {
             SetErrorAndReturn("Weapon doesn't use saving throw as success measuring type");
             return;

@@ -152,8 +152,8 @@ public abstract class SpellCastingAbility : AFeat
         }
         else if (command is GetKnownSpells getKnownSpells)
         {
-            getKnownSpells.AddItems(Spells);
-            getKnownSpells.AddItems(Cantrips);
+            getKnownSpells.AddItems(this, Spells);
+            getKnownSpells.AddItems(this, Cantrips);
         }
         else if (command is GetAvailableSpellSlots getAvailableSpellSlots)
         {

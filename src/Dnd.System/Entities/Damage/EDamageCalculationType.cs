@@ -1,4 +1,4 @@
-﻿namespace Dnd.System.Entities;
+﻿namespace Dnd.System.Entities.Damage;
 
 public enum EDamageCalculationType
 {

@@ -1,20 +1,8 @@
 ﻿namespace Dnd.System.Entities.Spells;
 
-using Dnd.GameManagers.Dice;
-using Dnd.System.Entities.DiceModifiers;
-using Dnd.System.Entities.Damage;
+using Dnd.System.Entities.Actions;
 
-public interface IAttackingSpell : ISpell
+public interface IAttackingSpell : ISpell, IAttackAction
 {
-    ESuccessMeasuringType SuccessMeasuringType { get; }
-
-    public EDamageType DamageType { get; }
-
-    public EDamageCalculationType DamageCalculationType { get; }
-
-    public int ConstantDamage { get; }
-
-    public DiceRoll? DamageDie { get; }
-
-    int GetDamage(ERollResult rollSuccess);
+    int ProjectileCount { get; }
 }

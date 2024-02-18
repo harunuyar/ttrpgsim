@@ -3,9 +3,9 @@
 using Dnd.System.Entities.Units;
 using Dnd.GameManagers.Dice;
 using Dnd.System.Entities.Items.Equipments.Weapons;
-using Dnd.System.Entities;
 using Dnd.System.Entities.Damage;
 using Dnd.System.CommandSystem.Commands.BaseCommands;
+using Dnd.System.Entities.Actions;
 
 public abstract class AWeapon : IWeapon
 {
@@ -19,7 +19,7 @@ public abstract class AWeapon : IWeapon
         EDamageType damageType, 
         EWeaponProperty weaponProperties, 
         ESuccessMeasuringType actionType, 
-        int constantDamage = 0, 
+        int? constantDamage = null, 
         DiceRoll? damageDie = null, 
         DiceRoll? versatileDamageDie = null)
     {
@@ -55,7 +55,7 @@ public abstract class AWeapon : IWeapon
 
     public EDamageCalculationType DamageCalculationType { get; }
 
-    public int ConstantDamage { get; }
+    public int? ConstantDamage { get; }
 
     public DiceRoll? DamageDie { get; }
 

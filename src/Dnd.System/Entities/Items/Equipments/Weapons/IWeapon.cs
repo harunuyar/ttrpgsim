@@ -1,23 +1,13 @@
 ﻿namespace Dnd.System.Entities.Items.Equipments.Weapons;
 
 using Dnd.GameManagers.Dice;
-using Dnd.System.Entities.Damage;
+using Dnd.System.Entities.Actions;
 
-public interface IWeapon : IItemDescription
+public interface IWeapon : IItemDescription, IAttackAction
 {
-    public EWeaponType WeaponType { get; }
+    EWeaponType WeaponType { get; }
 
-    public EDamageType DamageType { get; }
+    EWeaponProperty WeaponProperties { get; }
 
-    public EWeaponProperty WeaponProperties { get; }
-
-    public ESuccessMeasuringType SuccessMeasuringType { get; }
-
-    public EDamageCalculationType DamageCalculationType { get; }
-
-    public int ConstantDamage { get; }
-
-    public DiceRoll? DamageDie { get; }
-
-    public DiceRoll? VersatileDamageDie { get; }
+    DiceRoll? VersatileDamageDie { get; }
 }

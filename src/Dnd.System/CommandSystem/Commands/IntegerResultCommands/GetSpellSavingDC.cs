@@ -3,7 +3,7 @@
 using Dnd.System.CommandSystem.Commands.BaseCommands;
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands.Modifiers;
 using Dnd.System.CommandSystem.Commands.ValueCommands;
-using Dnd.System.Entities;
+using Dnd.System.Entities.Actions;
 using Dnd.System.Entities.Attributes;
 using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Spells;

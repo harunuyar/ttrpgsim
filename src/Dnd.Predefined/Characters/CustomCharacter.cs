@@ -17,6 +17,7 @@ public class CustomCharacter : IGameActor
         HitPoints = new HitPoints();
         Inventory = new Inventory();
         EffectsTable = new EffectsTable();
+        ActionCounter = new ActionCounter();
     }
 
     public IRace Race { get; }
@@ -36,4 +37,6 @@ public class CustomCharacter : IGameActor
     public bool HasInspiration { get; set; }
 
     public string Name { get; }
+
+    public ActionCounter ActionCounter { get; }
 }

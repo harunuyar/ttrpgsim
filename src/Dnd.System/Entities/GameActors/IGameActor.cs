@@ -21,10 +21,14 @@ public interface IGameActor : IDndEntity
 
     EffectsTable EffectsTable { get; }
 
+    ActionCounter ActionCounter { get; }
+
     bool HasInspiration { get; set; }
 
     internal void HandleCommand(ICommand command)
     {
+        ActionCounter.HandleCommand(command);
+
         foreach (var trait in Race.RaceTraits)
         {
             trait.HandleCommand(command);

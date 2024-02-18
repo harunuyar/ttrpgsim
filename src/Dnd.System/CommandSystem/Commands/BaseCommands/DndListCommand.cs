@@ -1,6 +1,7 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.BaseCommands;
 
 using Dnd.System.CommandSystem.Results;
+using Dnd.System.Entities;
 using Dnd.System.Entities.GameActors;
 
 public abstract class DndListCommand<T> : ADndCommand<ListResult<T>>
@@ -12,24 +13,35 @@ public abstract class DndListCommand<T> : ADndCommand<ListResult<T>>
 
     public override ListResult<T> Result { get; }
 
-    public void AddItem(T item)
+    public void AddItem(IDndEntity source, T item)
     {
         if (!IsForceCompleted)
         {
-            Result.Values.Add(item);
+            Result.Add(source, item);
         }
     }
 
-    public void AddItems(IEnumerable<T> items)
+    public void AddItems(IDndEntity source, IEnumerable<T> items)
     {
         if (!IsForceCompleted)
         {
-            Result.Values.AddRange(items);
+            Result.Add(source, items);
         }
     }
 
-    public void SetItemsAndReturn(List<T> list)
+    public void SetItemsAndReturn(IDndEntity source, IEnumerable<T> list)
     {
-        Result.Set(list);
+        if (!IsForceCompleted)
+        {
+            Result.Set(new List<(IDndEntity, IEnumerable<T>)>() { (source, list) });
+        }
+    }
+
+    public void AddByOverriding<K>(K newSource, IEnumerable<T> values, Func<K, K, bool> overrides) where K : IDndEntity
+    {
+        if (!IsForceCompleted)
+        {
+            Result.AddByOverriding(newSource, values, overrides);
+        }
     }
 }

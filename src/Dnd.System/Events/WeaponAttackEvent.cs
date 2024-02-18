@@ -8,6 +8,7 @@ using Dnd.System.CommandSystem.Commands.RollCommands;
 using Dnd.System.CommandSystem.Commands.ValueCommands;
 using Dnd.System.CommandSystem.Results;
 using Dnd.System.Entities;
+using Dnd.System.Entities.Damage;
 using Dnd.System.Entities.DiceModifiers;
 using Dnd.System.Entities.GameActors;
 using Dnd.System.Entities.Items;
@@ -211,7 +212,7 @@ public class WeaponAttackEvent : AEvent
 
         if (weapon.DamageCalculationType == EDamageCalculationType.Constant)
         {
-            return RollResult.Success(new int[] { weapon.ConstantDamage });
+            return RollResult.Success(new int[] { weapon.ConstantDamage!.Value });
         }
 
         var damageDie = Versatile ? weapon.VersatileDamageDie ?? weapon.DamageDie : weapon.DamageDie;
