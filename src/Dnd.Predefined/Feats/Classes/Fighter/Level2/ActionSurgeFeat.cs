@@ -18,7 +18,7 @@ public class ActionSurgeFeat : AFeat
 
     public override void HandleCommand(ICommand command)
     {
-        if (command is GetPossibleActions getPossibleActions)
+        if (command is GetActions getPossibleActions)
         {
             getPossibleActions.AddByOverriding(this, [ActionSurge], (a, b) => a.Level > b.Level);
         }

@@ -1,12 +1,12 @@
 ﻿namespace Dnd.System.CommandSystem.Commands.ListCommands;
 
 using Dnd.System.CommandSystem.Commands.BaseCommands;
-using Dnd.System.Entities.Actions;
+using Dnd.System.Entities.Actions.BaseActions;
 using Dnd.System.Entities.GameActors;
 
-public class GetPossibleActions : DndListCommand<IAction>
+public class GetActions : DndListCommand<IAction>
 {
-    public GetPossibleActions(IGameActor character) : base(character)
+    public GetActions(IGameActor character) : base(character)
     {
     }
 }

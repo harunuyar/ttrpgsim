@@ -2,7 +2,7 @@
 
 using Dnd.System.Entities.Actions;
 
-public interface IAttackingSpell : ISpell, IAttackAction
+public interface IAttackingSpell : ISpell, IAttacking
 {
     int ProjectileCount { get; }
 }

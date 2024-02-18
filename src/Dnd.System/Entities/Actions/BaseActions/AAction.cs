@@ -1,10 +1,11 @@
-﻿namespace Dnd.System.Entities.Actions;
+﻿namespace Dnd.System.Entities.Actions.BaseActions;
 
 using Dnd.System.CommandSystem.Commands.BaseCommands;
+using Dnd.System.Entities.GameActors;
 
 public abstract class AAction : IAction
 {
-    public AAction(string name, string description, EActionType actionType, List<UsageLimitation> usageLimitations, Range range)
+    public AAction(string name, string description, EActionType actionType, Range range, List<UsageLimitation> usageLimitations)
     {
         Name = name;
         Description = description;
@@ -25,11 +26,6 @@ public abstract class AAction : IAction
 
     public bool IsAvailable => UsageLimitations.All(x => x.IsAvailable());
 
-    public virtual void HandleCommand(ICommand command)
-    {
-        UsageLimitations.ForEach(x => x.HandleCommand(command));
-    }
-
     public bool Use()
     {
         if (!IsAvailable)
@@ -40,5 +36,14 @@ public abstract class AAction : IAction
         UsageLimitations.ForEach(x => x.Use());
 
         return true;
+    }
+
+    public virtual void HandleCommand(ICommand command)
+    {
+        UsageLimitations.ForEach(x => x.HandleCommand(command));
+    }
+
+    public virtual void Apply(IGameActor actor, IEnumerable<IGameActor> targets)
+    {
     }
 }

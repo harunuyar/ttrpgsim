@@ -5,6 +5,8 @@ using Dnd.System.CommandSystem.Commands.EventCommands;
 
 public class UsageLimitation
 {
+    public static UsageLimitation None => new UsageLimitation(EUsageLimitation.None, null);
+
     public UsageLimitation(EUsageLimitation limitation, int? charges)
     {
         Limitation = limitation;

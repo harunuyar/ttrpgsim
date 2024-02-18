@@ -16,21 +16,13 @@ public class Blinded : AEffect
     {
         base.HandleCommand(command);
 
-        if (command is GetWeaponAttackModifier calculateWeaponAttackModifier)
+        if (command is GetAttackModifier getAttackModifier)
         {
-            calculateWeaponAttackModifier.AddAdvantage(this, System.Entities.DiceModifiers.EAdvantage.Disadvantage);
+            getAttackModifier.AddAdvantage(this, System.Entities.DiceModifiers.EAdvantage.Disadvantage);
         }
-        else if (command is GetSpellAttackModifier calculateSpellAttackModifier)
+        else if (command is GetAttackModifierAgainst getAttackModifierAgainst)
         {
-            calculateSpellAttackModifier.AddAdvantage(this, System.Entities.DiceModifiers.EAdvantage.Disadvantage);
-        }
-        else if (command is GetWeaponAttackModifierAgainst calculateWeaponAttackModifierAgainstCharacter)
-        {
-            calculateWeaponAttackModifierAgainstCharacter.AddAdvantage(this, System.Entities.DiceModifiers.EAdvantage.Advantage);
-        }
-        else if (command is GetSpellAttackModifierAgainst calculateSpellAttackModifierAgainstCharacter)
-        {
-            calculateSpellAttackModifierAgainstCharacter.AddAdvantage(this, System.Entities.DiceModifiers.EAdvantage.Advantage);
+            getAttackModifierAgainst.AddAdvantage(this, System.Entities.DiceModifiers.EAdvantage.Advantage);
         }
     }
 }

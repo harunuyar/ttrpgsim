@@ -2,6 +2,8 @@
 
 using Dnd.System.CommandSystem.Commands.BaseCommands;
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands.Modifiers;
+using Dnd.System.Entities.Actions;
+using Dnd.System.Entities.Actions.Impl;
 using Dnd.System.Entities.Attributes;
 using Dnd.System.Entities.Items.Equipments.Weapons;
 
@@ -13,9 +15,9 @@ internal class TwoWeaponFighting : AFeat, IFightingStyle
 
     public override void HandleCommand(ICommand command)
     {
-        if (command is GetWeaponDamageModifier calculateWeaponDamageModifier
-            && calculateWeaponDamageModifier.WeaponItem.ItemDescription is IWeapon weapon
-            && calculateWeaponDamageModifier.WeaponItem == command.Actor.Inventory.Equipments.OffHandWeapon)
+        if (command is GetDamageModifier getDamageModifier
+            && getDamageModifier.AttackAction is WeaponAttack weaponAttack
+            && getDamageModifier.AttackAction.ActionType == EActionType.BonusAction)
         {
             var getStrengthModifier = new GetAttributeModifier(command.Actor, EAttributeType.Strength);
             var strengthModifier = getStrengthModifier.Execute();
@@ -24,7 +26,7 @@ internal class TwoWeaponFighting : AFeat, IFightingStyle
             {
                 int attributeModifier = strengthModifier.Value;
 
-                if (weapon.WeaponProperties.HasFlag(EWeaponProperty.Finesse | EWeaponProperty.Range))
+                if (weaponAttack.Weapon.WeaponProperties.HasFlag(EWeaponProperty.Finesse | EWeaponProperty.Range))
                 {
                     var getDexterityModifier = new GetAttributeModifier(command.Actor, EAttributeType.Dexterity);
                     var dexterityModifier = getDexterityModifier.Execute();
@@ -38,15 +40,15 @@ internal class TwoWeaponFighting : AFeat, IFightingStyle
                     }
                     else
                     {
-                        calculateWeaponDamageModifier.SetErrorAndReturn("Couldn't get dexterity modifier: " + strengthModifier.ErrorMessage);
+                        getDamageModifier.SetErrorAndReturn("Couldn't get dexterity modifier: " + strengthModifier.ErrorMessage);
                     }
                 }
 
-                calculateWeaponDamageModifier.SetBaseValue(this, attributeModifier);
+                getDamageModifier.SetBaseValue(this, attributeModifier);
             }
             else
             {
-                calculateWeaponDamageModifier.SetErrorAndReturn("Couldn't get strength modifier: " + strengthModifier.ErrorMessage);
+                getDamageModifier.SetErrorAndReturn("Couldn't get strength modifier: " + strengthModifier.ErrorMessage);
             }
         }
     }

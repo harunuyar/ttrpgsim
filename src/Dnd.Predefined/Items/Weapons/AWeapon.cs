@@ -6,6 +6,7 @@ using Dnd.System.Entities.Items.Equipments.Weapons;
 using Dnd.System.Entities.Damage;
 using Dnd.System.CommandSystem.Commands.BaseCommands;
 using Dnd.System.Entities.Actions;
+using Dnd.System.Entities.Attributes;
 
 public abstract class AWeapon : IWeapon
 {
@@ -66,6 +67,10 @@ public abstract class AWeapon : IWeapon
     public EWeaponProperty WeaponProperties { get; }
 
     public ESuccessMeasuringType SuccessMeasuringType { get; }
+
+    public EAttributeType? SavingThrowAttribute => null;
+
+    public Func<int, int>? FailureDamageModifier => null;
 
     public virtual void HandleCommand(ICommand command)
     {

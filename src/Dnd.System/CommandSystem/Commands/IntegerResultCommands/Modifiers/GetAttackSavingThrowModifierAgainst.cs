@@ -4,9 +4,9 @@ using Dnd.System.CommandSystem.Commands.BaseCommands;
 using Dnd.System.Entities.Actions.BaseActions;
 using Dnd.System.Entities.GameActors;
 
-public class GetAttackModifierAgainst : DndScoreCommand
+internal class GetAttackSavingThrowModifierAgainst : DndScoreCommand
 {
-    internal GetAttackModifierAgainst(IGameActor character, IGameActor attacker, IAttackAction attackAction) : base(character)
+    public GetAttackSavingThrowModifierAgainst(IGameActor character, IGameActor attacker, IAttackAction attackAction) : base(character)
     {
         Attacker = attacker;
         AttackAction = attackAction;

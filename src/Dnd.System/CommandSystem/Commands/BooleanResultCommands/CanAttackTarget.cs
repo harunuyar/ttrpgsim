@@ -2,17 +2,13 @@
 
 using Dnd.System.CommandSystem.Commands.BaseCommands;
 using Dnd.System.Entities.GameActors;
-using Dnd.System.Entities.Items;
 
 public class CanAttackTarget : DndBooleanCommand
 {
-    public CanAttackTarget(IGameActor character, IItem weaponItem, IGameActor target) : base(character)
+    public CanAttackTarget(IGameActor character, IGameActor target) : base(character)
     {
-        WeaponItem = weaponItem;
         Target = target;
     }
-
-    public IItem WeaponItem { get; set; }
 
     public IGameActor Target { get; set; }
 
@@ -29,6 +25,20 @@ public class CanAttackTarget : DndBooleanCommand
         if (!canTakeAnyAction.Value)
         {
             Result.Set(canTakeAnyAction);
+            return;
+        }
+
+        var canBeTargeted = new CanBeTargeted(Target, Actor).Execute();
+
+        if (!canBeTargeted.IsSuccess)
+        {
+            SetErrorAndReturn("CanBeTargeted: " + canBeTargeted.ErrorMessage);
+            return;
+        }
+
+        if (!canBeTargeted.Value)
+        {
+            Result.Set(canBeTargeted);
             return;
         }
 

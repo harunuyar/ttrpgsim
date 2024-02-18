@@ -1,4 +1,6 @@
-﻿namespace Dnd.System.Entities.Actions;
+﻿namespace Dnd.System.Entities.Actions.BaseActions;
+
+using Dnd.System.Entities.GameActors;
 
 public interface IAction : IBonusProvider
 {
@@ -11,4 +13,8 @@ public interface IAction : IBonusProvider
     Range Range { get; }
 
     bool IsAvailable { get; }
+
+    bool Use();
+
+    void Apply(IGameActor actor, IEnumerable<IGameActor> targets);
 }

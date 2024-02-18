@@ -2,6 +2,7 @@
 
 using Dnd.System.CommandSystem.Commands.BaseCommands;
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands.Modifiers;
+using Dnd.System.Entities.Actions.Impl;
 using Dnd.System.Entities.Items.Equipments.Weapons;
 
 internal class Archery : AFeat, IFightingStyle
@@ -12,11 +13,11 @@ internal class Archery : AFeat, IFightingStyle
 
     public override void HandleCommand(ICommand command)
     {
-        if (command is GetWeaponAttackModifier calculateWeaponAttackModifier
-            && calculateWeaponAttackModifier.WeaponItem.ItemDescription is IWeapon weapon
-            && weapon.WeaponType.IsRanged())
+        if (command is GetAttackModifier getAttackModifier
+            && getAttackModifier.AttackAction is WeaponAttack weaponAttack
+            && weaponAttack.Weapon.WeaponType.IsRanged())
         {
-            calculateWeaponAttackModifier.AddBonus(this, 2);
+            getAttackModifier.AddBonus(this, 2);
         }
     }
 }

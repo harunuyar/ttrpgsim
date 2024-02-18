@@ -2,6 +2,7 @@
 
 using Dnd.System.CommandSystem.Commands.BaseCommands;
 using Dnd.System.CommandSystem.Commands.IntegerResultCommands.Modifiers;
+using Dnd.System.Entities.Actions.Impl;
 using Dnd.System.Entities.Items.Equipments.Weapons;
 
 public class Dueling : AFeat, IFightingStyle
@@ -12,14 +13,14 @@ public class Dueling : AFeat, IFightingStyle
 
     public override void HandleCommand(ICommand command)
     {
-        if (command is GetWeaponDamageModifier calculateWeaponDamageModifier
-            && calculateWeaponDamageModifier.WeaponItem.ItemDescription is IWeapon weapon
-            && weapon.WeaponType.IsMelee()
-            && !weapon.WeaponProperties.HasFlag(EWeaponProperty.TwoHanded)
-            && calculateWeaponDamageModifier.WeaponItem == command.Actor.Inventory.Equipments.MainHandWeapon
+        if (command is GetDamageModifier getDamageModifier
+            && getDamageModifier.AttackAction is WeaponAttack weaponAttack
+            && weaponAttack.Weapon.WeaponType.IsMelee()
+            && !weaponAttack.Weapon.WeaponProperties.HasFlag(EWeaponProperty.TwoHanded)
+            && command.Actor.Inventory.Equipments.MainHandWeapon != null
             && command.Actor.Inventory.Equipments.OffHandWeapon == null)
         {
-            calculateWeaponDamageModifier.AddBonus(this, 2);
+            getDamageModifier.AddBonus(this, 2);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿namespace Dnd.Predefined.Actions.Classes.Fighter;
 
 using Dnd.System.Entities.Actions;
+using Dnd.System.Entities.Actions.BaseActions;
 using Dnd.System.Entities.GameActors;
 
 public class ActionSurge : ASelfAction
@@ -20,15 +21,11 @@ public class ActionSurge : ASelfAction
 
     public int Level { get; }
 
-    public override bool Use(IGameActor actor)
+    public override void Apply(IGameActor actor, IEnumerable<IGameActor> targets)
     {
-        bool returnVal = base.Use(actor);
-
-        if (returnVal)
+        foreach (var target in targets)
         {
-            actor.ActionCounter.AddExtraActionPoint();
+            target.ActionCounter.AddExtraActionPoint();
         }
-
-        return returnVal;
     }
 }

@@ -4,9 +4,9 @@ using Dnd.System.CommandSystem.Commands.BaseCommands;
 using Dnd.System.Entities.Actions.BaseActions;
 using Dnd.System.Entities.GameActors;
 
-public class GetAttackModifier : DndScoreCommand
+public class GetDamageModifier : DndScoreCommand
 {
-    public GetAttackModifier(IGameActor character, IGameActor? target, IAttackAction attackAction) : base(character)
+    public GetDamageModifier(IGameActor character, IGameActor? target, IAttackAction attackAction) : base(character)
     {
         Target = target;
         AttackAction = attackAction;
@@ -24,15 +24,15 @@ public class GetAttackModifier : DndScoreCommand
 
         if (Target != null)
         {
-            var attackModifierAgainst = new GetAttackModifierAgainst(Target, Actor, AttackAction).Execute();
+            var damageModifierAgainst = new GetDamageModifierAgainst(Target, Actor, AttackAction).Execute();
 
-            if (!attackModifierAgainst.IsSuccess)
+            if (!damageModifierAgainst.IsSuccess)
             {
-                SetErrorAndReturn("GetAttackModifierAgainst: " + attackModifierAgainst.ErrorMessage);
+                SetErrorAndReturn("GetDamageModifierAgainst: " + damageModifierAgainst.ErrorMessage);
                 return;
             }
 
-            Result.AddAsBonus("Attack Modifier From Target", attackModifierAgainst);
+            Result.AddAsBonus("Damage Modifier From Target", damageModifierAgainst);
         }
     }
 }

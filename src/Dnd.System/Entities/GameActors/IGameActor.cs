@@ -38,6 +38,8 @@ public interface IGameActor : IDndEntity
 
         EffectsTable.HandleCommand(command);
 
+        Inventory.Equipments.HandleCommand(command);
+
         foreach (var item in Inventory.Equipments.EquipedItems)
         {
             item.HandleCommand(command);

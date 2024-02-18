@@ -1,5 +1,6 @@
 ﻿namespace Dnd.Predefined.Levels;
 
+using Dnd.Predefined.Feats;
 using Dnd.Predefined.Feats.Proficiency;
 using Dnd.System.Entities.Classes;
 using Dnd.System.Entities.Feats;
@@ -16,7 +17,7 @@ public abstract class SharedLevel1 : ILevel
 
         if (multiclass)
         {
-            Feats = new List<IFeat>(2 + proficientSkills.Count)
+            Feats = new List<IFeat>(3 + proficientSkills.Count)
             {
                 new ArmorProficiency(dndClass.MulticlassArmorProficiencies),
                 new WeaponProficiency(dndClass.MulticlassWeaponProficiencies),
@@ -25,8 +26,9 @@ public abstract class SharedLevel1 : ILevel
         }
         else
         {
-            Feats = new List<IFeat>(3 + proficientSkills.Count)
+            Feats = new List<IFeat>(6 + proficientSkills.Count)
             {
+                new UnarmedStrikeAbility(),
                 new ProficiencyBonus(),
                 new ArmorProficiency(dndClass.ArmorProficiencies),
                 new WeaponProficiency(dndClass.WeaponProficiencies),

@@ -3,7 +3,7 @@
 using Dnd.GameManagers.Dice;
 using Dnd.System.Entities.Actions;
 
-public interface IWeapon : IItemDescription, IAttackAction
+public interface IWeapon : IItemDescription, IAttacking
 {
     EWeaponType WeaponType { get; }
 
