@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+	<ProjectReference Include="..\..\Dnd.5eSRD\Dnd.5eSRD.csproj" />
 	<ProjectReference Include="..\..\src\Dnd.Predefined\Dnd.Predefined.csproj" />
     <ProjectReference Include="..\..\src\Dnd.System\Dnd.System.csproj" />
   </ItemGroup>
