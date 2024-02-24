@@ -31,9 +31,9 @@ public class GetAttackRollModifier : ListCommand<int>
             Add(attackModifierAgainst);
         }
 
-        if (AttackAction.Weapon != null)
+        if (AttackAction is IWeaponAttackAction weaponAttackAction)
         {
-            await AttackAction.Weapon.HandleUsageCommand(this);
+            await weaponAttackAction.Weapon.HandleUsageCommand(this);
         }
     }
 }

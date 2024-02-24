@@ -19,9 +19,9 @@ internal class GetAdvantageForAttackSavingThrowAgainst : ListCommand<EAdvantage>
 
     protected override async Task InitializeResult()
     {
-        if (SavingThrowAttackAction.Weapon is not null)
+        if (SavingThrowAttackAction is IWeaponAttackAction weaponAttackAction)
         {
-            await SavingThrowAttackAction.Weapon.HandleUsageCommand(this);
+            await weaponAttackAction.Weapon.HandleUsageCommand(this);
         }
     }
 }

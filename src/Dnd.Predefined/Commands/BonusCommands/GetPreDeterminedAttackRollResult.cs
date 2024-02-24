@@ -19,9 +19,9 @@ public class GetPreDeterminedAttackRollResult : ListCommand<ERollResult>
 
     protected override async Task InitializeResult()
     {
-        if (AttackRollAction.Weapon is not null)
+        if (AttackRollAction is IWeaponAttackAction weaponAttackAction)
         {
-            await AttackRollAction.Weapon.HandleUsageCommand(this);
+            await weaponAttackAction.Weapon.HandleUsageCommand(this);
         }
 
         if (Target is not null)

@@ -31,9 +31,9 @@ public class GetDamageRollModifier : ListCommand<int>
             Add(damageModifierAgainst);
         }
 
-        if (AttackAction?.Weapon != null)
+        if (AttackAction is IWeaponAttackAction weaponAttackAction)
         {
-            await AttackAction.Weapon.HandleUsageCommand(this);
+            await weaponAttackAction.Weapon.HandleUsageCommand(this);
         }
     }
 }

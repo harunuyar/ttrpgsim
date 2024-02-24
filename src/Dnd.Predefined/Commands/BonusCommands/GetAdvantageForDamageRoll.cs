@@ -19,9 +19,9 @@ public class GetAdvantageForDamageRoll : ListCommand<EAdvantage>
 
     protected override async Task InitializeResult()
     {
-        if (AttackAction.Weapon is not null)
+        if (AttackAction is IWeaponAttackAction weaponAttackAction)
         {
-            await AttackAction.Weapon.HandleUsageCommand(this);
+            await weaponAttackAction.Weapon.HandleUsageCommand(this);
         }
 
         if (Target is not null)

@@ -1,7 +1,5 @@
 ﻿namespace Dnd.System.Entities.Action;
 
-using Dnd._5eSRD.Models.Spell;
-using Dnd.System.Entities.Instances;
 using Dnd.System.GameManagers.Dice;
 
 public enum EAttackType
@@ -43,6 +41,4 @@ public interface IAttackAction : IAction
     EDamageCalculationType DamageCalculationType { get; }
     DiceRoll? DamageRoll { get; }
     int? ConstantDamage { get; }
-    EquipmentInstance? Weapon { get; }
-    SpellModel? Spell { get; }
 }
