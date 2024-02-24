@@ -1,4 +1,4 @@
-﻿namespace Dnd.GameManagers;
+﻿namespace Dnd.System.GameManagers;
 
 public class GameSettings
 {

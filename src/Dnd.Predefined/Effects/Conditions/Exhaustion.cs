@@ -1,22 +1,38 @@
 ﻿namespace Dnd.Predefined.Effects.Conditions;
 
-using Dnd.System.Entities.GameActors;
-using Dnd.System.Entities.Effects.Duration;
-using Dnd.System.CommandSystem.Commands.BaseCommands;
+using Dnd._5eSRD.Constants;
+using Dnd._5eSRD.Models.Condition;
+using Dnd.Context;
+using Dnd.System.CommandSystem.Commands;
+using Dnd.System.Entities.Effect;
+using Dnd.System.Entities.GameActor;
+using Dnd.System.Entities.Units;
 
-public class Exhaustion : AEffect
+public class Exhaustion : AConditionEffect
 {
-    public Exhaustion(IEffectDuration duration, IGameActor source, IGameActor target, int level = 1)
-        : base("Exhaustion", "Exhaustion is measured in six levels. An effect can give a creature one or more levels of exhaustion, as specified in the effect's description.", duration, source, target)
+    public static async Task<Exhaustion?> Create(IGameActor source, IGameActor target, int level, EffectDurationType durationType, TimeSpan? duration = null, int? maxTriggerCount = null, int? maxRestCount = null)
+    {
+        var conditionModel = await DndContext.Instance.GetObject<ConditionModel>(Conditions.Exhaustion);
+
+        if (conditionModel == null)
+        {
+            return null;
+        }
+
+        return new Exhaustion(conditionModel, durationType, source, target, level, duration, maxTriggerCount, maxRestCount);
+    }
+
+    private Exhaustion(ConditionModel conditionModel, EffectDurationType durationType, IGameActor source, IGameActor target, int level, TimeSpan? duration = null, int? maxTriggerCount = null, int? maxRestCount = null)
+        : base(conditionModel, durationType, source, target, duration, maxTriggerCount, maxRestCount)
     {
         Level = level;
     }
 
     public int Level { get; set; }
 
-    public override void HandleCommand(ICommand command)
+    public override Task HandleCommand(ICommand command)
     {
-        base.HandleCommand(command);
         // TODO: Implement exhaustion effects
+        return base.HandleCommand(command);
     }
 }

@@ -1,59 +1,73 @@
 ﻿namespace Dnd.System.CommandSystem.Results;
 
-using Dnd.System.Entities;
-
 public class ListResult<T> : ICommandResult
 {
-    public ListResult()
+    public static ListResult<T> Empty()
     {
-        IsSuccess = true;
-        ValuesPerSource = new List<(IDndEntity Source, IEnumerable<T> Values)>();
+        return new ListResult<T>(true, null, []);
     }
 
-    public List<(IDndEntity Source, IEnumerable<T> Values)> ValuesPerSource { get; }
+    public static ListResult<T> Success(List<(string, T)> values)
+    {
+        return new ListResult<T>(true, null, values);
+    }
 
-    public IReadOnlyList<T> Values => ValuesPerSource.SelectMany(x => x.Values).ToList();
+    public static ListResult<T> Failure(string errorMessage)
+    {
+        return new ListResult<T>(false, errorMessage, []);
+    }
+
+    protected ListResult(bool isSuccess, string? errorMessage, List<(string, T)> values)
+    {
+        IsSuccess = isSuccess;
+        ErrorMessage = errorMessage;
+        Values = values;
+    }
+
+    public List<(string, T)> Values { get; private set; }
 
     public bool IsSuccess { get; private set; }
 
     public string? ErrorMessage { get; private set; }
 
-    public void Set(List<(IDndEntity Source, IEnumerable<T> Values)> valuesPerSource)
+    internal void Set(ListResult<T> result)
     {
-        IsSuccess = true;
-        ValuesPerSource.Clear();
-        ValuesPerSource.AddRange(valuesPerSource);
+        Values = [.. result.Values];
+        IsSuccess = result.IsSuccess;
+        ErrorMessage = result.ErrorMessage;
     }
 
-    public void Add(IDndEntity source, IEnumerable<T> values)
+    internal void Add(ListResult<T> result)
     {
-        ValuesPerSource.Add((source, values));
-    }
-
-    public void Add(IDndEntity source, T value)
-    {
-        ValuesPerSource.Add((source, new List<T> { value }));
-    }
-
-    public void AddByOverriding<K>(K newSource, IEnumerable<T> values, Func<K, K, bool> overrides) where K : IDndEntity
-    {
-        ValuesPerSource.RemoveAll(x => x.Source is K oldSource && overrides(newSource, oldSource));
-
-        if (!ValuesPerSource.Any(x => x.Source is K oldSource && overrides(oldSource, newSource)))
-        {
-            Add(newSource, values);
-        }
-    }
-
-    public void Reset()
-    {
-        IsSuccess = true;
-        ValuesPerSource.Clear();
+        Values.AddRange(result.Values);
     }
 
     public void SetError(string errorMessage)
     {
         IsSuccess = false;
         ErrorMessage = errorMessage;
+        Values.Clear();
+    }
+
+    internal void AddValue(string message, T value)
+    {
+        Values.Add((message, value));
+    }
+
+    internal void AddValues(string message, IEnumerable<T> values)
+    {
+        Values.AddRange(values.Select(v => (message, v)));
+    }
+
+    internal void SetValues(List<(string, T)> values)
+    {
+        Values = values;
+    }
+
+    public void Reset()
+    {
+        IsSuccess = true;
+        ErrorMessage = null;
+        Values.Clear();
     }
 }

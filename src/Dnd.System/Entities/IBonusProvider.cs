@@ -1,8 +1,8 @@
 ﻿namespace Dnd.System.Entities;
 
-using Dnd.System.CommandSystem.Commands.BaseCommands;
+using Dnd.System.CommandSystem.Commands;
 
-public interface IBonusProvider : IDndEntity
+public interface IBonusProvider
 {
-    void HandleCommand(ICommand command);
+    Task HandleCommand(ICommand command);
 }

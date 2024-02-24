@@ -1,8 +1,6 @@
 ﻿namespace Dnd.Tests.GameManagers;
 
-using Dnd.GameManagers.Dice;
-using Dnd.System.Entities.DiceModifiers;
-using Dnd.System.GameManagers;
+using Dnd.System.GameManagers.Dice;
 
 [TestClass]
 public class ProbabilityTest

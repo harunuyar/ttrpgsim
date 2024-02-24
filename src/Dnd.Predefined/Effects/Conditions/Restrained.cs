@@ -1,22 +1,40 @@
 ﻿namespace Dnd.Predefined.Effects.Conditions;
 
-using Dnd.System.Entities.GameActors;
-using Dnd.System.Entities.Effects.Duration;
-using Dnd.System.CommandSystem.Commands.IntegerResultCommands;
-using Dnd.System.CommandSystem.Commands.BaseCommands;
+using Dnd._5eSRD.Constants;
+using Dnd._5eSRD.Models.Condition;
+using Dnd.Context;
+using Dnd.Predefined.Commands.ScoreCommands;
+using Dnd.System.CommandSystem.Commands;
+using Dnd.System.Entities.Effect;
+using Dnd.System.Entities.GameActor;
+using Dnd.System.Entities.Units;
 
-public class Restrained : AEffect
+public class Restrained : AConditionEffect
 {
-    public Restrained(IEffectDuration duration, IGameActor source, IGameActor target)
-        : base("Restrained", "A restrained creature's speed becomes 0, and it can't benefit from any bonus to its speed.", duration, source, target)
+    public static async Task<Restrained?> Create(IGameActor source, IGameActor target, EffectDurationType durationType, TimeSpan? duration = null, int? maxTriggerCount = null, int? maxRestCount = null)
+    {
+        var conditionModel = await DndContext.Instance.GetObject<ConditionModel>(Conditions.Restrained);
+
+        if (conditionModel == null)
+        {
+            return null;
+        }
+
+        return new Restrained(conditionModel, durationType, source, target, duration, maxTriggerCount, maxRestCount);
+    }
+
+    private Restrained(ConditionModel conditionModel, EffectDurationType durationType, IGameActor source, IGameActor target, TimeSpan? duration = null, int? maxTriggerCount = null, int? maxRestCount = null) 
+        : base(conditionModel, durationType, source, target, duration, maxTriggerCount, maxRestCount)
     {
     }
 
-    public override void HandleCommand(ICommand command)
+    public override Task HandleCommand(ICommand command)
     {
         if (command is GetSpeed getSpeed)
         {
-            getSpeed.SetValueAndReturn(this, 0);
+            getSpeed.SetBaseValueAndReturn(0, Name);
         }
+
+        return base.HandleCommand(command);
     }
 }

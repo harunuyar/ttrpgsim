@@ -1,29 +1,45 @@
 ﻿namespace Dnd.Predefined.Effects.Conditions;
 
-using Dnd.System.Entities.DiceModifiers;
-using Dnd.System.Entities.GameActors;
-using Dnd.System.Entities.Effects.Duration;
-using Dnd.System.CommandSystem.Commands.BaseCommands;
-using Dnd.System.CommandSystem.Commands.IntegerResultCommands.Modifiers;
+using Dnd._5eSRD.Constants;
+using Dnd._5eSRD.Models.Condition;
+using Dnd.Context;
+using Dnd.Predefined.Commands.BonusCommands;
+using Dnd.System.CommandSystem.Commands;
+using Dnd.System.Entities.Effect;
+using Dnd.System.Entities.GameActor;
+using Dnd.System.Entities.Units;
+using Dnd.System.GameManagers.Dice;
 
-public class Frightened : AEffect
+public class Frightened : AConditionEffect
 {
-    public Frightened(IEffectDuration duration, IGameActor source, IGameActor target)
-        : base("Frightened", "A frightened creature has disadvantage on ability checks and attack rolls while the source of its fear is within line of sight.", duration, source, target)
+    public static async Task<Frightened?> Create(IGameActor source, IGameActor target, EffectDurationType durationType, TimeSpan? duration = null, int? maxTriggerCount = null, int? maxRestCount = null)
+    {
+        var conditionModel = await DndContext.Instance.GetObject<ConditionModel>(Conditions.Frightened);
+
+        if (conditionModel == null)
+        {
+            return null;
+        }
+
+        return new Frightened(conditionModel, durationType, source, target, duration, maxTriggerCount, maxRestCount);
+    }
+
+    private Frightened(ConditionModel conditionModel, EffectDurationType durationType, IGameActor source, IGameActor target, TimeSpan? duration = null, int? maxTriggerCount = null, int? maxRestCount = null) 
+        : base(conditionModel, durationType, source, target, duration, maxTriggerCount, maxRestCount)
     {
     }
 
-    public override void HandleCommand(ICommand command)
+    public override Task HandleCommand(ICommand command)
     {
-        base.HandleCommand(command);
+        if (command is GetAdvantageForAttackRoll advantageForAttackRoll)
+        {
+            advantageForAttackRoll.AddValue(EAdvantage.Disadvantage, Name);
+        }
+        else if (command is GetAdvantageForAttackRollAgainst advantageForAttackRollAgainst)
+        {
+            advantageForAttackRollAgainst.AddValue(EAdvantage.Advantage, Name);
+        }
 
-        if (command is GetAttackModifier getAttackModifier)
-        {
-            getAttackModifier.AddAdvantage(this, EAdvantage.Disadvantage);
-        }
-        else if (command is GetSavingThrowModifier getSavingThrowModifier)
-        {
-            getSavingThrowModifier.AddAdvantage(this, EAdvantage.Disadvantage);
-        }
+        return base.HandleCommand(command);
     }
 }

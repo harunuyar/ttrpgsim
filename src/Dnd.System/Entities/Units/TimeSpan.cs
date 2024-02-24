@@ -21,6 +21,11 @@ public class TimeSpan
         Value = Value.Subtract(time);
     }
 
+    public void PassTime(TimeSpan time)
+    {
+        PassTime(time.Value);
+    }
+
     public void PassTurn()
     {
         Value = Value.Subtract(global::System.TimeSpan.FromSeconds(6));

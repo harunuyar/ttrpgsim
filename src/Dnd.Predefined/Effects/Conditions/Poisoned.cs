@@ -1,27 +1,45 @@
 ﻿namespace Dnd.Predefined.Effects.Conditions;
 
-using Dnd.System.Entities.GameActors;
-using Dnd.System.Entities.Effects.Duration;
-using Dnd.System.CommandSystem.Commands.BaseCommands;
-using Dnd.System.CommandSystem.Commands.IntegerResultCommands.Modifiers;
-using Dnd.System.Entities.DiceModifiers;
+using Dnd._5eSRD.Constants;
+using Dnd._5eSRD.Models.Condition;
+using Dnd.Context;
+using Dnd.Predefined.Commands.BonusCommands;
+using Dnd.System.CommandSystem.Commands;
+using Dnd.System.Entities.Effect;
+using Dnd.System.Entities.GameActor;
+using Dnd.System.Entities.Units;
+using Dnd.System.GameManagers.Dice;
 
-public class Poisoned : AEffect
+public class Poisoned : AConditionEffect
 {
-    public Poisoned(IEffectDuration duration, IGameActor source, IGameActor target)
-        : base("Poisoned", "A poisoned creature has disadvantage on attack rolls and ability checks.", duration, source, target)
+    public static async Task<Poisoned?> Create(IGameActor source, IGameActor target, EffectDurationType durationType, TimeSpan? duration = null, int? maxTriggerCount = null, int? maxRestCount = null)
+    {
+        var conditionModel = await DndContext.Instance.GetObject<ConditionModel>(Conditions.Poisoned);
+
+        if (conditionModel == null)
+        {
+            return null;
+        }
+
+        return new Poisoned(conditionModel, durationType, source, target, duration, maxTriggerCount, maxRestCount);
+    }
+
+    private Poisoned(ConditionModel conditionModel, EffectDurationType durationType, IGameActor source, IGameActor target, TimeSpan? duration = null, int? maxTriggerCount = null, int? maxRestCount = null) 
+        : base(conditionModel, durationType, source, target, duration, maxTriggerCount, maxRestCount)
     {
     }
 
-    public override void HandleCommand(ICommand command)
+    public override Task HandleCommand(ICommand command)
     {
-        if (command is GetAttributeModifier getAttributeModifier)
+        if (command is GetAdvantageForSavingThrow advantageForSavingThrow)
         {
-            getAttributeModifier.AddAdvantage(this, EAdvantage.Disadvantage);
+            advantageForSavingThrow.AddValue(EAdvantage.Disadvantage, Name);
         }
-        else if (command is GetAttackModifier getAttackModifier)
+        else if (command is GetAdvantageForAttackRoll advantageForAttackRoll)
         {
-            getAttackModifier.AddAdvantage(this, EAdvantage.Disadvantage);
+            advantageForAttackRoll.AddValue(EAdvantage.Disadvantage, Name);
         }
+
+        return base.HandleCommand(command);
     }
 }

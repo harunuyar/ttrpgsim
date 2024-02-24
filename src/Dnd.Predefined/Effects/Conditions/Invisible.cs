@@ -1,28 +1,45 @@
 ﻿namespace Dnd.Predefined.Effects.Conditions;
 
-using Dnd.System.Entities.GameActors;
-using Dnd.System.Entities.Effects.Duration;
-using Dnd.System.CommandSystem.Commands.BaseCommands;
-using Dnd.System.CommandSystem.Commands.IntegerResultCommands.Modifiers;
-using Dnd.System.Entities.DiceModifiers;
+using Dnd._5eSRD.Constants;
+using Dnd._5eSRD.Models.Condition;
+using Dnd.Context;
+using Dnd.Predefined.Commands.BonusCommands;
+using Dnd.System.CommandSystem.Commands;
+using Dnd.System.Entities.Effect;
+using Dnd.System.Entities.GameActor;
+using Dnd.System.Entities.Units;
+using Dnd.System.GameManagers.Dice;
 
-public class Invisible : AEffect
+public class Invisible : AConditionEffect
 {
-    public Invisible(IEffectDuration duration, IGameActor source, IGameActor target)
-        : base("Invisible", "An invisible creature is impossible to see without the aid of magic or a special sense. For the purpose of hiding, the creature is heavily obscured. The creature's location can be detected by any noise it makes or any tracks it leaves. Attack rolls against the creature have disadvantage, and the creature's attack rolls have advantage.", 
-            duration, source, target)
+    public static async Task<Invisible?> Create(IGameActor source, IGameActor target, EffectDurationType durationType, TimeSpan? duration = null, int? maxTriggerCount = null, int? maxRestCount = null)
+    {
+        var conditionModel = await DndContext.Instance.GetObject<ConditionModel>(Conditions.Invisible);
+
+        if (conditionModel == null)
+        {
+            return null;
+        }
+
+        return new Invisible(conditionModel, durationType, source, target, duration, maxTriggerCount, maxRestCount);
+    }
+
+    private Invisible(ConditionModel conditionModel, EffectDurationType durationType, IGameActor source, IGameActor target, TimeSpan? duration = null, int? maxTriggerCount = null, int? maxRestCount = null) 
+        : base(conditionModel, durationType, source, target, duration, maxTriggerCount, maxRestCount)
     {
     }
 
-    public override void HandleCommand(ICommand command)
+    public override Task HandleCommand(ICommand command)
     {
-        if (command is GetAttackModifier getAttackModifier)
+        if (command is GetAdvantageForAttackRoll advantageForAttackRoll)
         {
-            getAttackModifier.AddAdvantage(this, EAdvantage.Advantage);
+            advantageForAttackRoll.AddValue(EAdvantage.Advantage, Name);
         }
-        else if (command is GetAttackModifierAgainst getAttackModifierAgainst)
+        else if (command is GetAdvantageForAttackRollAgainst advantageForAttackRollAgainst)
         {
-            getAttackModifierAgainst.AddAdvantage(this, EAdvantage.Disadvantage);
+            advantageForAttackRollAgainst.AddValue(EAdvantage.Disadvantage, Name);
         }
+
+        return base.HandleCommand(command);
     }
 }

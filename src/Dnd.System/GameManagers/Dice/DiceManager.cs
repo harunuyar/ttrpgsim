@@ -1,4 +1,4 @@
-﻿namespace Dnd.GameManagers.Dice;
+﻿namespace Dnd.System.GameManagers.Dice;
 
 public class DiceManager
 {

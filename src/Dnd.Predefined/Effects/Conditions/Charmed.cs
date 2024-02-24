@@ -1,27 +1,40 @@
 ﻿namespace Dnd.Predefined.Effects.Conditions;
 
-using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
-using Dnd.System.Entities.GameActors;
-using Dnd.System.Entities.Effects.Duration;
-using Dnd.System.CommandSystem.Commands.BaseCommands;
+using Dnd._5eSRD.Constants;
+using Dnd._5eSRD.Models.Condition;
+using Dnd.Context;
+using Dnd.Predefined.Commands.BoolCommands;
+using Dnd.System.CommandSystem.Commands;
+using Dnd.System.Entities.Effect;
+using Dnd.System.Entities.GameActor;
+using Dnd.System.Entities.Units;
 
-public class Charmed : AEffect
+public class Charmed : AConditionEffect
 {
-    public Charmed(IGameActor charmer, IEffectDuration duration, IGameActor source, IGameActor target)
-        : base("Charmed", "A charmed creature can't attack the charmer or target the charmer with harmful abilities or magical effects. The charmer has advantage on any ability check to interact socially with the creature.", duration, source, target)
+    public static async Task<Charmed?> Create(IGameActor source, IGameActor target, EffectDurationType durationType, TimeSpan? duration = null, int? maxTriggerCount = null, int? maxRestCount = null)
     {
-        Charmer = charmer;
+        var conditionModel = await DndContext.Instance.GetObject<ConditionModel>(Conditions.Charmed);
+
+        if (conditionModel == null)
+        {
+            return null;
+        }
+
+        return new Charmed(conditionModel, durationType, source, target, duration, maxTriggerCount, maxRestCount);
     }
 
-    public IGameActor Charmer { get; set; }
-
-    public override void HandleCommand(ICommand command)
+    private Charmed(ConditionModel conditionModel, EffectDurationType durationType, IGameActor source, IGameActor target, TimeSpan? duration = null, int? maxTriggerCount = null, int? maxRestCount = null) 
+        : base(conditionModel, durationType, source, target, duration, maxTriggerCount, maxRestCount)
     {
-        base.HandleCommand(command);
+    }
 
-        if (command is CanAttackTarget canAttackTarget && canAttackTarget.Target == Charmer)
+    public override Task HandleCommand(ICommand command)
+    {
+        if (command is CanAttackTarget canAttackTarget && canAttackTarget.Target == Source)
         {
-            canAttackTarget.SetValue(this, false, "You can't directly harm your charmer.");
+            canAttackTarget.SetValue(false, "You can't directly harm your charmer.");
         }
+
+        return base.HandleCommand(command);
     }
 }

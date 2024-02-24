@@ -1,40 +1,61 @@
 ﻿namespace Dnd.Predefined.Effects.Conditions;
 
-using Dnd.System.Entities.GameActors;
-using Dnd.System.Entities.Effects.Duration;
-using Dnd.System.CommandSystem.Commands.BaseCommands;
-using Dnd.System.CommandSystem.Commands.BooleanResultCommands;
-using Dnd.System.CommandSystem.Commands.IntegerResultCommands.Modifiers;
-using Dnd.System.Entities.Attributes;
-using Dnd.System.Entities.DiceModifiers;
+using Dnd._5eSRD.Constants;
+using Dnd._5eSRD.Models.Condition;
+using Dnd.Context;
+using Dnd.Predefined.Commands.BonusCommands;
+using Dnd.Predefined.Commands.BoolCommands;
+using Dnd.Predefined.Commands.ValueCommands;
+using Dnd.System.CommandSystem.Commands;
+using Dnd.System.Entities.Effect;
+using Dnd.System.Entities.GameActor;
+using Dnd.System.Entities.Units;
+using Dnd.System.GameManagers.Dice;
 
-public class Paralyzed : AEffect
+public class Paralyzed : AConditionEffect
 {
-    public Paralyzed(IEffectDuration duration, IGameActor source, IGameActor target)
-        : base("Paralyzed", "A paralyzed creature is incapacitated and can't move or speak. The creature automatically fails Strength and Dexterity saving throws. Attack rolls against the creature have advantage. Any attack that hits the creature is a critical hit if the attacker is within 5 feet of the creature.", 
-            duration, source, target)
+    public static async Task<Paralyzed?> Create(IGameActor source, IGameActor target, EffectDurationType durationType, TimeSpan? duration = null, int? maxTriggerCount = null, int? maxRestCount = null)
+    {
+        var conditionModel = await DndContext.Instance.GetObject<ConditionModel>(Conditions.Paralyzed);
+
+        if (conditionModel == null)
+        {
+            return null;
+        }
+
+        return new Paralyzed(conditionModel, durationType, source, target, duration, maxTriggerCount, maxRestCount);
+    }
+
+    private Paralyzed(ConditionModel conditionModel, EffectDurationType durationType, IGameActor source, IGameActor target, TimeSpan? duration = null, int? maxTriggerCount = null, int? maxRestCount = null) 
+        : base(conditionModel, durationType, source, target, duration, maxTriggerCount, maxRestCount)
     {
     }
 
-    public override void HandleCommand(ICommand command)
+    public override Task HandleCommand(ICommand command)
     {
         if (command is CanTakeAnyAction canTakeAnyAction)
         {
-            canTakeAnyAction.SetValueAndReturn(this, false, "You are paralyzed and can't take any action.");
+            canTakeAnyAction.SetValue(false, "You are paralyzed and can't take any action.");
         }
-        else if (command is GetSavingThrowModifier getSavingThrowModifier)
+        else if (command is GetPreDeterminedSavingThrowResult savingThrowResult)
         {
-            if ((getSavingThrowModifier.AttributeType & (EAttributeType.Strength | EAttributeType.Dexterity)) != 0)
+            if (savingThrowResult.SavingThrowAction.Ability.Url == AbilityScores.Str || savingThrowResult.SavingThrowAction.Ability.Url == AbilityScores.Dex)
             {
-                getSavingThrowModifier.SetAutoFailure(this);
+                savingThrowResult.SetValue(ERollResult.Failure, Name);
             }
         }
-        else if (command is GetAttackModifierAgainst getAttackModifierAgainst)
+        else if (command is GetAdvantageForAttackRollAgainst advantageForAttackRollAgainst)
         {
-            getAttackModifierAgainst.AddAdvantage(this, EAdvantage.Advantage);
-
-            // Accept all hits as critical hits regardless of the distance being within 5 feet.
-            getAttackModifierAgainst.Result.BonusCollection.AddHitResult(this, EHitResult.CriticalHit);
+            advantageForAttackRollAgainst.AddValue(EAdvantage.Advantage, Name);
         }
+        else if (command is GetRollSuccessAgainst rollSuccessAgainst)
+        {
+            if (rollSuccessAgainst.NormalResult == ERollResult.Success)
+            {
+                rollSuccessAgainst.SetValue(ERollResult.CriticalSuccess, Name);
+            }
+        }
+
+        return base.HandleCommand(command);
     }
 }
