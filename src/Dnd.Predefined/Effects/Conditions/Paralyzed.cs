@@ -5,7 +5,6 @@ using Dnd._5eSRD.Models.Condition;
 using Dnd.Context;
 using Dnd.Predefined.Commands.BonusCommands;
 using Dnd.Predefined.Commands.BoolCommands;
-using Dnd.Predefined.Commands.ValueCommands;
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.Effect;
 using Dnd.System.Entities.GameActor;
@@ -48,9 +47,9 @@ public class Paralyzed : AConditionEffect
         {
             advantageForAttackRollAgainst.AddValue(EAdvantage.Advantage, Name);
         }
-        else if (command is GetRollSuccessAgainst rollSuccessAgainst)
+        else if (command is GetAttackRollResultAgainst rollSuccessAgainst)
         {
-            if (rollSuccessAgainst.NormalResult == ERollResult.Success)
+            if (rollSuccessAgainst.DefaultRollResult == ERollResult.Success)
             {
                 rollSuccessAgainst.SetValue(ERollResult.CriticalSuccess, Name);
             }

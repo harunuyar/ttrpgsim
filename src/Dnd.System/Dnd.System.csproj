@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Dnd.5eSRD\Dnd.5eSRD.csproj" />
-    <ProjectReference Include="..\Dnd.Context\Dnd.Context.csproj" />
   </ItemGroup>
 
 </Project>
