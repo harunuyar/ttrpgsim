@@ -11,19 +11,19 @@ public class LevelInfo
         MultiClasses = [];
     }
 
-    public ClassInstance? MainClass { get; private set; }
+    public IClassInstance? MainClass { get; private set; }
 
-    public List<ClassInstance> MultiClasses { get; }
+    public List<IClassInstance> MultiClasses { get; }
 
-    private Dictionary<ClassModel, List<LevelInstance>> Levels { get; }
+    private Dictionary<ClassModel, List<ILevelInstance>> Levels { get; }
 
     public int Level => Levels.Values.Sum(list => list.Count);
 
-    public bool AddLevel(LevelInstance newLevel)
+    public bool AddLevel(ILevelInstance newLevel)
     {
         if (!Levels.TryGetValue(newLevel.ClassInstance.ClassModel, out var currentLevels))
         {
-            currentLevels = new List<LevelInstance>();
+            currentLevels = new List<ILevelInstance>();
             Levels.Add(newLevel.ClassInstance.ClassModel, currentLevels);
 
             if (MainClass == null)
@@ -52,17 +52,17 @@ public class LevelInfo
         return Levels.TryGetValue(dndClass, out var levels) ? levels.Count : 0;
     }
 
-    public List<LevelInstance> GetLevels()
+    public List<ILevelInstance> GetLevels()
     {
         return Levels.Select(pair => pair.Value.Last()).ToList();
     }
 
-    public LevelInstance? GetLevelForClass(ClassModel dndClass)
+    public ILevelInstance? GetLevelForClass(ClassModel dndClass)
     {
         return Levels.GetValueOrDefault(dndClass)?.Last();
     }
 
-    public List<ClassInstance> GetClasses()
+    public List<IClassInstance> GetClasses()
     {
         return MainClass == null ? MultiClasses.ToList() : MultiClasses.Prepend(MainClass).ToList();
     }

@@ -17,7 +17,7 @@ public class RaceModel : APIReference
     public string? LanguageDesc { get; set; }
     public Choice? LanguageOptions { get; set; }
     public List<APIReference>? Languages { get; set; }
-    public CreatureSize? Size { get; set; }
+    public ECreatureSize? Size { get; set; }
     public string? SizeDescription { get; set; }
     public int? Speed { get; set; }
     public List<APIReference>? StartingProficiencies { get; set; }

@@ -16,13 +16,27 @@ public class DC
     public string? Desc { get; set; }
 }
 
+public enum ESpellComponent
+{
+    V,
+    S,
+    M
+}
+
+public enum EAttackType
+{
+    None,
+    Melee,
+    Ranged
+}
+
 public class SpellModel : APIReference
 {
-    public AreaOfEffect? AreaOfEffect { get; set; }
-    public string? AttackType { get; set; }
+    public AreaOfEffectModel? AreaOfEffect { get; set; }
+    public EAttackType? AttackType { get; set; }
     public string? CastingTime { get; set; }
     public List<APIReference>? Classes { get; set; }
-    public List<string>? Components { get; set; }
+    public List<ESpellComponent>? Components { get; set; }
     public bool? Concentration { get; set; }
     public Damage? Damage { get; set; }
     public DC? Dc { get; set; }

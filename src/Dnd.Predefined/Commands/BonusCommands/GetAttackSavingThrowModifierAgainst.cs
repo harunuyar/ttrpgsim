@@ -1,12 +1,12 @@
 ﻿namespace Dnd.Predefined.Commands.BonusCommands;
 
 using Dnd.System.CommandSystem.Commands;
-using Dnd.System.Entities.Action;
+using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.Entities.GameActor;
 
 internal class GetAttackSavingThrowModifierAgainst : ListCommand<int>
 {
-    public GetAttackSavingThrowModifierAgainst(IGameActor character, IGameActor target, ISavingThrowAttackAction attackAction) : base(character)
+    public GetAttackSavingThrowModifierAgainst(IGameActor character, IGameActor target, ISavingThrowAction attackAction) : base(character)
     {
         Target = target;
         AttackAction = attackAction;
@@ -14,7 +14,7 @@ internal class GetAttackSavingThrowModifierAgainst : ListCommand<int>
 
     public IGameActor Target { get; }
 
-    public ISavingThrowAttackAction AttackAction { get; }
+    public ISavingThrowAction AttackAction { get; }
 
     protected override async Task InitializeResult()
     {

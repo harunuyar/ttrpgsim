@@ -1,7 +1,7 @@
 ﻿namespace Dnd.Predefined.Commands.ScoreCommands;
 
 using Dnd.System.CommandSystem.Commands;
-using Dnd.System.Entities.Action;
+using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.Entities.GameActor;
 
 public class GetSavingDC : ScoreCommand

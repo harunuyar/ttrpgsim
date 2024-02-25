@@ -2,7 +2,7 @@
 
 using Dnd._5eSRD.Models.Common;
 
-public class Reference
+public class Reference : IAPIReference
 {
     public string? Index { get; set; }
     public string? Name { get; set; }

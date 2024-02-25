@@ -2,7 +2,7 @@
 
 using Dnd.System.CommandSystem.Commands;
 
-public interface IUsageBonusProvider : IBonusProvider
+public interface IUsageBonusProvider : ICommandHandler
 {
     Task HandleUsageCommand(ICommand command);
 }

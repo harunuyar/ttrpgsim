@@ -4,7 +4,7 @@ using Dnd._5eSRD.Models.Common;
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.GameActor;
 
-public class GetCreatureType : ValueCommand<CreatureType>
+public class GetCreatureType : ValueCommand<ECreatureType>
 {
     public GetCreatureType(IGameActor character) : base(character)
     {
@@ -12,7 +12,7 @@ public class GetCreatureType : ValueCommand<CreatureType>
 
     protected override Task InitializeResult()
     {
-        SetValue(CreatureType.Humanoid, $"{Actor.Name} is a humanoid.");
+        SetValue(ECreatureType.Humanoid, $"{Actor.Name} is a humanoid.");
 
         return Task.CompletedTask;
     }

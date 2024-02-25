@@ -92,5 +92,40 @@ public partial class Program
 
             File.WriteAllText(filePath, fileContent.ToString());
         }
+
+        // Generate SubclassLevels.cs explicitly
+        {
+            var fileContent = new StringBuilder();
+            fileContent.AppendLine($"namespace Dnd._5eSRD.Constants;");
+            fileContent.AppendLine();
+            fileContent.AppendLine($"public class SubclassLevels");
+            fileContent.AppendLine("{");
+
+            var classes = dndClient.GetAllReferenceObjects("api/subclasses").Result;
+
+            foreach (var @class in classes)
+            {
+                fileContent.AppendLine($"    public const string {RevertSnakeCase(@class.Index!)}ObjectType = \"{@class.Url}/levels\";");
+
+                var levels = dndClient.GetAllObjectsLevelsExclusive<Dictionary<string, object>>($"{@class.Url}/levels").Result;
+
+                foreach (var level in levels)
+                {
+                    fileContent.AppendLine($"    public const string {RevertSnakeCase(level["index"].ToString()!)} = \"{level["url"]}\";");
+                }
+            }
+
+            fileContent.AppendLine("}");
+
+            var folderPath = Path.Combine("Dnd.5eSRD", "Constants");
+            var filePath = Path.Combine("Dnd.5eSRD", "Constants", "SubclassLevels.cs");
+
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            File.WriteAllText(filePath, fileContent.ToString());
+        }
     }
 }

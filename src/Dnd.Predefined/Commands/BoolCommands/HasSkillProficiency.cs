@@ -2,7 +2,6 @@
 
 using Dnd._5eSRD.Models.Skill;
 using Dnd.System.CommandSystem.Commands;
-using Dnd.System.Entities;
 using Dnd.System.Entities.GameActor;
 
 public class HasSkillProficiency : ValueCommand<bool>
@@ -34,13 +33,13 @@ public class HasSkillProficiency : ValueCommand<bool>
             SetError($"{Skill.Name} skill url is null.");
         }
 
-        var hasProficiency = await Actor.HasProficiency(Skill.Url!);
-        if (hasProficiency)
+        var proficiency = await new HasProficiency(Actor, Skill).Execute();
+        if (!proficiency.IsSuccess)
         {
-            SetValue(true, $"{Actor.Name} has {Skill.Name} skill proficiency.");
-            ForceComplete();
+            SetError("HasProficiency: " + proficiency.ErrorMessage);
+            return;
         }
 
-        SetValue(false, $"{Actor.Name} doesn't have {Skill.Name} skill proficiency.");
+        Set(proficiency);
     }
 }

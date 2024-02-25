@@ -2,7 +2,6 @@
 
 using Dnd._5eSRD.Models.Equipment;
 using Dnd.System.CommandSystem.Commands;
-using Dnd.System.Entities;
 using Dnd.System.Entities.GameActor;
 
 public class HasEquipmentProficiency : ValueCommand<bool>
@@ -21,12 +20,13 @@ public class HasEquipmentProficiency : ValueCommand<bool>
             SetError($"{Equipment.Name} equipment url is null.");
         }
 
-        if (await Actor.HasProficiency(Equipment.Url!))
+        var proficiency = await new HasProficiency(Actor, Equipment).Execute();
+        if (!proficiency.IsSuccess)
         {
-            SetValue(true, $"{Actor.Name} has {Equipment.Name} proficiency.");
+            SetError("HasProficiency: " + proficiency.ErrorMessage);
             return;
         }
 
-        SetValue(false, $"{Actor.Name} doesn't have {Equipment.Name} proficiency.");
+        Set(proficiency);
     }
 }

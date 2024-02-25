@@ -7,11 +7,10 @@ using Dnd.Predefined.Commands.ScoreCommands;
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.Effect;
 using Dnd.System.Entities.GameActor;
-using Dnd.System.Entities.Units;
 
 public class Grappled : AConditionEffect
 {
-    public static async Task<Grappled?> Create(IGameActor source, IGameActor target, EffectDurationType durationType, TimeSpan? duration = null, int? maxTriggerCount = null, int? maxRestCount = null)
+    public static async Task<Grappled?> Create(IGameActor source, IGameActor target, EffectDuration durationType)
     {
         var conditionModel = await DndContext.Instance.GetObject<ConditionModel>(Conditions.Grappled);
 
@@ -20,11 +19,11 @@ public class Grappled : AConditionEffect
             return null;
         }
 
-        return new Grappled(conditionModel, durationType, source, target, duration, maxTriggerCount, maxRestCount);
+        return new Grappled(conditionModel, durationType, source, target);
     }
 
-    private Grappled(ConditionModel conditionModel, EffectDurationType durationType, IGameActor source, IGameActor target, TimeSpan? duration = null, int? maxTriggerCount = null, int? maxRestCount = null) 
-        : base(conditionModel, durationType, source, target, duration, maxTriggerCount, maxRestCount)
+    private Grappled(ConditionModel conditionModel, EffectDuration durationType, IGameActor source, IGameActor target) 
+        : base(conditionModel, durationType, source, target)
     {
     }
 

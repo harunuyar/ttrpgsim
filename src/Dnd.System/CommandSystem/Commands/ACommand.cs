@@ -31,56 +31,63 @@ public abstract class ACommand<T> : ICommand where T : ICommandResult
 
         if (!IsForceCompleted && Result.IsSuccess)
         {
-            foreach (var trait in Actor.Race.Traits)
+            await Actor.HandleCommand(this);
+
+            /*if (!IsForceCompleted)
             {
-                if (!IsForceCompleted)
-                {
-                    await trait.HandleCommand(this);
-                }
+                await Actor.Race.HandleCommand(this);
             }
 
-            foreach (var trait in Actor.Subrace?.RacialTraits ?? [])
+            if (!IsForceCompleted && Actor.Subrace is not null)
+            {
+                await Actor.Subrace.HandleCommand(this);
+            }
+
+            foreach (var c in Actor.LevelInfo.GetClasses())
             {
                 if (!IsForceCompleted)
                 {
-                    await trait.HandleCommand(this);
+                    await c.HandleCommand(this);
                 }
             }
 
             foreach (var level in Actor.LevelInfo.GetLevels())
             {
-                foreach (var feature in level.Features)
+                if (!IsForceCompleted)
                 {
-                    if (!IsForceCompleted)
-                    {
-                        await feature.HandleCommand(this);
-                    }
+                    await level.HandleCommand(this);
                 }
             }
 
-            foreach (var equipment in Actor.Inventory.EquipedItems)
+            if (!IsForceCompleted)
             {
-                if (!IsForceCompleted)
-                {
-                    await equipment.HandleCommand(this);
-                }
+                await Actor.SpellMemory.HandleCommand(this);
             }
 
-            foreach (var effect in Actor.EffectsTable.ActiveEffects)
+            if (!IsForceCompleted)
             {
-                if (!IsForceCompleted)
-                {
-                    await effect.HandleCommand(this);
-                }
+                await Actor.ActionCounter.HandleCommand(this);
             }
 
-            foreach (var effect in Actor.EffectsTable.CausedEffects)
+            if (!IsForceCompleted)
             {
-                if (!IsForceCompleted)
-                {
-                    await effect.HandleCommand(this);
-                }
+                await Actor.Inventory.HandleCommand(this);
             }
+
+            if (!IsForceCompleted)
+            {
+                await Actor.EffectsTable.HandleCommand(this);
+            }
+
+            if (!IsForceCompleted)
+            {
+                await Actor.HitPoints.HandleCommand(this);
+            }
+
+            if (!IsForceCompleted)
+            {
+                await Actor.Alignment.HandleCommand(this);
+            }*/
         }
 
         foreach (Action action in finalActions)

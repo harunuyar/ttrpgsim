@@ -7,11 +7,10 @@ using Dnd.Predefined.Commands.BoolCommands;
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.Effect;
 using Dnd.System.Entities.GameActor;
-using Dnd.System.Entities.Units;
 
 public class Incapacitated : AConditionEffect
 {
-    public static async Task<Incapacitated?> Create(IGameActor source, IGameActor target, EffectDurationType durationType, TimeSpan? duration = null, int? maxTriggerCount = null, int? maxRestCount = null)
+    public static async Task<Incapacitated?> Create(IGameActor source, IGameActor target, EffectDuration durationType)
     {
         var conditionModel = await DndContext.Instance.GetObject<ConditionModel>(Conditions.Incapacitated);
 
@@ -20,11 +19,11 @@ public class Incapacitated : AConditionEffect
             return null;
         }
 
-        return new Incapacitated(conditionModel, durationType, source, target, duration, maxTriggerCount, maxRestCount);
+        return new Incapacitated(conditionModel, durationType, source, target);
     }
 
-    private Incapacitated(ConditionModel conditionModel, EffectDurationType durationType, IGameActor source, IGameActor target, TimeSpan? duration = null, int? maxTriggerCount = null, int? maxRestCount = null) 
-        : base(conditionModel, durationType, source, target, duration, maxTriggerCount, maxRestCount)
+    private Incapacitated(ConditionModel conditionModel, EffectDuration durationType, IGameActor source, IGameActor target) 
+        : base(conditionModel, durationType, source, target)
     {
     }
 

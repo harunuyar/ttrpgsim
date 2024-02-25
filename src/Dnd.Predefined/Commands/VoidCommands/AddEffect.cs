@@ -15,8 +15,16 @@ public class AddEffect : VoidCommand
 
     protected override Task FinalizeResult()
     {
-        Effect.Source.EffectsTable.AddCausedEffect(Effect);
-        SetMessage($"Applied {Effect.Name} to {Effect.Target.Name}.");
+        if (Effect is IPersonalEffect personalEffect)
+        {
+            personalEffect.Source.EffectsTable.AddCausedPersonalEffect(personalEffect);
+            SetMessage($"Applied {personalEffect.Name} to {personalEffect.Target.Name}.");
+        }
+        else if (Effect is IAreaEffect areaEffect)
+        {
+            areaEffect.Source.EffectsTable.AddActiveAreaEffect(areaEffect);
+        }
+        
         return Task.CompletedTask;
     }
 }

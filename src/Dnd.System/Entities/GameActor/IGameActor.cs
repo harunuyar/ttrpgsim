@@ -1,31 +1,19 @@
 ﻿namespace Dnd.System.Entities.GameActor;
 
-using Dnd._5eSRD.Models.Alignment;
 using Dnd.System.Entities.Instances;
 
-public interface IGameActor
+public interface IGameActor : ICommandHandler
 {
     string Name { get; }
-
-    RaceInstance Race { get; }
-
-    SubraceInstance? Subrace { get; }
-
-    AlignmentModel Alignment { get; }
-
-    AbilitySet AttributeSet { get; }
-
-    LevelInfo LevelInfo { get; }
-
-    HitPoints HitPoints { get; }
-
-    Inventory Inventory { get; }
-
-    EffectsTable EffectsTable { get; }
-
-    ActionCounter ActionCounter { get; }
-
-    SpellMemory SpellMemory { get; }
-
     bool HasInspiration { get; set; }
+    IRaceInstance Race { get; }
+    ISubraceInstance? Subrace { get; }
+    IAlignmentInstance Alignment { get; }
+    AbilitySet AttributeSet { get; }
+    LevelInfo LevelInfo { get; }
+    IHitPoints HitPoints { get; }
+    IEffectsTable EffectsTable { get; }
+    IInventory Inventory { get; }
+    IActionCounter ActionCounter { get; }
+    ISpellMemory SpellMemory { get; }
 }

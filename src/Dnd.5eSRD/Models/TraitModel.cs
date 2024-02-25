@@ -28,7 +28,7 @@ public class Action
     public Usage? Usage { get; set; }
     public DifficultyClass? Dc { get; set; }
     public List<ActionDamage>? Damage { get; set; }
-    public AreaOfEffect? AreaOfEffect { get; set; }
+    public AreaOfEffectModel? AreaOfEffect { get; set; }
 }
 
 public class TraitSpecific

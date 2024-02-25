@@ -1,5 +1,7 @@
 ﻿namespace Dnd.System.GameManagers.Dice;
 
+using global::System.Text.RegularExpressions;
+
 public class DiceRoll
 {
     public DiceRoll(int numberOfDice, EDiceType diceType)
@@ -29,32 +31,28 @@ public class DiceRoll
         return rolls;
     }
 
-    public int[] MaxRoll()
+    public int MaxRoll()
     {
-        int[] rolls = new int[NumberOfDice];
-
-        for (int i = 0; i < NumberOfDice; i++)
-        {
-            rolls[i] = (int)DiceType;
-        }
-
-        return rolls;
+        return NumberOfDice * (int)DiceType;
     }
 
-    public int[] MinRoll()
+    public int MinRoll()
     {
-        int[] rolls = new int[NumberOfDice];
-
-        for (int i = 0; i < NumberOfDice; i++)
-        {
-            rolls[i] = 1;
-        }
-
-        return rolls;
+        return NumberOfDice;
     }
 
-    public static DiceRoll operator*(DiceRoll diceRoll, int multiplier)
+    public static DiceRoll Parse(string input)
     {
-        return new DiceRoll(diceRoll.NumberOfDice * multiplier, diceRoll.DiceType);
+        var parts = input.ToLower().Split('d');
+        int count = 1;
+        if (parts.Length > 0)
+        {
+            if (!string.IsNullOrWhiteSpace(parts[0]))
+                count = int.Parse(parts[0]);
+        }
+
+        var sides = (EDiceType)int.Parse(parts[1]);
+
+        return new DiceRoll(count, sides);
     }
 }

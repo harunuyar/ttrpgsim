@@ -46,9 +46,18 @@ public class TwoHandedDamage
     public APIReference? DamageType { get; set; }
 }
 
+public enum EArmorCategory
+{
+    None,
+    Light,
+    Medium,
+    Heavy,
+    Shield
+}
+
 public class EquipmentModel : APIReference
 {
-    public string? ArmorCategory { get; set; }
+    public EArmorCategory? ArmorCategory { get; set; }
     public ArmorClass? ArmorClass { get; set; }
     public string? Capacity { get; set; }
     public string? CategoryRange { get; set; }

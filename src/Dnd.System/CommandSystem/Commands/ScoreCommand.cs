@@ -12,6 +12,11 @@ public class ScoreCommand : ACommand<ScoreResult>
 
     protected override ScoreResult Result { get; }
 
+    public int GetCurrentValue()
+    {
+        return Result.Value;
+    }
+
     public void SetBaseValue(int value, string message)
     {
         if (IsForceCompleted)

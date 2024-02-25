@@ -2,7 +2,6 @@
 
 using Dnd._5eSRD.Models.Skill;
 using Dnd.System.CommandSystem.Commands;
-using Dnd.System.Entities;
 using Dnd.System.Entities.GameActor;
 
 public class HasSkillExpertise : ValueCommand<bool>
@@ -14,23 +13,15 @@ public class HasSkillExpertise : ValueCommand<bool>
 
     public SkillModel Skill { get; }
 
-    protected override async Task InitializeResult()
+    protected override Task InitializeResult()
     {
         if (Skill.Url == null)
         {
             SetError($"{Skill.Name} skill url is null.");
-            return;
-        }
-
-        foreach (var p in Actor.LevelInfo.GetLevels().SelectMany(l => l.Features).SelectMany(f => f.ExpertiseOptions))
-        {
-            if (await p.HasProficiency(Skill.Url))
-            {
-                SetValue(true, $"{Actor.Name} has {Skill} skill expertise.");
-                return;
-            }
+            return Task.CompletedTask;
         }
 
         SetValue(false, $"{Actor.Name} doesn't have {Skill} skill expertise.");
+        return Task.CompletedTask;
     }
 }

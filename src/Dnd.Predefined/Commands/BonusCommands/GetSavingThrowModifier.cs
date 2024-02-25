@@ -3,7 +3,7 @@
 using Dnd.Predefined.Commands.BoolCommands;
 using Dnd.Predefined.Commands.ScoreCommands;
 using Dnd.System.CommandSystem.Commands;
-using Dnd.System.Entities.Action;
+using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.Entities.GameActor;
 
 public class GetSavingThrowModifier : ListCommand<int>
@@ -46,9 +46,9 @@ public class GetSavingThrowModifier : ListCommand<int>
             AddValue(proficiencyBonusResult.Value, proficiencyBonusResult.Message);
         }
 
-        if (SavingThrowAction is ISavingThrowAttackAction savingThrowAttackAction)
+        if (SavingThrowAction.ActionOwner is not null)
         {
-            var against = await new GetAttackSavingThrowModifierAgainst(savingThrowAttackAction.ActionOwner, Actor, savingThrowAttackAction).Execute();
+            var against = await new GetAttackSavingThrowModifierAgainst(SavingThrowAction.ActionOwner, Actor, SavingThrowAction).Execute();
 
             if (!against.IsSuccess)
             {

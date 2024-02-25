@@ -14,7 +14,7 @@ public class GetMaxHP : ScoreCommand
 
     protected override async Task InitializeResult()
     {
-        SetBaseValue(Actor.HitPoints.HitPointRolls.Sum(), "Base");
+        SetBaseValue(Actor.HitPoints.GetTotalHitPointRolls(), "Base");
 
         var abilityScore = await DndContext.Instance.GetObject<AbilityScoreModel>(AbilityScores.Con);
         if (abilityScore == null)
@@ -32,15 +32,5 @@ public class GetMaxHP : ScoreCommand
         }
 
         AddBonus(Actor.LevelInfo.Level * constModifierResult.Value, "Constitution");
-    }
-
-    protected override Task FinalizeResult()
-    {
-        if (Result.IsSuccess)
-        {
-            Actor.HitPoints.SetMaxHitPoints(Result.Value);
-        }
-
-        return Task.CompletedTask;
     }
 }

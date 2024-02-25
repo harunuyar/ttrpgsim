@@ -12,7 +12,7 @@ public class GetAlignment : ValueCommand<AlignmentModel>
 
     protected override Task InitializeResult()
     {
-        SetValue(Actor.Alignment, "Alignment");
+        SetValue(Actor.Alignment.AlignmentModel, "Alignment");
         return Task.CompletedTask;
     }
 }

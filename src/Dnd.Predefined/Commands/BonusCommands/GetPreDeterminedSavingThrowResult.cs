@@ -1,7 +1,7 @@
 ﻿namespace Dnd.Predefined.Commands.BonusCommands;
 
 using Dnd.System.CommandSystem.Commands;
-using Dnd.System.Entities.Action;
+using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.Entities.GameActor;
 using Dnd.System.GameManagers.Dice;
 
@@ -16,9 +16,9 @@ public class GetPreDeterminedSavingThrowResult : ListCommand<ERollResult>
 
     protected override async Task InitializeResult()
     {
-        if (SavingThrowAction is ISavingThrowAttackAction savingThrowAttackAction)
+        if (SavingThrowAction.ActionOwner is not null)
         {
-            var bonusFromAttacker = await new GetPreDeterminedSavingThrowResultAgainst(savingThrowAttackAction.ActionOwner, savingThrowAttackAction, Actor).Execute();
+            var bonusFromAttacker = await new GetPreDeterminedSavingThrowResultAgainst(SavingThrowAction.ActionOwner, SavingThrowAction, Actor).Execute();
 
             if (!bonusFromAttacker.IsSuccess)
             {

@@ -151,12 +151,12 @@ public class MonsterModel : APIReference
     public List<Proficiency>? Proficiencies { get; set; }
     public List<Reaction>? Reactions { get; set; }
     public Sense? Senses { get; set; }
-    public CreatureSize? Size { get; set; }
+    public ECreatureSize? Size { get; set; }
     public List<SpecialAbility>? SpecialAbilities { get; set; }
     public Speed? Speed { get; set; }
     public int? Strength { get; set; }
     public string? Subtype { get; set; }
-    public CreatureType? Type { get; set; }
+    public ECreatureType? Type { get; set; }
     public int? Wisdom { get; set; }
     public int? Xp { get; set; }
 }

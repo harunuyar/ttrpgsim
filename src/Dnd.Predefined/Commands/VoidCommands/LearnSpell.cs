@@ -40,6 +40,8 @@ public class LearnSpell : VoidCommand
             return;
         }
 
+        // TODO: Create spell action from spell model
+        /*
         if (Spell.Level == 0)
         {
             Actor.SpellMemory.LearnCantrip(Class, Spell);
@@ -49,6 +51,6 @@ public class LearnSpell : VoidCommand
         else
         {
             Actor.SpellMemory.PrepareSpell(Class, Spell);
-        }
+        }*/
     }
 }

@@ -1,7 +1,7 @@
 ﻿namespace Dnd.Predefined.Commands.BonusCommands;
 
 using Dnd.System.CommandSystem.Commands;
-using Dnd.System.Entities.Action;
+using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.Entities.GameActor;
 using Dnd.System.GameManagers.Dice;
 
@@ -16,9 +16,9 @@ public class GetAdvantageForSavingThrow : ListCommand<EAdvantage>
 
     protected override async Task InitializeResult()
     {
-        if (SavingThrowAction is ISavingThrowAttackAction savingThrowAttackAction)
+        if (SavingThrowAction.ActionOwner is not null)
         {
-            var advantageFromTarget = await new GetAdvantageForAttackSavingThrowAgainst(savingThrowAttackAction.ActionOwner, Actor, savingThrowAttackAction).Execute();
+            var advantageFromTarget = await new GetAdvantageForAttackSavingThrowAgainst(SavingThrowAction.ActionOwner, Actor, SavingThrowAction).Execute();
 
             if (!advantageFromTarget.IsSuccess)
             {

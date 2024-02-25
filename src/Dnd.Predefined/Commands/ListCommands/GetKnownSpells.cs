@@ -9,12 +9,4 @@ public class GetKnownSpells : ListCommand<SpellModel>
     public GetKnownSpells(IGameActor character) : base(character)
     {
     }
-
-    protected override Task InitializeResult()
-    {
-        AddValues(Actor.SpellMemory.GetCantrips(), "Known Cantrips");
-        AddValues(Actor.SpellMemory.GetPreparedSpells(), "Prepared Spells");
-
-        return Task.CompletedTask;
-    }
 }

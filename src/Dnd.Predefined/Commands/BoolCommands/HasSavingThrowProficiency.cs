@@ -2,7 +2,6 @@
 
 using Dnd._5eSRD.Models.AbilityScore;
 using Dnd.System.CommandSystem.Commands;
-using Dnd.System.Entities;
 using Dnd.System.Entities.GameActor;
 
 public class HasSavingThrowProficiency : ValueCommand<bool>
@@ -16,17 +15,13 @@ public class HasSavingThrowProficiency : ValueCommand<bool>
 
     protected override async Task InitializeResult()
     {
-        if (Ability.Url == null)
+        var proficiency = await new HasProficiency(Actor, Ability).Execute();
+        if (!proficiency.IsSuccess)
         {
-            SetError($"{Ability.Name} equipment url is null.");
-        }
-
-        if (await Actor.HasProficiency(Ability.Url!))
-        {
-            SetValue(true, $"{Actor.Name} has {Ability.FullName} proficiency.");
+            SetError("HasProficiency: " + proficiency.ErrorMessage);
             return;
         }
 
-        SetValue(false, $"{Actor.Name} doesn't have {Ability} saving throw proficiency.");
+        Set(proficiency);
     }
 }

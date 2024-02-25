@@ -17,13 +17,13 @@ public class Choice
     public OptionSet? From { get; set; }
 }
 
-public class AreaOfEffect
+public class AreaOfEffectModel
 {
     public int? Size { get; set; }
-    public AreaOfEffectType? Type { get; set; }
+    public EAreaOfEffectType? Type { get; set; }
 }
 
-public enum AreaOfEffectType
+public enum EAreaOfEffectType
 {
     Sphere,
     Cube,
@@ -152,7 +152,7 @@ public class Prerequisite
     public APIReference? Proficiency { get; set; }
 }
 
-public enum CreatureSize
+public enum ECreatureSize
 {
     None,
     Tiny,
@@ -163,7 +163,7 @@ public enum CreatureSize
     Gargantuan
 }
 
-public enum CreatureType
+public enum ECreatureType
 {
     None,
     Aberration,

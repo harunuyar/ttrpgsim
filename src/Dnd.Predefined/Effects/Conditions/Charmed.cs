@@ -7,11 +7,10 @@ using Dnd.Predefined.Commands.BoolCommands;
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.Effect;
 using Dnd.System.Entities.GameActor;
-using Dnd.System.Entities.Units;
 
 public class Charmed : AConditionEffect
 {
-    public static async Task<Charmed?> Create(IGameActor source, IGameActor target, EffectDurationType durationType, TimeSpan? duration = null, int? maxTriggerCount = null, int? maxRestCount = null)
+    public static async Task<Charmed?> Create(IGameActor source, IGameActor target, EffectDuration durationType)
     {
         var conditionModel = await DndContext.Instance.GetObject<ConditionModel>(Conditions.Charmed);
 
@@ -20,11 +19,11 @@ public class Charmed : AConditionEffect
             return null;
         }
 
-        return new Charmed(conditionModel, durationType, source, target, duration, maxTriggerCount, maxRestCount);
+        return new Charmed(conditionModel, durationType, source, target);
     }
 
-    private Charmed(ConditionModel conditionModel, EffectDurationType durationType, IGameActor source, IGameActor target, TimeSpan? duration = null, int? maxTriggerCount = null, int? maxRestCount = null) 
-        : base(conditionModel, durationType, source, target, duration, maxTriggerCount, maxRestCount)
+    private Charmed(ConditionModel conditionModel, EffectDuration durationType, IGameActor source, IGameActor target) 
+        : base(conditionModel, durationType, source, target)
     {
     }
 
