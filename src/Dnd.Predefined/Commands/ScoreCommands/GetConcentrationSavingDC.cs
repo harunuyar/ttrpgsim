@@ -21,7 +21,7 @@ public class GetConcentrationSavingDC : ValueCommand<int>
         int damageDC = DamageTaken / 2;
         if (damageDC > 10)
         {
-            SetValue(damageDC, "Half of Damage Taken");
+            SetValue(damageDC, "Half of DamageBonusCommands Taken");
         }
         else
         {

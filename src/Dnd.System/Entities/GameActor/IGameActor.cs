@@ -8,9 +8,9 @@ public interface IGameActor : ICommandHandler
     bool HasInspiration { get; set; }
     IRaceInstance Race { get; }
     ISubraceInstance? Subrace { get; }
-    IAlignmentInstance Alignment { get; }
-    AbilitySet AttributeSet { get; }
-    LevelInfo LevelInfo { get; }
+    IAlignmentInstance? Alignment { get; }
+    IAbilitySet AttributeSet { get; }
+    ILevelInfo LevelInfo { get; }
     IHitPoints HitPoints { get; }
     IEffectsTable EffectsTable { get; }
     IInventory Inventory { get; }

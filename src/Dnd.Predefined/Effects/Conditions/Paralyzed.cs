@@ -3,9 +3,10 @@
 using Dnd._5eSRD.Constants;
 using Dnd._5eSRD.Models.Condition;
 using Dnd.Context;
-using Dnd.Predefined.Commands.BonusCommands;
+using Dnd.Predefined.Commands.RollBonusCommands;
 using Dnd.Predefined.Commands.BoolCommands;
 using Dnd.System.CommandSystem.Commands;
+using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.Entities.Effect;
 using Dnd.System.Entities.GameActor;
 using Dnd.System.GameManagers.Dice;
@@ -35,22 +36,25 @@ public class Paralyzed : AConditionEffect
         {
             canTakeAnyAction.SetValue(false, "You are paralyzed and can't take any action.");
         }
-        else if (command is GetPreDeterminedSavingThrowResult savingThrowResult)
+        else if (command is GetPredeterminedRollResult predeterminedRollResult)
         {
-            if (savingThrowResult.SavingThrowAction.Ability.Url == AbilityScores.Str || savingThrowResult.SavingThrowAction.Ability.Url == AbilityScores.Dex)
+            if (predeterminedRollResult.Action is ISavingThrowAction savingThrow && (savingThrow.Ability.Url == AbilityScores.Str || savingThrow.Ability.Url == AbilityScores.Dex))
             {
-                savingThrowResult.SetValue(ERollResult.Failure, Name);
+                predeterminedRollResult.SetValue(ERollResult.Failure, Name);
             }
         }
-        else if (command is GetAdvantageForAttackRollAgainst advantageForAttackRollAgainst)
+        else if (command is GetAdvantageFromOpponent advantageFromOpponent)
         {
-            advantageForAttackRollAgainst.AddValue(EAdvantage.Advantage, Name);
-        }
-        else if (command is GetAttackRollResultAgainst rollSuccessAgainst)
-        {
-            if (rollSuccessAgainst.DefaultRollResult == ERollResult.Success)
+            if (advantageFromOpponent.Action is IAttackAction)
             {
-                rollSuccessAgainst.SetValue(ERollResult.CriticalSuccess, Name);
+                advantageFromOpponent.AddValue(EAdvantage.Advantage, Name);
+            }
+        }
+        else if (command is GetRollActionResultFromOpponent actionResultFromOpponent)
+        {
+            if (actionResultFromOpponent.Action is IAttackAction && actionResultFromOpponent.DefaultRollResult == ERollResult.Success)
+            {
+                actionResultFromOpponent.SetValue(ERollResult.CriticalSuccess, Name);
             }
         }
 

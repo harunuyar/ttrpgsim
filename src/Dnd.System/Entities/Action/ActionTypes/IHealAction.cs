@@ -1,8 +1,5 @@
 ﻿namespace Dnd.System.Entities.Action.ActionTypes;
 
-using Dnd.System.GameManagers.Dice;
-
-public interface IHealAction : IAction
+public interface IHealAction : ITargetingAction, IAmountAction
 {
-    DicePool? HealDicePool { get; }
 }

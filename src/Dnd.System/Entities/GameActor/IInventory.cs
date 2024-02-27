@@ -8,6 +8,11 @@ public interface IInventory : ICommandHandler
     Currency Wealth { get; }
     Dictionary<IEquipmentInstance, int> Items { get; }
     List<IEquipmentInstance> EquipedItems { get; }
+    IEquipmentInstance? MainHandWeapon { get; }
+    IEquipmentInstance? OffHandWeapon { get; }
+    IEquipmentInstance? Armor { get; }
+    IEquipmentInstance? Shield { get; }
+    IEquipmentInstance? Ammunition { get; }
     void AddItem(IEquipmentInstance equipmentModel, int amount);
     void RemoveItem(IEquipmentInstance equipmentModel, int amount);
     int GetQuantity(IEquipmentInstance equipmentModel);

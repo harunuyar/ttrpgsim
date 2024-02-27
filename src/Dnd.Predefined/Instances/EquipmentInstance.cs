@@ -4,9 +4,10 @@ using Dnd._5eSRD.Constants;
 using Dnd._5eSRD.Models.AbilityScore;
 using Dnd._5eSRD.Models.Equipment;
 using Dnd.Context;
-using Dnd.Predefined.Commands.BonusCommands;
+using Dnd.Predefined.Commands.RollBonusCommands;
 using Dnd.Predefined.Commands.ScoreCommands;
 using Dnd.System.CommandSystem.Commands;
+using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.GameManagers.Dice;
 
 public class EquipmentInstance : IEquipmentInstance
@@ -20,11 +21,11 @@ public class EquipmentInstance : IEquipmentInstance
 
     public virtual async Task HandleCommand(ICommand command)
     {
-        if (command is GetAdvantageForSkillCheck advantageForSkillCheck)
+        if (command is GetAdvantage advantage)
         {
-            if ((EquipmentModel.StealthDisadvantage ?? false) && advantageForSkillCheck.SkillCheck.Skill.Url == Skills.Stealth)
+            if ((EquipmentModel.StealthDisadvantage ?? false) && advantage.Action is ISkillCheckAction skillCheck && skillCheck.Skill.Url == Skills.Stealth)
             {
-                advantageForSkillCheck.SetValue(EAdvantage.Disadvantage, "Stealth");
+                advantage.AddValue(EAdvantage.Disadvantage, "Stealth");
             }
         }
         else if (command is GetSpeed speed)

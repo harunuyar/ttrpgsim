@@ -1,7 +1,8 @@
 ﻿namespace Dnd.Predefined.Commands.ScoreCommands;
 
 using Dnd._5eSRD.Models.Skill;
-using Dnd.Predefined.Commands.BonusCommands;
+using Dnd.Predefined.Actions;
+using Dnd.Predefined.Commands.RollBonusCommands;
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.GameActor;
 
@@ -18,7 +19,7 @@ public class GetPassiveSkillValue : ScoreCommand
     {
         SetBaseValue(10, "Base");
 
-        var skillModifierResult = await new GetSkillModifier(Actor, Skill).Execute();
+        var skillModifierResult = await new GetModifiers(Actor, new SkillCheckAction(Actor, Skill), null).Execute();
 
         if (!skillModifierResult.IsSuccess)
         {

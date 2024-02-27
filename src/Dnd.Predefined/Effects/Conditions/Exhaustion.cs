@@ -3,9 +3,10 @@
 using Dnd._5eSRD.Constants;
 using Dnd._5eSRD.Models.Condition;
 using Dnd.Context;
-using Dnd.Predefined.Commands.BonusCommands;
+using Dnd.Predefined.Commands.RollBonusCommands;
 using Dnd.Predefined.Commands.ScoreCommands;
 using Dnd.System.CommandSystem.Commands;
+using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.Entities.Effect;
 using Dnd.System.Entities.GameActor;
 using Dnd.System.GameManagers.Dice;
@@ -34,11 +35,15 @@ public class Exhaustion : AConditionEffect
 
     public override Task HandleCommand(ICommand command)
     {
-        if (command is GetAdvantageForAbilityCheck advantageForAbilityCheck)
+        if (command is GetAdvantage advantage)
         {
-            if (Level >= 1)
+            if (Level >= 1 && (advantage.Action is IAbilityCheckAction || advantage.Action is ISkillCheckAction))
             {
-                advantageForAbilityCheck.AddValue(EAdvantage.Disadvantage, Name + " Level " + Level);
+                advantage.AddValue(EAdvantage.Disadvantage, Name + " Level " + Level);
+            }
+            else if (Level >= 3 && (advantage.Action is IAttackAction || advantage.Action is ISavingThrowAction))
+            {
+                advantage.AddValue(EAdvantage.Disadvantage, Name + " Level " + Level);
             }
         }
 
@@ -51,22 +56,6 @@ public class Exhaustion : AConditionEffect
             else if (Level >= 5)
             {
                 speed.AddFinalAction(() => speed.AddBonus(-speed.GetCurrentValue(), Name + " Level " + Level));
-            }
-        }
-
-        if (command is GetAdvantageForAttackRoll advantageForAttackRoll)
-        {
-            if (Level >= 3)
-            {
-                advantageForAttackRoll.AddValue(EAdvantage.Disadvantage, Name + " Level " + Level);
-            }
-        }
-
-        if (command is GetAdvantageForSavingThrow advantageForSavingThrow)
-        {
-            if (Level >= 3)
-            {
-                advantageForSavingThrow.AddValue(EAdvantage.Disadvantage, Name + " Level " + Level);
             }
         }
 

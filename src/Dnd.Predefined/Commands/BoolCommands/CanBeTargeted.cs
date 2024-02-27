@@ -3,9 +3,9 @@
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.GameActor;
 
-internal class CanBeTargeted : ValueCommand<bool>
+public class CanBeTargeted : ValueCommand<bool>
 {
-    public CanBeTargeted(IGameActor character, IGameActor attacker) : base(character)
+    internal CanBeTargeted(IGameActor character, IGameActor attacker) : base(character)
     {
         Attacker = attacker;
     }

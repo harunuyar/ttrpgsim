@@ -4,37 +4,29 @@ using global::System.Text.RegularExpressions;
 
 public partial class DicePool
 {
-    public DicePool(IEnumerable<DiceRoll> positiveDiceRolls, IEnumerable<DiceRoll> negativeDiceRolls, int bonus)
+    public DicePool(IEnumerable<DiceRoll> positiveDiceRolls, int bonus)
     {
-        PositiveRolls = positiveDiceRolls.ToList();
-        NegativeRolls = negativeDiceRolls.ToList();
+        Rolls = positiveDiceRolls.ToList();
         Bonus = bonus;
     }
 
-    public List<DiceRoll> PositiveRolls { get; set; }
-
-    public List<DiceRoll> NegativeRolls { get; set; }
+    public List<DiceRoll> Rolls { get; set; }
 
     public int Bonus { get; set; }
 
     public int MaxRoll()
     {
-        return (PositiveRolls.Count != 0 ? PositiveRolls.Sum(r => r.MaxRoll()) : 0) 
-            - (NegativeRolls.Count != 0 ? NegativeRolls.Sum(r => r.MinRoll()) : 0) 
-            + Bonus;
+        return (Rolls.Count != 0 ? Rolls.Sum(r => r.MaxRoll()) : 0) + Bonus;
     }
 
     public int MinRoll()
     {
-        return (PositiveRolls.Count != 0 ? PositiveRolls.Sum(r => r.MinRoll()) : 0)
-            - (NegativeRolls.Count != 0 ? NegativeRolls.Sum(r => r.MaxRoll()) : 0)
-            + Bonus;
+        return (Rolls.Count != 0 ? Rolls.Sum(r => r.MinRoll()) : 0) + Bonus;
     }
 
     public static DicePool Parse(string input)
     {
-        var positiveDiceRolls = new List<DiceRoll>();
-        var negativeDiceRolls = new List<DiceRoll>();
+        var diceRolls = new List<DiceRoll>();
         int bonus = 0;
 
         input = WhiteSpaceRegex().Replace(input, "").ToLower();
@@ -49,14 +41,8 @@ public partial class DicePool
             {
                 // If the token contains 'd', it's a dice roll
                 var diceRoll = DiceRoll.Parse(token);
-                if (token.StartsWith('-'))
-                {
-                    negativeDiceRolls.Add(diceRoll);
-                }
-                else
-                {
-                    positiveDiceRolls.Add(diceRoll);
-                }
+                diceRoll.Negative = token.StartsWith('-');
+                diceRolls.Add(diceRoll);
             }
             else
             {
@@ -73,7 +59,7 @@ public partial class DicePool
             }
         }
 
-        return new DicePool(positiveDiceRolls, negativeDiceRolls, bonus);
+        return new DicePool(diceRolls, bonus);
     }
 
     [GeneratedRegex(@"\s+")]

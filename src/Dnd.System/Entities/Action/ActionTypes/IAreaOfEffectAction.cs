@@ -2,7 +2,7 @@
 
 using Dnd._5eSRD.Models.Common;
 
-public interface IAreaOfEffectAction : IAction
+public interface IAreaOfEffectAction : IEffectAction, ITargetingAction
 {
     AreaOfEffectModel AreaOfEffect { get; }
 }

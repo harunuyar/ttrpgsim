@@ -4,11 +4,14 @@ using global::System.Text.RegularExpressions;
 
 public class DiceRoll
 {
-    public DiceRoll(int numberOfDice, EDiceType diceType)
+    public DiceRoll(int numberOfDice, EDiceType diceType, bool negative = false)
     {
         DiceType = diceType;
         NumberOfDice = numberOfDice;
+        Negative = negative;
     }
+
+    public bool Negative { get; set; }
 
     public EDiceType DiceType { get; set; }
 
@@ -16,7 +19,7 @@ public class DiceRoll
 
     public override string ToString()
     {
-        return $"{NumberOfDice}{DiceType}";
+        return (Negative ? "-" : "") + $"{NumberOfDice}{DiceType}";
     }
 
     public int[] Roll()
@@ -33,12 +36,26 @@ public class DiceRoll
 
     public int MaxRoll()
     {
-        return NumberOfDice * (int)DiceType;
+        if (Negative)
+        {
+            return -NumberOfDice;
+        }
+        else
+        {
+            return NumberOfDice * (int)DiceType;
+        }
     }
 
     public int MinRoll()
     {
-        return NumberOfDice;
+        if (Negative)
+        {
+            return NumberOfDice;
+        }
+        else
+        {
+            return -NumberOfDice * (int)DiceType;
+        }
     }
 
     public static DiceRoll Parse(string input)

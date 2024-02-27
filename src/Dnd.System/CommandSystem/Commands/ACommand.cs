@@ -32,62 +32,6 @@ public abstract class ACommand<T> : ICommand where T : ICommandResult
         if (!IsForceCompleted && Result.IsSuccess)
         {
             await Actor.HandleCommand(this);
-
-            /*if (!IsForceCompleted)
-            {
-                await Actor.Race.HandleCommand(this);
-            }
-
-            if (!IsForceCompleted && Actor.Subrace is not null)
-            {
-                await Actor.Subrace.HandleCommand(this);
-            }
-
-            foreach (var c in Actor.LevelInfo.GetClasses())
-            {
-                if (!IsForceCompleted)
-                {
-                    await c.HandleCommand(this);
-                }
-            }
-
-            foreach (var level in Actor.LevelInfo.GetLevels())
-            {
-                if (!IsForceCompleted)
-                {
-                    await level.HandleCommand(this);
-                }
-            }
-
-            if (!IsForceCompleted)
-            {
-                await Actor.SpellMemory.HandleCommand(this);
-            }
-
-            if (!IsForceCompleted)
-            {
-                await Actor.ActionCounter.HandleCommand(this);
-            }
-
-            if (!IsForceCompleted)
-            {
-                await Actor.Inventory.HandleCommand(this);
-            }
-
-            if (!IsForceCompleted)
-            {
-                await Actor.EffectsTable.HandleCommand(this);
-            }
-
-            if (!IsForceCompleted)
-            {
-                await Actor.HitPoints.HandleCommand(this);
-            }
-
-            if (!IsForceCompleted)
-            {
-                await Actor.Alignment.HandleCommand(this);
-            }*/
         }
 
         foreach (Action action in finalActions)

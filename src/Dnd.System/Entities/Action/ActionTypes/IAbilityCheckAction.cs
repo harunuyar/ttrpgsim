@@ -2,7 +2,7 @@
 
 using Dnd._5eSRD.Models.AbilityScore;
 
-public interface IAbilityCheckAction : IAction
+public interface IAbilityCheckAction : IRollAction
 {
     AbilityScoreModel Ability { get; }
 }

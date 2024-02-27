@@ -2,7 +2,7 @@
 
 using Dnd.System.Entities.Instances;
 
-public interface IWeaponAttackAction : IAttackAction
+public interface IWeaponAttackAction : IAttackAction, ISuccessRollAction
 {
     IEquipmentInstance Weapon { get; }
 }

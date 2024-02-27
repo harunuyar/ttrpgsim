@@ -11,9 +11,10 @@ public class IsSpellCaster : ValueCommand<bool>
 
     protected override Task InitializeResult()
     {
-        foreach (var classModel in Actor.LevelInfo.GetLevels().Select(l => l.ClassInstance.ClassModel))
+        foreach (var level in Actor.LevelInfo.GetLastLevels())
         {
-            if (classModel.Spellcasting?.Level != null && Actor.LevelInfo.GetLevelsInClass(classModel) >= classModel.Spellcasting.Level)
+            var spellcasting = level.ClassInstance.ClassModel.Spellcasting;
+            if (spellcasting?.Level != null && (level.LevelModel.LevelNumber ?? 0) >= spellcasting.Level)
             {
                 SetValue(true, $"{Actor.Name} is a spell caster.");
                 return Task.CompletedTask;

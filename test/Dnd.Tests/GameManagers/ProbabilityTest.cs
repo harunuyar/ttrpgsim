@@ -8,7 +8,7 @@ public class ProbabilityTest
     [TestMethod]
     [DataRow(1, EDiceType.d20, EAdvantage.None, 11, 50)]
     [DataRow(1, EDiceType.d20, EAdvantage.Advantage, 11, 75)]
-    [DataRow(1, EDiceType.d20, EAdvantage.Disadvantage, 11, 75)]
+    [DataRow(1, EDiceType.d20, EAdvantage.Disadvantage, 11, 25)]
     [DataRow(2, EDiceType.d20, EAdvantage.None, 11, 89)]
     [DataRow(2, EDiceType.d20, EAdvantage.None, 40, 0)]
     [DataRow(2, EDiceType.d20, EAdvantage.None, 38, 2)]

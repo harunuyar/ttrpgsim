@@ -17,7 +17,7 @@ public static class Probability
         }
         else if (advantage == EAdvantage.Disadvantage)
         {
-            result = 1 - result * result;
+            result = (1 - result) * (1 - result);
         }
 
         return result;
