@@ -54,7 +54,7 @@ public class Inventory : IInventory
 
     public void EquipArmor(IEquipmentInstance equipmentModel)
     {
-        if (equipmentModel.EquipmentModel.EquipmentCategory?.Url != EquipmentCategories.Armor)
+        if (equipmentModel.EquipmentModel.EquipmentCategory?.Url != EquipmentCategories.Armor || equipmentModel.EquipmentModel.ArmorCategory == EArmorCategory.Shield)
         {
             throw new ArgumentException("The equipment is not an armor");
         }
