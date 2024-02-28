@@ -4,9 +4,9 @@ using Dnd.System.Entities.Action;
 using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.Entities.GameActor;
 
-public class ATargetingAction : AAction, ITargetingAction
+public class TargetingAction : Action, ITargetingAction
 {
-    public ATargetingAction(IGameActor actionOwner, string name, ActionDurationType actionDurationType, ActionRange range, TargetingType targetingType) 
+    public TargetingAction(IGameActor actionOwner, string name, ActionDurationType actionDurationType, ActionRange range, TargetingType targetingType) 
         : base(actionOwner, name, actionDurationType)
     {
         Range = range;

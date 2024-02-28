@@ -6,9 +6,9 @@ using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.Entities.GameActor;
 using Dnd.System.GameManagers.Dice;
 
-public class ARollAction : AAction, IRollAction
+public class RollAction : Action, IRollAction
 {
-    public ARollAction(IGameActor actionOwner, string name, ActionDurationType actionDurationType, ERollType rollType) 
+    public RollAction(IGameActor actionOwner, string name, ActionDurationType actionDurationType, ERollType rollType) 
         : base(actionOwner, name, actionDurationType)
     {
         RollType = rollType;

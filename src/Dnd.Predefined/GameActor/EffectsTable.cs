@@ -11,6 +11,7 @@ public class EffectsTable : IEffectsTable
         ActivePersonalEffects = [];
         CausedPersonalEffects = [];
         ActiveAreaEffects = [];
+        AffectedAreaEffects = [];
     }
 
     public HashSet<IAreaEffect> ActiveAreaEffects { get; }
@@ -18,6 +19,8 @@ public class EffectsTable : IEffectsTable
     public HashSet<IPersonalEffect> ActivePersonalEffects { get; }
 
     public HashSet<IPersonalEffect> CausedPersonalEffects { get; }
+
+    public HashSet<IAreaEffect> AffectedAreaEffects { get; }
 
     public void AddCausedPersonalEffect(IPersonalEffect effect)
     {
@@ -36,43 +39,58 @@ public class EffectsTable : IEffectsTable
         ActiveAreaEffects.Add(effect);
     }
 
-    public void RemoveActiveAreaEffect(IAreaEffect effect)
+    public void RemoveCausedAreaEffect(IAreaEffect effect)
     {
         ActiveAreaEffects.Remove(effect);
+        foreach (var target in effect.GameActorsInArea)
+        {
+            target.EffectsTable.RemoveAffectedAreaEffect(effect);
+        }
+    }
+
+    public void AddAffectedAreaEffect(IAreaEffect effect)
+    {
+        AffectedAreaEffects.Add(effect);
+    }
+
+    public void RemoveAffectedAreaEffect(IAreaEffect effect)
+    {
+        AffectedAreaEffects.Remove(effect);
+    }
+
+    public void RemoveCausedEffect(IEffect effect)
+    {
+        if (effect is IPersonalEffect personalEffect)
+        {
+            RemoveCausedPersonalEffect(personalEffect);
+        }
+        else if (effect is IAreaEffect areaEffect)
+        {
+            RemoveCausedAreaEffect(areaEffect);
+        }
     }
 
     public async Task HandleCommand(ICommand command)
     {
-        foreach (var effect in ActiveAreaEffects)
+        // ToList() to avoid concurrent modification
+        foreach (var effect in ActiveAreaEffects.ToList()) 
         {
-            await effect.ActivateEffect();
             await effect.HandleCommand(command);
-
-            if (effect.IsExpired)
-            {
-                RemoveActiveAreaEffect(effect);
-            }
         }
 
-        foreach (var effect in ActivePersonalEffects)
+        foreach (var effect in AffectedAreaEffects.ToList())
         {
-            await effect.ActivateEffect();
             await effect.HandleCommand(command);
-
-            if (effect.IsExpired)
-            {
-                effect.Source.EffectsTable.RemoveCausedPersonalEffect(effect);
-            }
         }
 
-        foreach (var effect in CausedPersonalEffects)
+        foreach (var effect in ActivePersonalEffects.ToList())
         {
             await effect.HandleCommand(command);
+        }
 
-            if (effect.IsExpired)
-            {
-                RemoveCausedPersonalEffect(effect);
-            }
+        foreach (var effect in CausedPersonalEffects.ToList())
+        {
+            await effect.HandleCommand(command);
         }
     }
 }

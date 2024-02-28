@@ -3,17 +3,16 @@
 using Dnd._5eSRD.Constants;
 using Dnd._5eSRD.Models.Condition;
 using Dnd.Context;
-using Dnd.Predefined.Commands.RollBonusCommands;
 using Dnd.Predefined.Commands.BoolCommands;
+using Dnd.Predefined.Commands.RollBonusCommands;
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.Action.ActionTypes;
-using Dnd.System.Entities.Effect;
 using Dnd.System.Entities.GameActor;
 using Dnd.System.GameManagers.Dice;
 
 public class Paralyzed : AConditionEffect
 {
-    public static async Task<Paralyzed?> Create(IGameActor source, IGameActor target, EffectDuration durationType)
+    public static async Task<Paralyzed?> Create()
     {
         var conditionModel = await DndContext.Instance.GetObject<ConditionModel>(Conditions.Paralyzed);
 
@@ -22,15 +21,14 @@ public class Paralyzed : AConditionEffect
             return null;
         }
 
-        return new Paralyzed(conditionModel, durationType, source, target);
+        return new Paralyzed(conditionModel);
     }
 
-    private Paralyzed(ConditionModel conditionModel, EffectDuration durationType, IGameActor source, IGameActor target) 
-        : base(conditionModel, durationType, source, target)
+    private Paralyzed(ConditionModel conditionModel) : base(conditionModel)
     {
     }
 
-    public override Task HandleCommand(ICommand command)
+    public override Task HandleCommand(ICommand command, IGameActor effectSource, IGameActor effectOwner)
     {
         if (command is CanTakeAnyAction canTakeAnyAction)
         {
@@ -58,6 +56,6 @@ public class Paralyzed : AConditionEffect
             }
         }
 
-        return base.HandleCommand(command);
+        return Task.CompletedTask;
     }
 }

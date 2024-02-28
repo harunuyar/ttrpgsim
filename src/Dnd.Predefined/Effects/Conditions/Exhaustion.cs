@@ -7,13 +7,12 @@ using Dnd.Predefined.Commands.RollBonusCommands;
 using Dnd.Predefined.Commands.ScoreCommands;
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.Action.ActionTypes;
-using Dnd.System.Entities.Effect;
 using Dnd.System.Entities.GameActor;
 using Dnd.System.GameManagers.Dice;
 
 public class Exhaustion : AConditionEffect
 {
-    public static async Task<Exhaustion?> Create(IGameActor source, IGameActor target, int level, EffectDuration durationType)
+    public static async Task<Exhaustion?> Create(int level)
     {
         var conditionModel = await DndContext.Instance.GetObject<ConditionModel>(Conditions.Exhaustion);
 
@@ -22,18 +21,17 @@ public class Exhaustion : AConditionEffect
             return null;
         }
 
-        return new Exhaustion(conditionModel, durationType, source, target, level);
+        return new Exhaustion(conditionModel, level);
     }
 
-    private Exhaustion(ConditionModel conditionModel, EffectDuration durationType, IGameActor source, IGameActor target, int level)
-        : base(conditionModel, durationType, source, target)
+    private Exhaustion(ConditionModel conditionModel, int level) : base(conditionModel)
     {
         Level = level;
     }
 
     public int Level { get; set; }
 
-    public override Task HandleCommand(ICommand command)
+    public override Task HandleCommand(ICommand command, IGameActor effectSource, IGameActor effectOwner)
     {
         if (command is GetAdvantage advantage)
         {
@@ -51,7 +49,7 @@ public class Exhaustion : AConditionEffect
         {
             if (Level >= 2)
             {
-                speed.AddFinalAction(() => speed.AddBonus(-speed.GetCurrentValue()/2, Name + " Level " + Level));
+                speed.AddFinalAction(() => speed.AddBonus(-speed.GetCurrentValue() / 2, Name + " Level " + Level));
             }
             else if (Level >= 5)
             {
@@ -63,7 +61,7 @@ public class Exhaustion : AConditionEffect
         {
             if (Level >= 4)
             {
-                maxHP.AddFinalAction(() => maxHP.AddBonus(-maxHP.GetCurrentValue()/2, Name + " Level " + Level));
+                maxHP.AddFinalAction(() => maxHP.AddBonus(-maxHP.GetCurrentValue() / 2, Name + " Level " + Level));
             }
             else if (Level >= 6)
             {
@@ -71,6 +69,6 @@ public class Exhaustion : AConditionEffect
             }
         }
 
-        return base.HandleCommand(command);
+        return Task.CompletedTask;
     }
 }

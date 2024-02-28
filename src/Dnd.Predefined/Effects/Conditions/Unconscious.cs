@@ -5,12 +5,11 @@ using Dnd._5eSRD.Models.Condition;
 using Dnd.Context;
 using Dnd.Predefined.Commands.BoolCommands;
 using Dnd.System.CommandSystem.Commands;
-using Dnd.System.Entities.Effect;
 using Dnd.System.Entities.GameActor;
 
 public class Unconscious : AConditionEffect
 {
-    public static async Task<Unconscious?> Create(IGameActor source, IGameActor target, EffectDuration durationType)
+    public static async Task<Unconscious?> Create()
     {
         var conditionModel = await DndContext.Instance.GetObject<ConditionModel>(Conditions.Unconscious);
 
@@ -19,21 +18,20 @@ public class Unconscious : AConditionEffect
             return null;
         }
 
-        return new Unconscious(conditionModel, durationType, source, target);
+        return new Unconscious(conditionModel);
     }
 
-    private Unconscious(ConditionModel conditionModel, EffectDuration durationType, IGameActor source, IGameActor target) 
-        : base(conditionModel, durationType, source, target)
+    private Unconscious(ConditionModel conditionModel) : base(conditionModel)
     {
     }
 
-    public override Task HandleCommand(ICommand command)
+    public override Task HandleCommand(ICommand command, IGameActor effectSource, IGameActor effectOwner)
     {
         if (command is CanTakeAnyAction canTakeAnyAction)
         {
             canTakeAnyAction.SetValue(false, Name);
         }
 
-        return base.HandleCommand(command);
+        return Task.CompletedTask;
     }
 }

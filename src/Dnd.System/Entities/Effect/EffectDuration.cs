@@ -20,6 +20,8 @@ public class EffectDuration
 
     public int? RestCount { get; }
 
+    public EffectDurationInstance CreateInstance() => new EffectDurationInstance(this);
+
     public static EffectDuration Instantaneous => new EffectDuration(EEffectDurationType.Instantaneous);
 
     public static EffectDuration Permanent => new EffectDuration(EEffectDurationType.Permanent);

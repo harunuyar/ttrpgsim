@@ -6,4 +6,5 @@ public interface ISpellAction : IAction
 {
     SpellModel Spell { get; }
     bool Concentration { get; }
+    int CastingLevel { get; }
 }

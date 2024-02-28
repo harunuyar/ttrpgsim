@@ -6,9 +6,9 @@ using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.Entities.GameActor;
 using Dnd.System.GameManagers.Dice;
 
-public class ASuccessRollAction : ARollAction, ISuccessRollAction
+public class SuccessRollAction : RollAction, ISuccessRollAction
 {
-    public ASuccessRollAction(IGameActor actionOwner, string name, ActionDurationType actionDurationType, ERollType rollType) 
+    public SuccessRollAction(IGameActor actionOwner, string name, ActionDurationType actionDurationType, ERollType rollType) 
         : base(actionOwner, name, actionDurationType, rollType)
     {
     }

@@ -6,13 +6,12 @@ using Dnd.Context;
 using Dnd.Predefined.Commands.RollBonusCommands;
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.Action.ActionTypes;
-using Dnd.System.Entities.Effect;
 using Dnd.System.Entities.GameActor;
 using Dnd.System.GameManagers.Dice;
 
 public class Frightened : AConditionEffect
 {
-    public static async Task<Frightened?> Create(IGameActor source, IGameActor target, EffectDuration durationType)
+    public static async Task<Frightened?> Create()
     {
         var conditionModel = await DndContext.Instance.GetObject<ConditionModel>(Conditions.Frightened);
 
@@ -21,15 +20,14 @@ public class Frightened : AConditionEffect
             return null;
         }
 
-        return new Frightened(conditionModel, durationType, source, target);
+        return new Frightened(conditionModel);
     }
 
-    private Frightened(ConditionModel conditionModel, EffectDuration durationType, IGameActor source, IGameActor target) 
-        : base(conditionModel, durationType, source, target)
+    private Frightened(ConditionModel conditionModel) : base(conditionModel)
     {
     }
 
-    public override Task HandleCommand(ICommand command)
+    public override Task HandleCommand(ICommand command, IGameActor effectSource, IGameActor effectOwner)
     {
         if (command is GetAdvantage advantage)
         {
@@ -46,6 +44,6 @@ public class Frightened : AConditionEffect
             }
         }
 
-        return base.HandleCommand(command);
+        return Task.CompletedTask;
     }
 }

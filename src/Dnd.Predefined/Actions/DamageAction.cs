@@ -1,19 +1,23 @@
 ﻿namespace Dnd.Predefined.Actions;
 
+using Dnd._5eSRD.Models.DamageType;
 using Dnd.System.Entities.Action;
 using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.Entities.GameActor;
 using Dnd.System.GameManagers.Dice;
 
-public class AHealAction : ATargetingAction, IHealAction
+public class DamageAction : TargetingAction, IDamageAction
 {
-    public AHealAction(IGameActor actionOwner, string name, ActionDurationType actionDurationType, ActionRange range, TargetingType targetingType, DicePool damageDicePool)
+    public DamageAction(IGameActor actionOwner, string name, ActionDurationType actionDurationType, ActionRange range, TargetingType targetingType, DamageTypeModel damageType, DicePool damageDicePool)
         : base(actionOwner, name, actionDurationType, range, targetingType)
     {
-        AmountAction = new AAmountAction(actionOwner, name, actionDurationType, damageDicePool);
+        DamageType = damageType;
+        AmountAction = new AmountAction(actionOwner, name, actionDurationType, damageDicePool);
     }
 
-    public AAmountAction AmountAction { get; }
+    public AmountAction AmountAction { get; }
+
+    public DamageTypeModel DamageType { get; }
 
     public DicePool AmountDicePool => AmountAction.AmountDicePool;
 

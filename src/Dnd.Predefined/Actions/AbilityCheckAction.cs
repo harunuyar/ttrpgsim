@@ -9,7 +9,7 @@ using Dnd.System.Entities.Action;
 using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.Entities.GameActor;
 
-public class AbilityCheckAction : ARollAction, IAbilityCheckAction
+public class AbilityCheckAction : RollAction, IAbilityCheckAction
 {
     public AbilityCheckAction(IGameActor actionOwner, AbilityScoreModel ability) 
         : base(actionOwner, $"{ability.FullName} Check", ActionDurationType.Action, ERollType.AbilityCheck)

@@ -2,7 +2,7 @@
 
 using Dnd._5eSRD.Models.Spell;
 
-public interface IAttackAction : IDamageAction, ITargetingAction
+public interface IAttackAction : IDamageAction
 {
     EAttackType AttackType { get; }
 }

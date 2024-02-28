@@ -5,12 +5,11 @@ using Dnd._5eSRD.Models.Condition;
 using Dnd.Context;
 using Dnd.Predefined.Commands.BoolCommands;
 using Dnd.System.CommandSystem.Commands;
-using Dnd.System.Entities.Effect;
 using Dnd.System.Entities.GameActor;
 
 public class Petrified : AConditionEffect
 {
-    public static async Task<Petrified?> Create(IGameActor source, IGameActor target, EffectDuration durationType)
+    public static async Task<Petrified?> Create()
     {
         var conditionModel = await DndContext.Instance.GetObject<ConditionModel>(Conditions.Petrified);
 
@@ -19,21 +18,20 @@ public class Petrified : AConditionEffect
             return null;
         }
 
-        return new Petrified(conditionModel, durationType, source, target);
+        return new Petrified(conditionModel);
     }
 
-    private Petrified(ConditionModel conditionModel, EffectDuration durationType, IGameActor source, IGameActor target) 
-        : base(conditionModel, durationType, source, target)
+    private Petrified(ConditionModel conditionModel) : base(conditionModel)
     {
     }
 
-    public override Task HandleCommand(ICommand command)
+    public override Task HandleCommand(ICommand command, IGameActor effectSource, IGameActor effectOwner)
     {
         if (command is CanTakeAnyAction canTakeAnyAction)
         {
             canTakeAnyAction.SetValue(false, Name);
         }
 
-        return base.HandleCommand(command);
+        return Task.CompletedTask;
     }
 }

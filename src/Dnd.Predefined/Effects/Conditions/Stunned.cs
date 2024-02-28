@@ -5,12 +5,11 @@ using Dnd._5eSRD.Models.Condition;
 using Dnd.Context;
 using Dnd.Predefined.Commands.BoolCommands;
 using Dnd.System.CommandSystem.Commands;
-using Dnd.System.Entities.Effect;
 using Dnd.System.Entities.GameActor;
 
 public class Stunned : AConditionEffect
 {
-    public static async Task<Stunned?> Create(IGameActor source, IGameActor target, EffectDuration durationType)
+    public static async Task<Stunned?> Create()
     {
         var conditionModel = await DndContext.Instance.GetObject<ConditionModel>(Conditions.Stunned);
 
@@ -19,21 +18,20 @@ public class Stunned : AConditionEffect
             return null;
         }
 
-        return new Stunned(conditionModel, durationType, source, target);
+        return new Stunned(conditionModel);
     }
 
-    private Stunned(ConditionModel conditionModel, EffectDuration durationType, IGameActor source, IGameActor target) 
-        : base(conditionModel, durationType, source, target)
+    private Stunned(ConditionModel conditionModel) : base(conditionModel)
     {
     }
 
-    public override Task HandleCommand(ICommand command)
+    public override Task HandleCommand(ICommand command, IGameActor effectSource, IGameActor effectOwner)
     {
         if (command is CanTakeAnyAction canTakeAnyAction)
         {
             canTakeAnyAction.SetValue(false, Name);
         }
 
-        return base.HandleCommand(command);
+        return Task.CompletedTask;
     }
 }

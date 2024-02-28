@@ -6,13 +6,12 @@ using Dnd.Context;
 using Dnd.Predefined.Commands.RollBonusCommands;
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.Action.ActionTypes;
-using Dnd.System.Entities.Effect;
 using Dnd.System.Entities.GameActor;
 using Dnd.System.GameManagers.Dice;
 
 public class Poisoned : AConditionEffect
 {
-    public static async Task<Poisoned?> Create(IGameActor source, IGameActor target, EffectDuration durationType)
+    public static async Task<Poisoned?> Create()
     {
         var conditionModel = await DndContext.Instance.GetObject<ConditionModel>(Conditions.Poisoned);
 
@@ -21,15 +20,14 @@ public class Poisoned : AConditionEffect
             return null;
         }
 
-        return new Poisoned(conditionModel, durationType, source, target);
+        return new Poisoned(conditionModel);
     }
 
-    private Poisoned(ConditionModel conditionModel, EffectDuration durationType, IGameActor source, IGameActor target) 
-        : base(conditionModel, durationType, source, target)
+    private Poisoned(ConditionModel conditionModel) : base(conditionModel)
     {
     }
 
-    public override Task HandleCommand(ICommand command)
+    public override Task HandleCommand(ICommand command, IGameActor effectSource, IGameActor effectOwner)
     {
         if (command is GetAdvantage advantage)
         {
@@ -46,6 +44,6 @@ public class Poisoned : AConditionEffect
             }
         }
 
-        return base.HandleCommand(command);
+        return Task.CompletedTask;
     }
 }

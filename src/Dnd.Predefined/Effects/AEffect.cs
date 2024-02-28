@@ -4,94 +4,63 @@ using Dnd.Predefined.Commands.VoidCommands;
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.Effect;
 using Dnd.System.Entities.GameActor;
-using Dnd.System.Entities.Units;
 
 public abstract class AEffect : IEffect
 {
-    public AEffect(string name, string desc, EffectDuration duration, IGameActor source)
+    public AEffect(IEffectDefinition effectDefinition, EffectDuration duration, IGameActor source)
     {
-        Name = name;
-        Description = desc;
-        Duration = duration;
+        EffectDefinition = effectDefinition;
+        Duration = duration.CreateInstance();
         Source = source;
-
-        if (duration.Type.HasFlag(EEffectDurationType.UntilTriggered))
-        {
-            RemainingTriggerCount = duration.TriggerCount;
-        }
-
-        if (duration.Type.HasFlag(EEffectDurationType.UntilShortRest) || duration.Type.HasFlag(EEffectDurationType.UntilLongRest))
-        {
-            RemainingRestCount = duration.RestCount;
-        }
-
-        if (duration.Type.HasFlag(EEffectDurationType.Timed))
-        {
-            RemainingDuration = duration.Duration?.Clone();
-        }
     }
-
-    public string Name { get; }
-
-    public string Description { get; }
-
-    public EffectDuration Duration { get; }
 
     public IGameActor Source { get; }
 
-    public Duration? RemainingDuration { get; }
+    public bool IsExpired => Duration.IsExpired;
 
-    public int? RemainingTriggerCount { get; private set; }
+    public IEffectDefinition EffectDefinition { get; }
 
-    public int? RemainingRestCount { get; private set; }
-
-    public bool IsExpired => RemainingDuration is not null 
-        ? RemainingDuration.IsOver 
-        : (RemainingTriggerCount.HasValue 
-            ? RemainingTriggerCount <= 0 
-            : (RemainingRestCount.HasValue && RemainingRestCount <= 0));
+    public EffectDurationInstance Duration { get; }
 
     public virtual Task ActivateEffect()
     {
-        if (Duration.Type.HasFlag(EEffectDurationType.UntilTriggered) && RemainingTriggerCount.HasValue)
+        Duration.Trigger();
+
+        if (IsExpired)
         {
-            RemainingTriggerCount--;
+            Source.EffectsTable.RemoveCausedEffect(this);
         }
 
         return Task.CompletedTask;
     }
 
-    public virtual Task HandleCommand(ICommand command)
+    public virtual async Task HandleCommand(ICommand command)
     {
-        if (command is TakeTurn takeTurn)
+        if (command is TakeTurn)
         {
-            if (takeTurn.Actor == Source)
+            if (EffectDefinition is IActiveEffectDefinition activeEffect && activeEffect.ActivationTime.HasFlag(EEffectActivationTime.SourceTurnStart) && command.Actor == Source)
             {
-                RemainingDuration?.PassTurn();
+                await ActivateEffect();
+            }
+
+            if (command.Actor == Source)
+            {
+                Duration.PassTurn();
+            }
+        }
+        else if (command is EndTurn)
+        {
+            if (EffectDefinition is IActiveEffectDefinition activeEffect && activeEffect.ActivationTime.HasFlag(EEffectActivationTime.SourceTurnEnd) && command.Actor == Source)
+            {
+                await ActivateEffect();
             }
         }
         else if (command is PassTime passTime)
         {
-            if (passTime.Actor == Source)
+            if (command.Actor == Source)
             {
-                RemainingDuration?.PassTime(passTime.TimeSpan);
+                Duration.PassTime(passTime.TimeSpan);
             }
         }
-        else if (command is LongRest)
-        {
-            if (Duration.Type.HasFlag(EEffectDurationType.UntilLongRest) && RemainingRestCount.HasValue)
-            {
-                RemainingRestCount--;
-            }
-        }
-        else if (command is ShortRest)
-        {
-            if (Duration.Type.HasFlag(EEffectDurationType.UntilShortRest) && RemainingRestCount.HasValue)
-            {
-                RemainingRestCount--;
-            }
-        }
-
-        return Task.CompletedTask;
     }
 }

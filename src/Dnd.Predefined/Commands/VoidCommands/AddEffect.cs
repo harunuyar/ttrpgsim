@@ -18,7 +18,7 @@ public class AddEffect : VoidCommand
         if (Effect is IPersonalEffect personalEffect)
         {
             personalEffect.Source.EffectsTable.AddCausedPersonalEffect(personalEffect);
-            SetMessage($"Applied {personalEffect.Name} to {personalEffect.Target.Name}.");
+            SetMessage($"Applied {personalEffect.EffectDefinition.Name} to {personalEffect.Target.Name}.");
         }
         else if (Effect is IAreaEffect areaEffect)
         {

@@ -17,7 +17,7 @@ internal class RemoveEffect : VoidCommand
     {
         if (Effect is IAreaEffect areaEffect)
         {
-            areaEffect.Source.EffectsTable.RemoveActiveAreaEffect(areaEffect);
+            areaEffect.Source.EffectsTable.RemoveCausedAreaEffect(areaEffect);
         }
         else if (Effect is IPersonalEffect personalEffect)
         {

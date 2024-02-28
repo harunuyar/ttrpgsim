@@ -11,17 +11,17 @@ using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.Entities.GameActor;
 using Dnd.System.GameManagers.Dice;
 
-public class SavingThrowAction : ASuccessRollAction, ISavingThrowAction
+public class SavingThrowAction : SuccessRollAction, ISavingThrowAction
 {
     public SavingThrowAction(IGameActor actionOwner, AbilityScoreModel ability, double saveDamageMultiplier, DamageTypeModel damageType, DicePool damageDicePool)
         : base(actionOwner, $"{ability.FullName} Saving Throw", ActionDurationType.FreeAction, ERollType.Save)
     {
         Ability = ability;
         SaveDamageMultiplier = saveDamageMultiplier;
-        DamageAction = new ADamageAction(actionOwner, "DamageBonusCommands", ActionDurationType.FreeAction, ActionRange.Self, TargetingType.SingleTarget, damageType, damageDicePool);
+        DamageAction = new DamageAction(actionOwner, "DamageBonusCommands", ActionDurationType.FreeAction, ActionRange.Self, TargetingType.SingleTarget, damageType, damageDicePool);
     }
 
-    public ADamageAction DamageAction { get; }
+    public DamageAction DamageAction { get; }
 
     public AbilityScoreModel Ability { get; }
 

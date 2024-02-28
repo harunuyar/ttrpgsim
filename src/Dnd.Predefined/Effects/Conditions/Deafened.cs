@@ -3,12 +3,12 @@
 using Dnd._5eSRD.Constants;
 using Dnd._5eSRD.Models.Condition;
 using Dnd.Context;
-using Dnd.System.Entities.Effect;
+using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.GameActor;
 
 public class Deafened : AConditionEffect
 {
-    public static async Task<Deafened?> Create(IGameActor source, IGameActor target, EffectDuration durationType)
+    public static async Task<Deafened?> Create()
     {
         var conditionModel = await DndContext.Instance.GetObject<ConditionModel>(Conditions.Deafened);
 
@@ -17,11 +17,15 @@ public class Deafened : AConditionEffect
             return null;
         }
 
-        return new Deafened(conditionModel, durationType, source, target);
+        return new Deafened(conditionModel);
     }
 
-    private Deafened(ConditionModel conditionModel, EffectDuration durationType, IGameActor source, IGameActor target)
-        : base(conditionModel, durationType, source, target)
+    private Deafened(ConditionModel conditionModel) : base(conditionModel)
     {
+    }
+
+    public override Task HandleCommand(ICommand command, IGameActor effectSource, IGameActor effectOwner)
+    {
+        return Task.CompletedTask;
     }
 }

@@ -7,9 +7,9 @@ using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.Entities.GameActor;
 using Dnd.System.GameManagers.Dice;
 
-public class AAmountAction : AAction, IAmountAction
+public class AmountAction : Action, IAmountAction
 {
-    public AAmountAction(IGameActor actionOwner, string name, ActionDurationType actionDurationType, DicePool amountDicePool)
+    public AmountAction(IGameActor actionOwner, string name, ActionDurationType actionDurationType, DicePool amountDicePool)
         : base(actionOwner, name, actionDurationType)
     {
         AmountDicePool = amountDicePool;

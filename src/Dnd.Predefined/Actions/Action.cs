@@ -6,9 +6,9 @@ using Dnd.System.Entities.Action;
 using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.Entities.GameActor;
 
-public class AAction : IAction
+public class Action : IAction
 {
-    public AAction(IGameActor actionOwner, string name, ActionDurationType actionDurationType)
+    public Action(IGameActor actionOwner, string name, ActionDurationType actionDurationType)
     {
         ActionOwner = actionOwner;
         Name = name;
