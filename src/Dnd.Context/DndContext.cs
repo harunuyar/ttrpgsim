@@ -19,8 +19,13 @@ public class DndContext
         cache = [];
     }
 
-    public async Task<T?> GetObject<T>(string index) where T : class, IAPIReference
+    public async Task<T?> GetObject<T>(string? index) where T : class, IAPIReference
     {
+        if (index == null)
+        {
+            return null;
+        }
+
         if (cache.TryGetValue(index, out var cachedObject))
         {
             return cachedObject as T;

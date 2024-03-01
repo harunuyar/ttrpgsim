@@ -13,6 +13,7 @@ public class Action : IAction
         ActionOwner = actionOwner;
         Name = name;
         ActionDuration = actionDurationType;
+        ReactionType = EReactionType.None;
     }
 
     public IGameActor ActionOwner { get; }
@@ -20,6 +21,8 @@ public class Action : IAction
     public string Name { get; }
 
     public ActionDurationType ActionDuration { get; }
+
+    public EReactionType ReactionType { get; set; }
 
     public virtual Task HandleCommand(ICommand command)
     {

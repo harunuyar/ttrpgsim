@@ -6,12 +6,14 @@ using Dnd.System.Entities.GameActor;
 
 public class CanCastKnownSpell : ValueCommand<bool>
 {
-    public CanCastKnownSpell(IGameActor character, SpellModel spell) : base(character)
+    public CanCastKnownSpell(IGameActor character, SpellModel spell, int spellSlot) : base(character)
     {
         Spell = spell;
     }
 
     public SpellModel Spell { get; }
+
+    public int SpellSlot { get; }
 
     protected override async Task InitializeResult()
     {

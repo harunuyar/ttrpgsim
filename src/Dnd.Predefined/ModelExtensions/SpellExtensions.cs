@@ -22,28 +22,39 @@ public static class SpellExtensions
         return ActionDurationType.FromString(spellModel.CastingTime);
     }
 
-    public static Dictionary<int, DicePool> GetDamageAtSlotLevel(this SpellModel spellModel)
+    public static DicePool GetDamage(this SpellModel spellModel, int charLevel, int spellLevel)
     {
-        var damageAtSlotLevel = new Dictionary<int, DicePool>();
-
-        foreach (var pair in spellModel.Damage?.DamageAtSlotLevel ?? [])
+        if (spellModel.Damage?.DamageAtSlotLevel?.TryGetValue(spellLevel, out var damage) ?? false)
         {
-            damageAtSlotLevel.Add(pair.Key, DicePool.Parse(pair.Value));
+            return DicePool.Parse(damage);
         }
 
-        return damageAtSlotLevel;
+        if (spellModel.Damage?.DamageAtCharacterLevel?.TryGetValue(charLevel, out damage) ?? false)
+        {
+            return DicePool.Parse(damage);
+        }
+
+        return new DicePool([], 0);
     }
 
-    public static Dictionary<int, DicePool> GetDamageAtCharacterLevel(this SpellModel spellModel)
+    public static DicePool GetDamageAtSlotLevel(this SpellModel spellModel, int spellLevel)
     {
-        var damageAtCharLevel = new Dictionary<int, DicePool>();
-
-        foreach (var pair in spellModel.Damage?.DamageAtCharacterLevel ?? [])
+        if (spellModel.Damage?.DamageAtSlotLevel?.TryGetValue(spellLevel, out var damage) ?? false)
         {
-            damageAtCharLevel.Add(pair.Key, DicePool.Parse(pair.Value));
+            return DicePool.Parse(damage);
         }
 
-        return damageAtCharLevel;
+        return new DicePool([], 0);
+    }
+
+    public static DicePool GetDamageAtCharacterLevel(this SpellModel spellModel, int charLevel)
+    {
+        if (spellModel.Damage?.DamageAtCharacterLevel?.TryGetValue(charLevel, out var damage) ?? false)
+        {
+            return DicePool.Parse(damage);
+        }
+
+        return new DicePool([], 0);
     }
 
     public static Dictionary<int, DicePool> GetHealAtSlotLevel(this SpellModel spellModel)

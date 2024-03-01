@@ -7,5 +7,6 @@ public interface IAction : ICommandHandler, IUsageBonusProvider
     IGameActor ActionOwner { get; }
     string Name { get; }
     ActionDurationType ActionDuration { get; }
+    EReactionType ReactionType { get; }
     Task<bool> IsAvailable();
 }

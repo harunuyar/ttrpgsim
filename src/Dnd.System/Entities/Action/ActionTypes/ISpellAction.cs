@@ -5,6 +5,5 @@ using Dnd._5eSRD.Models.Spell;
 public interface ISpellAction : IAction
 {
     SpellModel Spell { get; }
-    bool Concentration { get; }
-    int CastingLevel { get; }
+    int SpellSlot { get; }
 }
