@@ -27,7 +27,7 @@ public abstract class AreaEffect : AEffect, IAreaEffect
         GameActorsInArea.Add(actor);
         actor.EffectsTable.AddAffectedAreaEffect(this);
 
-        if (ActiveEffectDefinition.ActivationTime.HasFlag(EEffectActivationTime.TargetEnteredArea))
+        if (ActiveEffectDefinition.ActivationTime.HasFlag(EEffectActivationTime.EntersArea))
         {
             await ActivateForOneTarget(actor);
         }
@@ -38,7 +38,7 @@ public abstract class AreaEffect : AEffect, IAreaEffect
         GameActorsInArea.Remove(actor);
         actor.EffectsTable.RemoveAffectedAreaEffect(this);
 
-        if (ActiveEffectDefinition.ActivationTime.HasFlag(EEffectActivationTime.TargetLeftArea))
+        if (ActiveEffectDefinition.ActivationTime.HasFlag(EEffectActivationTime.ExitsArea))
         {
             await ActivateForOneTarget(actor);
         }

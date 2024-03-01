@@ -44,7 +44,7 @@ public abstract class PersonalEffect : AEffect, IPersonalEffect
         }
         else if (command is LongRest)
         {
-            if (EffectDefinition is IActiveEffectDefinition activeEffect && activeEffect.ActivationTime.HasFlag(EEffectActivationTime.LongRest) && command.Actor == Target)
+            if (EffectDefinition is IActiveEffectDefinition activeEffect && activeEffect.ActivationTime.HasFlag(EEffectActivationTime.OnLongRest) && command.Actor == Target)
             {
                 await ActivateEffect();
             }
@@ -56,7 +56,7 @@ public abstract class PersonalEffect : AEffect, IPersonalEffect
         }
         else if (command is ShortRest)
         {
-            if (EffectDefinition is IActiveEffectDefinition activeEffect && activeEffect.ActivationTime.HasFlag(EEffectActivationTime.ShortRest) && command.Actor == Target)
+            if (EffectDefinition is IActiveEffectDefinition activeEffect && activeEffect.ActivationTime.HasFlag(EEffectActivationTime.OnShortRest) && command.Actor == Target)
             {
                 await ActivateEffect();
             }

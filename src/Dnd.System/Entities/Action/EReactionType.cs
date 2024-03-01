@@ -3,27 +3,28 @@
 [Flags]
 public enum EReactionType : uint
 {
-    None            = 0x00000000,
+    None            = 0x0,
     // When
-    Before          = 0x00000001,
-    After           = 0x00000002,
+    Before          = 1u << 0,
+    After           = 1u << 1,
     // By who
-    Self            = 0x00000004,
-    Enemy           = 0x00000008,
-    Ally            = 0x00000010,
+    Self            = 1u << 2,
+    Enemy           = 1u << 3,
+    Ally            = 1u << 4,
     // To whom
-    ToSelf          = 0x00000020,
-    ToEnemy         = 0x00000040,
-    ToAlly          = 0x00000080,
+    ToSelf          = 1u << 5,
+    ToEnemy         = 1u << 6,
+    ToAlly          = 1u << 7,
     // What
-    AttackAttempt   = 0x00000100,
-    AttackRoll      = 0x00000200,
-    DamageRoll      = 0x00000400,
-    SavingThrow     = 0x00000800,
-    AbilityCheck    = 0x00001000,
-    SkillCheck      = 0x00002000,
-    Walk            = 0x00004000,
-    // Where
-    Nearby          = 0x00008000,
-    FarAway         = 0x00010000,
+    SpellCast       = 1u << 8,
+    AttackRoll      = 1u << 9,
+    DamageRoll      = 1u << 10,
+    HealRoll        = 1u << 11,
+    SavingThrow     = 1u << 12,
+    AbilityCheck    = 1u << 13,
+    SkillCheck      = 1u << 14,
+    Walk            = 1u << 15,
+    // Where          
+    Nearby          = 1u << 16,
+    FarAway         = 1u << 17,
 }
