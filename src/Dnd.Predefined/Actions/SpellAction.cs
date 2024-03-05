@@ -9,13 +9,12 @@ using Dnd.Predefined.ModelExtensions;
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.Action;
 using Dnd.System.Entities.Action.ActionTypes;
-using Dnd.System.Entities.GameActor;
 using Dnd.System.Entities.Instances;
 
 public class SpellAction : Action, ISpellAction
 {
-    public SpellAction(IGameActor actionOwner, ISpellcastingAbility spellcastingAbility, SpellModel spellModel, int spellSlot, IEnumerable<IActionUsageLimit> usageLimits) 
-        : base(actionOwner, spellModel.Name ?? "Unknown", ActionDurationType.FromString(spellModel.CastingTime) ?? ActionDurationType.Action, usageLimits)
+    public SpellAction(ISpellcastingAbility spellcastingAbility, SpellModel spellModel, int spellSlot, IEnumerable<IActionUsageLimit> usageLimits) 
+        : base(spellModel.Name ?? "Unknown", ActionDurationType.FromString(spellModel.CastingTime) ?? ActionDurationType.Action, usageLimits)
     {
         SpellcastingAbility = spellcastingAbility;
         Spell = spellModel;

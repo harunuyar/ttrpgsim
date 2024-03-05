@@ -1,18 +1,17 @@
 ﻿namespace Dnd.Predefined.Actions;
 
 using Dnd._5eSRD.Models.AbilityScore;
-using Dnd.Predefined.Commands.RollBonusCommands;
 using Dnd.Predefined.Commands.BoolCommands;
+using Dnd.Predefined.Commands.RollBonusCommands;
 using Dnd.Predefined.Commands.ScoreCommands;
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.Action;
 using Dnd.System.Entities.Action.ActionTypes;
-using Dnd.System.Entities.GameActor;
 
 public class AbilityCheckAction : RollAction, IAbilityCheckAction
 {
-    public AbilityCheckAction(IGameActor actionOwner, AbilityScoreModel ability, IEnumerable<IActionUsageLimit> usageLimits) 
-        : base(actionOwner, $"{ability.FullName} Check", ActionDurationType.Action, ERollType.AbilityCheck, usageLimits)
+    public AbilityCheckAction(AbilityScoreModel ability, IEnumerable<IActionUsageLimit> usageLimits) 
+        : base($"{ability.FullName} Check", ActionDurationType.Action, ERollType.AbilityCheck, usageLimits)
     {
         Ability = ability;
     }

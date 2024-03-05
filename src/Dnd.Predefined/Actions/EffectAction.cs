@@ -3,17 +3,18 @@
 using Dnd.System.Entities.Action;
 using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.Entities.Effect;
-using Dnd.System.Entities.GameActor;
 
 public class EffectAction : TargetingAction, IEffectAction
 {
-    public EffectAction(IGameActor actionOwner, string name, ActionDurationType actionDurationType, ActionRange range, TargetingType targetingType, IEnumerable<IActionUsageLimit> usageLimits) 
-        : base(actionOwner, name, actionDurationType, range, targetingType, usageLimits)
+    public EffectAction(string name, ActionDurationType actionDurationType, ActionRange range, TargetingType targetingType, IEffectDefinition effect, EffectDuration effectDuration, IEnumerable<IActionUsageLimit> usageLimits) 
+        : base(name, actionDurationType, range, targetingType, usageLimits)
     {
+        EffectDefinition = effect;
+        Duration = effectDuration;
     }
 
-    public EffectDuration Duration => throw new NotImplementedException();
+    public EffectDuration Duration { get; }
 
-    public IEffectDefinition EffectDefinition => throw new NotImplementedException();
+    public IEffectDefinition EffectDefinition { get; }
 }
 

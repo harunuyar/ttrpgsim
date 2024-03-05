@@ -10,22 +10,21 @@ using Dnd.Predefined.Commands.ScoreCommands;
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.Action;
 using Dnd.System.Entities.Action.ActionTypes;
-using Dnd.System.Entities.GameActor;
 using Dnd.System.GameManagers.Dice;
 
 public class UnarmedAttackAction : AttackRollAction, IUnarmedAttackAction
 {
-    public static async Task<UnarmedAttackAction> Create(IGameActor actionOwner, ActionDurationType actionDurationType, EAttackHandType handType)
+    public static async Task<UnarmedAttackAction> Create(ActionDurationType actionDurationType, EAttackHandType handType)
     {
         var damageType = await DndContext.Instance.GetObject<DamageTypeModel>(DamageTypes.Bludgeoning);
 
         return damageType == null 
             ? throw new InvalidOperationException("Bludgeoning damage type model is not found") 
-            : new UnarmedAttackAction(actionOwner, actionDurationType, damageType, handType);
+            : new UnarmedAttackAction(actionDurationType, damageType, handType);
     }
 
-    public UnarmedAttackAction(IGameActor actionOwner, ActionDurationType actionDurationType, DamageTypeModel damageType, EAttackHandType handType) 
-        : base(actionOwner, "Unarmed Attack", actionDurationType, ActionRange.Touch, TargetingType.SingleTarget, damageType, new DicePool([], 1), [])
+    public UnarmedAttackAction(ActionDurationType actionDurationType, DamageTypeModel damageType, EAttackHandType handType) 
+        : base("Unarmed Attack", actionDurationType, ActionRange.Touch, TargetingType.SingleTarget, damageType, new DicePool([], 1), [])
     {
         HandType = handType;
     }
@@ -46,7 +45,7 @@ public class UnarmedAttackAction : AttackRollAction, IUnarmedAttackAction
                 return;
             }
 
-            var strengthModifier = await new GetAbilityModifier(ActionOwner, str).Execute();
+            var strengthModifier = await new GetAbilityModifier(command.Actor, str).Execute();
 
             if (!strengthModifier.IsSuccess)
             {
@@ -62,7 +61,7 @@ public class UnarmedAttackAction : AttackRollAction, IUnarmedAttackAction
                 return;
             }
 
-            var dexModifier = await new GetAbilityModifier(ActionOwner, dex).Execute();
+            var dexModifier = await new GetAbilityModifier(command.Actor, dex).Execute();
 
             if (!dexModifier.IsSuccess)
             {
@@ -79,7 +78,7 @@ public class UnarmedAttackAction : AttackRollAction, IUnarmedAttackAction
                 modifiers.AddValue(strengthModifier.Value, "Strength");
             }
 
-            var proficiency = await new GetProficiencyBonus(ActionOwner).Execute();
+            var proficiency = await new GetProficiencyBonus(command.Actor).Execute();
 
             if (!proficiency.IsSuccess)
             {
@@ -101,7 +100,7 @@ public class UnarmedAttackAction : AttackRollAction, IUnarmedAttackAction
                     return;
                 }
 
-                var strengthModifier = await new GetAbilityModifier(ActionOwner, str).Execute();
+                var strengthModifier = await new GetAbilityModifier(command.Actor, str).Execute();
 
                 if (!strengthModifier.IsSuccess)
                 {
@@ -117,7 +116,7 @@ public class UnarmedAttackAction : AttackRollAction, IUnarmedAttackAction
                     return;
                 }
 
-                var dexModifier = await new GetAbilityModifier(ActionOwner, dex).Execute();
+                var dexModifier = await new GetAbilityModifier(command.Actor, dex).Execute();
 
                 if (!dexModifier.IsSuccess)
                 {

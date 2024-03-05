@@ -3,18 +3,17 @@
 using Dnd._5eSRD.Models.AbilityScore;
 using Dnd._5eSRD.Models.Skill;
 using Dnd.Context;
-using Dnd.Predefined.Commands.RollBonusCommands;
 using Dnd.Predefined.Commands.BoolCommands;
+using Dnd.Predefined.Commands.RollBonusCommands;
 using Dnd.Predefined.Commands.ScoreCommands;
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.Action;
 using Dnd.System.Entities.Action.ActionTypes;
-using Dnd.System.Entities.GameActor;
 
 public class SkillCheckAction : RollAction, ISkillCheckAction
 {
-    public SkillCheckAction(IGameActor actionOwner, SkillModel skill)
-        : base(actionOwner, $"{skill.Name} Check", ActionDurationType.Action, ERollType.Skill, [])
+    public SkillCheckAction(SkillModel skill)
+        : base($"{skill.Name} Check", ActionDurationType.Action, ERollType.Skill, [])
     {
         Skill = skill;
     }

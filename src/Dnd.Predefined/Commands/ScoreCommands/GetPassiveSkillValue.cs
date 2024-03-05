@@ -19,7 +19,7 @@ public class GetPassiveSkillValue : ScoreCommand
     {
         SetBaseValue(10, "Base");
 
-        var skillModifierResult = await new GetModifiers(Actor, new SkillCheckAction(Actor, Skill), null).Execute();
+        var skillModifierResult = await new GetModifiers(Actor, new SkillCheckAction(Skill), null).Execute();
 
         if (!skillModifierResult.IsSuccess)
         {

@@ -11,22 +11,21 @@ using Dnd.Predefined.Commands.ScoreCommands;
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.Action;
 using Dnd.System.Entities.Action.ActionTypes;
-using Dnd.System.Entities.GameActor;
 using Dnd.System.Entities.Instances;
 using Dnd.System.GameManagers.Dice;
 
 public class WeaponAttackAction : AttackRollAction, IWeaponAttackAction
 {
-    public static async Task<WeaponAttackAction> Create(IGameActor actionOwner, ActionDurationType actionDurationType, IEquipmentInstance weapon, EAttackHandType attackHandType)
+    public static async Task<WeaponAttackAction> Create(ActionDurationType actionDurationType, IEquipmentInstance weapon, EAttackHandType attackHandType)
     {
         var damageType = await DndContext.Instance.GetObject<DamageTypeModel>(weapon.EquipmentModel.Damage?.DamageType?.Url);
         return damageType == null
             ? throw new InvalidOperationException($"Weapon damage type model {weapon.EquipmentModel.Damage?.DamageType?.Url} is not found")
-            : new WeaponAttackAction(actionOwner, actionDurationType, damageType, weapon, attackHandType);
+            : new WeaponAttackAction(actionDurationType, damageType, weapon, attackHandType);
     }
 
-    public WeaponAttackAction(IGameActor actionOwner, ActionDurationType actionDurationType, DamageTypeModel damageType, IEquipmentInstance weapon, EAttackHandType attackHandType)
-        : base(actionOwner, "Weapon Attack", actionDurationType, ActionRange.FromString(weapon.EquipmentModel.WeaponRange) ?? ActionRange.Touch, TargetingType.SingleTarget, damageType, 
+    public WeaponAttackAction(ActionDurationType actionDurationType, DamageTypeModel damageType, IEquipmentInstance weapon, EAttackHandType attackHandType)
+        : base("Weapon Attack", actionDurationType, ActionRange.FromString(weapon.EquipmentModel.WeaponRange) ?? ActionRange.Touch, TargetingType.SingleTarget, damageType, 
             DicePool.Parse(attackHandType == EAttackHandType.Versatile ? weapon.EquipmentModel.TwoHandedDamage?.DamageDice : weapon.EquipmentModel.Damage?.DamageDice), [])
     {
         Weapon = weapon;
@@ -55,7 +54,7 @@ public class WeaponAttackAction : AttackRollAction, IWeaponAttackAction
                     return;
                 }
 
-                var dexModifier = await new GetAbilityModifier(ActionOwner, dex).Execute();
+                var dexModifier = await new GetAbilityModifier(command.Actor, dex).Execute();
 
                 if (!dexModifier.IsSuccess)
                 {
@@ -75,7 +74,7 @@ public class WeaponAttackAction : AttackRollAction, IWeaponAttackAction
                     return;
                 }
 
-                var strengthModifier = await new GetAbilityModifier(ActionOwner, str).Execute();
+                var strengthModifier = await new GetAbilityModifier(command.Actor, str).Execute();
 
                 if (!strengthModifier.IsSuccess)
                 {
@@ -93,7 +92,7 @@ public class WeaponAttackAction : AttackRollAction, IWeaponAttackAction
                         return;
                     }
 
-                    var dexModifier = await new GetAbilityModifier(ActionOwner, dex).Execute();
+                    var dexModifier = await new GetAbilityModifier(command.Actor, dex).Execute();
 
                     if (!dexModifier.IsSuccess)
                     {
@@ -116,7 +115,7 @@ public class WeaponAttackAction : AttackRollAction, IWeaponAttackAction
                 }
             }
 
-            var hasProficiency = await new HasProficiency(ActionOwner, Weapon.EquipmentModel).Execute();
+            var hasProficiency = await new HasProficiency(command.Actor, Weapon.EquipmentModel).Execute();
 
             if (!hasProficiency.IsSuccess)
             {
@@ -126,7 +125,7 @@ public class WeaponAttackAction : AttackRollAction, IWeaponAttackAction
 
             if (hasProficiency.Value)
             {
-                var proficiency = await new GetProficiencyBonus(ActionOwner).Execute();
+                var proficiency = await new GetProficiencyBonus(command.Actor).Execute();
 
                 if (!proficiency.IsSuccess)
                 {
@@ -149,7 +148,7 @@ public class WeaponAttackAction : AttackRollAction, IWeaponAttackAction
                     return;
                 }
 
-                var strengthModifier = await new GetAbilityModifier(ActionOwner, str).Execute();
+                var strengthModifier = await new GetAbilityModifier(command.Actor, str).Execute();
 
                 if (!strengthModifier.IsSuccess)
                 {
@@ -167,7 +166,7 @@ public class WeaponAttackAction : AttackRollAction, IWeaponAttackAction
                         return;
                     }
 
-                    var dexModifier = await new GetAbilityModifier(ActionOwner, dex).Execute();
+                    var dexModifier = await new GetAbilityModifier(command.Actor, dex).Execute();
 
                     if (!dexModifier.IsSuccess)
                     {

@@ -8,17 +8,16 @@ using Dnd.Predefined.Commands.ScoreCommands;
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.Action;
 using Dnd.System.Entities.Action.ActionTypes;
-using Dnd.System.Entities.GameActor;
 using Dnd.System.GameManagers.Dice;
 
 public class SavingThrowAction : SuccessRollAction, ISavingThrowAction
 {
-    public SavingThrowAction(IGameActor actionOwner, AbilityScoreModel ability, double saveDamageMultiplier, DamageTypeModel damageType, DicePool damageDicePool, IEnumerable<IActionUsageLimit> usageLimits)
-        : base(actionOwner, $"{ability.FullName} Saving Throw", ActionDurationType.FreeAction, ERollType.Save, usageLimits)
+    public SavingThrowAction(AbilityScoreModel ability, double saveDamageMultiplier, DamageTypeModel damageType, DicePool damageDicePool, IEnumerable<IActionUsageLimit> usageLimits)
+        : base($"{ability.FullName} Saving Throw", ActionDurationType.FreeAction, ERollType.Save, usageLimits)
     {
         Ability = ability;
         SaveDamageMultiplier = saveDamageMultiplier;
-        DamageAction = new DamageAction(actionOwner, "DamageBonusCommands", ActionDurationType.FreeAction, ActionRange.Self, TargetingType.SingleTarget, damageType, damageDicePool, []);
+        DamageAction = new DamageAction("DamageBonusCommands", ActionDurationType.FreeAction, ActionRange.Self, TargetingType.SingleTarget, damageType, damageDicePool, []);
     }
 
     public DamageAction DamageAction { get; }
@@ -34,26 +33,6 @@ public class SavingThrowAction : SuccessRollAction, ISavingThrowAction
     public ActionRange Range => DamageAction.Range;
 
     public TargetingType TargetingType => DamageAction.TargetingType;
-
-    public Task<EAdvantage> GetAmountAdvantage()
-    {
-        return DamageAction.GetAmountAdvantage();
-    }
-
-    public Task<DicePool> GetAmountBonus()
-    {
-        return DamageAction.GetAmountBonus();
-    }
-
-    public Task<int> GetAmountResult(int defaultAmount)
-    {
-        return DamageAction.GetAmountResult(defaultAmount);
-    }
-
-    public Task<int?> GetPredeterminedAmount()
-    {
-        return DamageAction.GetPredeterminedAmount();
-    }
 
     public override async Task HandleUsageCommand(ICommand command)
     {

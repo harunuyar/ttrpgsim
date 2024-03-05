@@ -14,7 +14,9 @@ public class ActionUsageLimit : IActionUsageLimit
     }
 
     public EActionUsageLimitType Type { get; }
+
     public int Limit { get; }
+
     public int Current { get; private set; }
 
     public void Use()

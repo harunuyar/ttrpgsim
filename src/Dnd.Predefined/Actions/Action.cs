@@ -4,19 +4,15 @@ using Dnd.Predefined.Commands.BoolCommands;
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.Action;
 using Dnd.System.Entities.Action.ActionTypes;
-using Dnd.System.Entities.GameActor;
 
 public class Action : IAction
 {
-    public Action(IGameActor actionOwner, string name, ActionDurationType actionDurationType, IEnumerable<IActionUsageLimit> usageLimits)
+    public Action(string name, ActionDurationType actionDurationType, IEnumerable<IActionUsageLimit> usageLimits)
     {
-        ActionOwner = actionOwner;
         Name = name;
         ActionDuration = actionDurationType;
         UsageLimits = usageLimits.ToList();
     }
-
-    public IGameActor ActionOwner { get; }
 
     public string Name { get; }
 
@@ -29,7 +25,7 @@ public class Action : IAction
         return Task.CompletedTask;
     }
 
-    public virtual Task HandleUsageCommand(ICommand command)
+    public virtual async Task HandleUsageCommand(ICommand command)
     {
         if (command is IsActionAvailable isActionAvailable)
         {
@@ -39,18 +35,9 @@ public class Action : IAction
             }
         }
 
-        return Task.CompletedTask;
-    }
-
-    public virtual async Task<bool> IsAvailable()
-    {
-        var isAvailable = await new IsActionAvailable(ActionOwner, this, null).Execute();
-
-        if (!isAvailable.IsSuccess)
+        foreach (var usageLimit in UsageLimits)
         {
-            throw new InvalidOperationException("IsActionAvailable: " + isAvailable.ErrorMessage);
+            await usageLimit.HandleCommand(command);
         }
-
-        return isAvailable.Value;
     }
 }

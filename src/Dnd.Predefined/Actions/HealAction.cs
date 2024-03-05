@@ -2,38 +2,17 @@
 
 using Dnd.System.Entities.Action;
 using Dnd.System.Entities.Action.ActionTypes;
-using Dnd.System.Entities.GameActor;
 using Dnd.System.GameManagers.Dice;
 
 public class HealAction : TargetingAction, IHealAction
 {
-    public HealAction(IGameActor actionOwner, string name, ActionDurationType actionDurationType, ActionRange range, TargetingType targetingType, DicePool healDicePool, IEnumerable<IActionUsageLimit> usageLimits)
-        : base(actionOwner, name, actionDurationType, range, targetingType, usageLimits)
+    public HealAction(string name, ActionDurationType actionDurationType, ActionRange range, TargetingType targetingType, DicePool healDicePool, IEnumerable<IActionUsageLimit> usageLimits)
+        : base(name, actionDurationType, range, targetingType, usageLimits)
     {
-        AmountAction = new AmountAction(actionOwner, name, actionDurationType, healDicePool, []);
+        AmountAction = new AmountAction( name, actionDurationType, healDicePool, []);
     }
 
     public AmountAction AmountAction { get; }
 
     public DicePool AmountDicePool => AmountAction.AmountDicePool;
-
-    public Task<EAdvantage> GetAmountAdvantage()
-    {
-        return AmountAction.GetAmountAdvantage();
-    }
-
-    public Task<DicePool> GetAmountBonus()
-    {
-        return AmountAction.GetAmountBonus();
-    }
-
-    public Task<int> GetAmountResult(int defaultAmount)
-    {
-        return AmountAction.GetAmountResult(defaultAmount);
-    }
-
-    public Task<int?> GetPredeterminedAmount()
-    {
-        return AmountAction.GetPredeterminedAmount();
-    }
 }
