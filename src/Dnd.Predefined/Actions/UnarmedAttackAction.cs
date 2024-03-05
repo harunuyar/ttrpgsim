@@ -14,6 +14,9 @@ using Dnd.System.GameManagers.Dice;
 
 public class UnarmedAttackAction : AttackRollAction, IUnarmedAttackAction
 {
+    public static Task<UnarmedAttackAction> CreateMainHandUnarmedAttack() => Create(ActionDurationType.Action, EAttackHandType.MainHand);
+    public static Task<UnarmedAttackAction> CreateOffHandUnarmedAttack() => Create(ActionDurationType.BonusAction, EAttackHandType.OffHand);
+
     public static async Task<UnarmedAttackAction> Create(ActionDurationType actionDurationType, EAttackHandType handType)
     {
         var damageType = await DndContext.Instance.GetObject<DamageTypeModel>(DamageTypes.Bludgeoning);

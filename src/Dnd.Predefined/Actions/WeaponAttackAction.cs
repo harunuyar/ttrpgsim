@@ -16,6 +16,10 @@ using Dnd.System.GameManagers.Dice;
 
 public class WeaponAttackAction : AttackRollAction, IWeaponAttackAction
 {
+    public static Task<WeaponAttackAction> CreateMainHandWeaponAttack(IEquipmentInstance weapon) => Create(ActionDurationType.Action, weapon, EAttackHandType.MainHand);
+    public static Task<WeaponAttackAction> CreateOffHandWeaponAttack(IEquipmentInstance weapon) => Create(ActionDurationType.BonusAction, weapon, EAttackHandType.OffHand);
+    public static Task<WeaponAttackAction> CreateVersatileWeaponAttack(IEquipmentInstance weapon) => Create(ActionDurationType.Action, weapon, EAttackHandType.Versatile);
+
     public static async Task<WeaponAttackAction> Create(ActionDurationType actionDurationType, IEquipmentInstance weapon, EAttackHandType attackHandType)
     {
         var damageType = await DndContext.Instance.GetObject<DamageTypeModel>(weapon.EquipmentModel.Damage?.DamageType?.Url);

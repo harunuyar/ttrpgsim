@@ -3,23 +3,40 @@
 using Dnd._5eSRD.Models.Language;
 using Dnd._5eSRD.Models.Proficiency;
 using Dnd._5eSRD.Models.Race;
+using Dnd.Predefined.Actions;
 using Dnd.Predefined.Commands.BoolCommands;
 using Dnd.Predefined.Commands.ListCommands;
 using Dnd.Predefined.Commands.ScoreCommands;
 using Dnd.Predefined.ModelExtensions;
 using Dnd.System.CommandSystem.Commands;
+using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.Entities.Instances;
 
 public class RaceInstance : IRaceInstance
 {
-    public RaceInstance(
+    public static async Task<RaceInstance> Create(RaceModel raceModel,
+        IEnumerable<RaceAbilityBonusModel> abilityBonusOptions,
+        IEnumerable<LanguageModel> languageOptions,
+        IEnumerable<ProficiencyModel> startingProficiencyOptions,
+        IEnumerable<ITraitInstance> traits)
+    {
+        var main = await UnarmedAttackAction.CreateMainHandUnarmedAttack();
+        var off = await UnarmedAttackAction.CreateOffHandUnarmedAttack();
+        return new RaceInstance(raceModel, main, off, abilityBonusOptions, languageOptions, startingProficiencyOptions, traits);
+    }
+
+    private RaceInstance(
         RaceModel raceModel,
+        IUnarmedAttackAction mainHandUnarmedAttackAction,
+        IUnarmedAttackAction offHandUnarmedAttackAction,
         IEnumerable<RaceAbilityBonusModel> abilityBonusOptions,
         IEnumerable<LanguageModel> languageOptions,
         IEnumerable<ProficiencyModel> startingProficiencyOptions,
         IEnumerable<ITraitInstance> traits)
     {
         RaceModel = raceModel;
+        MainHandUnarmedAttackAction = mainHandUnarmedAttackAction;
+        OffHandUnarmedAttackAction = offHandUnarmedAttackAction;
         AbilityBonusOptions = abilityBonusOptions.ToList();
         LanguageOptions = languageOptions.ToList();
         StartingProficiencyOptions = startingProficiencyOptions.ToList();
@@ -35,6 +52,10 @@ public class RaceInstance : IRaceInstance
     public List<ProficiencyModel> StartingProficiencyOptions { get; }
 
     public List<ITraitInstance> Traits { get; }
+
+    public IUnarmedAttackAction MainHandUnarmedAttackAction { get; }
+
+    public IUnarmedAttackAction OffHandUnarmedAttackAction { get; }
 
     public async Task HandleCommand(ICommand command)
     {
@@ -99,6 +120,11 @@ public class RaceInstance : IRaceInstance
             }
 
             languages.AddValues(LanguageOptions, "Race Language Options");
+        }
+        else if (command is GetActions actions)
+        {
+            actions.AddValue(MainHandUnarmedAttackAction, "Main Hand Unarmed Attack");
+            actions.AddValue(OffHandUnarmedAttackAction, "Off Hand Unarmed Attack");
         }
     }
 }
