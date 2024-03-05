@@ -11,8 +11,8 @@ using Dnd.System.Entities.GameActor;
 
 public class AbilityCheckAction : RollAction, IAbilityCheckAction
 {
-    public AbilityCheckAction(IGameActor actionOwner, AbilityScoreModel ability) 
-        : base(actionOwner, $"{ability.FullName} Check", ActionDurationType.Action, ERollType.AbilityCheck)
+    public AbilityCheckAction(IGameActor actionOwner, AbilityScoreModel ability, IEnumerable<IActionUsageLimit> usageLimits) 
+        : base(actionOwner, $"{ability.FullName} Check", ActionDurationType.Action, ERollType.AbilityCheck, usageLimits)
     {
         Ability = ability;
     }

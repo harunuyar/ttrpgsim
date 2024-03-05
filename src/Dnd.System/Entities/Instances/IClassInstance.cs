@@ -7,4 +7,5 @@ public interface IClassInstance : ICommandHandler
 {
     ClassModel ClassModel { get; }
     List<ProficiencyModel> ProficiencyOptions { get; }
+    ISpellcastingAbility? Spellcasting { get; }
 }

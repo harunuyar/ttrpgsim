@@ -7,10 +7,10 @@ using Dnd.System.GameManagers.Dice;
 
 public class HealAction : TargetingAction, IHealAction
 {
-    public HealAction(IGameActor actionOwner, string name, ActionDurationType actionDurationType, ActionRange range, TargetingType targetingType, DicePool damageDicePool)
-        : base(actionOwner, name, actionDurationType, range, targetingType)
+    public HealAction(IGameActor actionOwner, string name, ActionDurationType actionDurationType, ActionRange range, TargetingType targetingType, DicePool healDicePool, IEnumerable<IActionUsageLimit> usageLimits)
+        : base(actionOwner, name, actionDurationType, range, targetingType, usageLimits)
     {
-        AmountAction = new AmountAction(actionOwner, name, actionDurationType, damageDicePool);
+        AmountAction = new AmountAction(actionOwner, name, actionDurationType, healDicePool, []);
     }
 
     public AmountAction AmountAction { get; }

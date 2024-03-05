@@ -13,7 +13,7 @@ using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.Entities.GameActor;
 using Dnd.System.GameManagers.Dice;
 
-public class UnarmedAttackAction : AttackAction, IUnarmedAttackAction
+public class UnarmedAttackAction : AttackRollAction, IUnarmedAttackAction
 {
     public static async Task<UnarmedAttackAction> Create(IGameActor actionOwner, ActionDurationType actionDurationType, EAttackHandType handType)
     {
@@ -25,37 +25,12 @@ public class UnarmedAttackAction : AttackAction, IUnarmedAttackAction
     }
 
     public UnarmedAttackAction(IGameActor actionOwner, ActionDurationType actionDurationType, DamageTypeModel damageType, EAttackHandType handType) 
-        : base(actionOwner, "Unarmed Attack", actionDurationType, ActionRange.Touch, TargetingType.SingleTarget, damageType, new DicePool([], 1))
+        : base(actionOwner, "Unarmed Attack", actionDurationType, ActionRange.Touch, TargetingType.SingleTarget, damageType, new DicePool([], 1), [])
     {
-        SuccessRollAction = new SuccessRollAction(actionOwner, Name, actionDurationType, ERollType.Attack);
         HandType = handType;
     }
 
-    private SuccessRollAction SuccessRollAction { get; }
-
-    public ERollType RollType => SuccessRollAction.RollType;
-
     public EAttackHandType HandType { get; }
-
-    public Task<ERollResult> GetPredeterminedResult()
-    {
-        return SuccessRollAction.GetPredeterminedResult();
-    }
-
-    public Task<ERollResult> GetResult(ERollResult defaultResult)
-    {
-        return SuccessRollAction.GetResult(defaultResult);
-    }
-
-    public Task<EAdvantage> GetRollAdvantage()
-    {
-        return SuccessRollAction.GetRollAdvantage();
-    }
-
-    public Task<DicePool> GetRollBonus()
-    {
-        return SuccessRollAction.GetRollBonus();
-    }
 
     public override async Task HandleUsageCommand(ICommand command)
     {

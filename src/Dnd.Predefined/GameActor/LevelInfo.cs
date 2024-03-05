@@ -67,4 +67,9 @@ public class LevelInfo : ILevelInfo
     {
         return Levels.Values.SelectMany(list => list).ToList();
     }
+
+    public ISubclassInstance? GetSubclassForClass(ClassModel dndClass)
+    {
+        return GetLevelForClass(dndClass)?.SubclassInstance;
+    }
 }

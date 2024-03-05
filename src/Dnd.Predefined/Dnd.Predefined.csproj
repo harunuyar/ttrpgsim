@@ -12,4 +12,8 @@
     <ProjectReference Include="..\Dnd.System\Dnd.System.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Definitions\Spells\" />
+  </ItemGroup>
+
 </Project>

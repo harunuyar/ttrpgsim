@@ -1,37 +1,28 @@
 ﻿namespace Dnd.Predefined.Commands.ScoreCommands;
 
-using Dnd._5eSRD.Models.Class;
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.GameActor;
+using Dnd.System.Entities.Instances;
 
 public class GetMaxKnownSpellsCount : ScoreCommand
 {
-    public GetMaxKnownSpellsCount(IGameActor character, ClassModel classModel) : base(character)
+    public GetMaxKnownSpellsCount(IGameActor character, ISpellcastingAbility spellcastingAbility) : base(character)
     {
-        ClassModel = classModel;
+        SpellcastingAbility = spellcastingAbility;
     }
 
-    public ClassModel ClassModel { get; }
+    public ISpellcastingAbility SpellcastingAbility { get; }
 
-    protected override Task InitializeResult()
+    protected override async Task InitializeResult()
     {
-        SetBaseValue(0, "Default");
-
-        var level = Actor.LevelInfo.GetLevelForClass(ClassModel);
-
-        if (level is null)
+        try
         {
-            return Task.CompletedTask;
+            int maxSpells = await SpellcastingAbility.GetMaxSpellsKnown(Actor);
+            SetBaseValue(maxSpells, "Spellcasting Ability");
         }
-
-        int? spellsKnown = level?.LevelModel?.Spellcasting?.SpellsKnown;
-        if (spellsKnown is not null)
+        catch (Exception ex)
         {
-            SetBaseValue(spellsKnown.Value, level!.LevelModel.Name ?? "Spellcaster Level");
+            SetError(ex.Message);
         }
-        
-        // Some classes might have different rules for spells known. That will be handled by features.
-
-        return Task.CompletedTask;
     }
 }

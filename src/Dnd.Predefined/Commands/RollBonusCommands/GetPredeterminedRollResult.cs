@@ -19,6 +19,8 @@ public class GetPredeterminedRollResult : ListCommand<ERollResult>
 
     protected override async Task InitializeResult()
     {
+        await Action.HandleUsageCommand(this);
+
         if (Opponent is not null)
         {
             var against = await new GetPredeterminedRollResultFromOpponent(Opponent, Action, Actor).Execute();

@@ -18,6 +18,8 @@ public class GetPredefinedAmount : ValueCommand<int?>
 
     protected override async Task InitializeResult()
     {
+        await AmountAction.HandleUsageCommand(this);
+
         if (Opponent is not null)
         {
             var fromOpponent = await new GetPredefinedAmountFromOpponent(Opponent, AmountAction, Actor).Execute();

@@ -1,4 +1,4 @@
-﻿namespace Dnd.System.Entities.Instances;
+﻿namespace Dnd.Predefined.Instances;
 
 using Dnd._5eSRD.Models.Language;
 using Dnd._5eSRD.Models.Subrace;
@@ -7,6 +7,7 @@ using Dnd.Predefined.Commands.ListCommands;
 using Dnd.Predefined.Commands.ScoreCommands;
 using Dnd.Predefined.ModelExtensions;
 using Dnd.System.CommandSystem.Commands;
+using Dnd.System.Entities.Instances;
 
 public class SubraceInstance : ISubraceInstance
 {
@@ -22,19 +23,6 @@ public class SubraceInstance : ISubraceInstance
     public List<LanguageModel> LanguageOptions { get; }
 
     public List<ITraitInstance> RacialTraits { get; }
-
-    public override bool Equals(object? obj)
-    {
-        return obj is SubraceInstance subraceInstance
-            && subraceInstance.SubraceModel == SubraceModel
-            && subraceInstance.LanguageOptions.Equals(LanguageOptions)
-            && subraceInstance.RacialTraits.Equals(RacialTraits);
-    }
-
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(SubraceModel, LanguageOptions, RacialTraits);
-    }
 
     public async Task HandleCommand(ICommand command)
     {

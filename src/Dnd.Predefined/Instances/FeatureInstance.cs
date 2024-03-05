@@ -1,9 +1,10 @@
-﻿namespace Dnd.System.Entities.Instances;
+﻿namespace Dnd.Predefined.Instances;
 
 using Dnd._5eSRD.Models.Feature;
 using Dnd._5eSRD.Models.Proficiency;
 using Dnd.Predefined.Commands.BoolCommands;
 using Dnd.System.CommandSystem.Commands;
+using Dnd.System.Entities.Instances;
 
 public class FeatureInstance : IFeatureInstance
 {
@@ -23,7 +24,7 @@ public class FeatureInstance : IFeatureInstance
 
     public List<IFeatureInstance> Invocations { get; }
 
-    public Task HandleCommand(ICommand command)
+    public virtual Task HandleCommand(ICommand command)
     {
         foreach (var subfeature in SubfeatureOptions)
         {
@@ -48,19 +49,5 @@ public class FeatureInstance : IFeatureInstance
         }
 
         return Task.CompletedTask;
-    }
-
-    public override bool Equals(object? obj)
-    {
-        return obj is FeatureInstance featureInstance
-            && featureInstance.FeatureModel == FeatureModel
-            && featureInstance.SubfeatureOptions.Equals(SubfeatureOptions)
-            && featureInstance.ExpertiseOptions.Equals(ExpertiseOptions)
-            && featureInstance.Invocations.Equals(Invocations);
-    }
-
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(FeatureModel, SubfeatureOptions, ExpertiseOptions, Invocations);
     }
 }

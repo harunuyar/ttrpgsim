@@ -14,7 +14,7 @@ using Dnd.System.Entities.GameActor;
 public class SkillCheckAction : RollAction, ISkillCheckAction
 {
     public SkillCheckAction(IGameActor actionOwner, SkillModel skill)
-        : base(actionOwner, $"{skill.Name} Check", ActionDurationType.Action, ERollType.Skill)
+        : base(actionOwner, $"{skill.Name} Check", ActionDurationType.Action, ERollType.Skill, [])
     {
         Skill = skill;
     }

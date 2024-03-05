@@ -13,7 +13,7 @@ using Dnd.System.Entities.GameActor;
 public class InitiativeCheckAction : RollAction, IInitiativeCheckAction
 {
     public InitiativeCheckAction(IGameActor actionOwner) 
-        : base(actionOwner, "Initiative Check", ActionDurationType.FreeAction, ERollType.Initiative)
+        : base(actionOwner, "Initiative Check", ActionDurationType.FreeAction, ERollType.Initiative, [new ActionUsageLimit(EActionUsageLimitType.PerCombat, 1)])
     {
     }
 

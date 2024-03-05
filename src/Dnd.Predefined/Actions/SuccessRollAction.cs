@@ -8,8 +8,8 @@ using Dnd.System.GameManagers.Dice;
 
 public class SuccessRollAction : RollAction, ISuccessRollAction
 {
-    public SuccessRollAction(IGameActor actionOwner, string name, ActionDurationType actionDurationType, ERollType rollType) 
-        : base(actionOwner, name, actionDurationType, rollType)
+    public SuccessRollAction(IGameActor actionOwner, string name, ActionDurationType actionDurationType, ERollType rollType, IEnumerable<IActionUsageLimit> usageLimits) 
+        : base(actionOwner, name, actionDurationType, rollType, usageLimits)
     {
     }
 

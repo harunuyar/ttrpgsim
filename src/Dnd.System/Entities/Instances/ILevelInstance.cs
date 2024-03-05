@@ -6,5 +6,6 @@ public interface ILevelInstance : ICommandHandler
 {
     public LevelModel LevelModel { get; }
     public IClassInstance ClassInstance { get; }
+    public ISubclassInstance? SubclassInstance { get; }
     public List<IFeatureInstance> Features { get; }
 }

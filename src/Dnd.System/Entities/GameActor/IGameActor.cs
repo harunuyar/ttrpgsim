@@ -14,6 +14,5 @@ public interface IGameActor : ICommandHandler
     IHitPoints HitPoints { get; }
     IEffectsTable EffectsTable { get; }
     IInventory Inventory { get; }
-    IActionCounter ActionCounter { get; }
-    ISpellMemory SpellMemory { get; }
+    IPointsCounter PointsCounter { get; }
 }

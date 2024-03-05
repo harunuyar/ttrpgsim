@@ -6,8 +6,8 @@ using Dnd.System.Entities.GameActor;
 
 public class TargetingAction : Action, ITargetingAction
 {
-    public TargetingAction(IGameActor actionOwner, string name, ActionDurationType actionDurationType, ActionRange range, TargetingType targetingType) 
-        : base(actionOwner, name, actionDurationType)
+    public TargetingAction(IGameActor actionOwner, string name, ActionDurationType actionDurationType, ActionRange range, TargetingType targetingType, IEnumerable<IActionUsageLimit> usageLimits) 
+        : base(actionOwner, name, actionDurationType, usageLimits)
     {
         Range = range;
         TargetingType = targetingType;

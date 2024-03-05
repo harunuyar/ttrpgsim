@@ -19,11 +19,11 @@ public class GetAmountResult : ScoreCommand
 
     public int DefaultAmount { get; }
 
-    protected override Task InitializeResult()
+    protected override async Task InitializeResult()
     {
         SetBaseValue(DefaultAmount, "Default");
 
-        return Task.CompletedTask;
+        await AmountAction.HandleUsageCommand(this);
     }
 
     protected override async Task FinalizeResult()

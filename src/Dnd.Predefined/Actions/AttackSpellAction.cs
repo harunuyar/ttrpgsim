@@ -6,20 +6,21 @@ using Dnd.Predefined.ModelExtensions;
 using Dnd.System.Entities.Action;
 using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.Entities.GameActor;
+using Dnd.System.Entities.Instances;
 using Dnd.System.GameManagers.Dice;
 
 public class AttackSpellAction : SpellAction, IAttackSpellAction
 {
-    public static async Task<AttackSpellAction> Create(IGameActor actionOwner, SpellModel spellModel, TargetingType targetingType, int castingLevel)
+    public static async Task<AttackSpellAction> Create(IGameActor actionOwner, ISpellcastingAbility spellcastingAbility, SpellModel spellModel, TargetingType targetingType, int castingLevel, IEnumerable<IActionUsageLimit> usageLimits)
     {
         var damageTypeModel = spellModel.Damage?.DamageType is null ? null : await spellModel.Damage.DamageType.GetModel<DamageTypeModel>();
         return damageTypeModel == null
             ? throw new InvalidOperationException("Spell does not have a damage type.")
-            : new AttackSpellAction(actionOwner, spellModel, targetingType, damageTypeModel, castingLevel);
+            : new AttackSpellAction(actionOwner, spellcastingAbility, spellModel, targetingType, damageTypeModel, castingLevel, usageLimits);
     }
 
-    public AttackSpellAction(IGameActor actionOwner, SpellModel spellModel, TargetingType targetingType, DamageTypeModel damageTypeModel, int castingLevel) 
-        : base(actionOwner, spellModel, castingLevel)
+    public AttackSpellAction(IGameActor actionOwner, ISpellcastingAbility spellcastingAbility, SpellModel spellModel, TargetingType targetingType, DamageTypeModel damageTypeModel, int castingLevel, IEnumerable<IActionUsageLimit> usageLimits) 
+        : base(actionOwner, spellcastingAbility, spellModel, castingLevel, usageLimits)
     {
         DamageAction = new DamageAction(
             actionOwner, 
@@ -28,7 +29,8 @@ public class AttackSpellAction : SpellAction, IAttackSpellAction
             ActionRange.FromString(spellModel.Range) ?? ActionRange.Self, 
             targetingType, 
             damageTypeModel, 
-            spellModel.GetDamage(actionOwner.LevelInfo.Level, castingLevel));
+            spellModel.GetDamage(actionOwner.LevelInfo.Level, castingLevel),
+            []);
     }
 
     private DamageAction DamageAction { get; }

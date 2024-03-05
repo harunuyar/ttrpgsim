@@ -9,8 +9,8 @@ using Dnd.System.GameManagers.Dice;
 
 public class AmountAction : Action, IAmountAction
 {
-    public AmountAction(IGameActor actionOwner, string name, ActionDurationType actionDurationType, DicePool amountDicePool)
-        : base(actionOwner, name, actionDurationType)
+    public AmountAction(IGameActor actionOwner, string name, ActionDurationType actionDurationType, DicePool amountDicePool, IEnumerable<IActionUsageLimit> usageLimits)
+        : base(actionOwner, name, actionDurationType, usageLimits)
     {
         AmountDicePool = amountDicePool;
     }

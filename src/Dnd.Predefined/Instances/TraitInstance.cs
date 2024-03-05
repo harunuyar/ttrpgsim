@@ -1,4 +1,4 @@
-﻿namespace Dnd.System.Entities.Instances;
+﻿namespace Dnd.Predefined.Instances;
 
 using Dnd._5eSRD.Models.Language;
 using Dnd._5eSRD.Models.Proficiency;
@@ -8,6 +8,7 @@ using Dnd.Predefined.Commands.BoolCommands;
 using Dnd.Predefined.Commands.ListCommands;
 using Dnd.Predefined.ModelExtensions;
 using Dnd.System.CommandSystem.Commands;
+using Dnd.System.Entities.Instances;
 
 public class TraitInstance : ITraitInstance
 {
@@ -29,21 +30,6 @@ public class TraitInstance : ITraitInstance
     public List<ProficiencyModel> ProficiencyChoices { get; }
 
     public List<LanguageModel> LanguageOptions { get; }
-
-    public override bool Equals(object? obj)
-    {
-        return obj is TraitInstance traitInstance
-            && traitInstance.TraitModel == TraitModel
-            && traitInstance.SubtraitOptions.Equals(SubtraitOptions)
-            && traitInstance.SpellOptions.Equals(SpellOptions)
-            && traitInstance.ProficiencyChoices.Equals(ProficiencyChoices)
-            && traitInstance.LanguageOptions.Equals(LanguageOptions);
-    }
-
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(TraitModel, SubtraitOptions, SpellOptions, ProficiencyChoices, LanguageOptions);
-    }
 
     public virtual async Task HandleCommand(ICommand command)
     {

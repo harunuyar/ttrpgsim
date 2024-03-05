@@ -6,7 +6,7 @@ using Dnd.System.Entities.Instances;
 
 public class GameActor : IGameActor
 {
-    public GameActor(string name, IRaceInstance race, ISubraceInstance? subrace, IAlignmentInstance? alignment, LevelInstance firstLevel)
+    public GameActor(string name, IRaceInstance race, ISubraceInstance? subrace, IAlignmentInstance? alignment, ILevelInstance firstLevel)
     {
         Name = name;
         Race = race;
@@ -18,8 +18,7 @@ public class GameActor : IGameActor
         HitPoints.AddHitPointRoll(firstLevel.ClassInstance.ClassModel.HitDie ?? 1);
         EffectsTable = new EffectsTable();
         Inventory = new Inventory();
-        ActionCounter = new ActionCounter();
-        SpellMemory = new SpellMemory();
+        PointsCounter = new PointsCounter();
     }
 
     public string Name { get; }
@@ -42,9 +41,7 @@ public class GameActor : IGameActor
 
     public IInventory Inventory { get; }
 
-    public IActionCounter ActionCounter { get; }
-
-    public ISpellMemory SpellMemory { get; }
+    public IPointsCounter PointsCounter { get; }
 
     public async Task HandleCommand(ICommand command)
     {
@@ -60,15 +57,20 @@ public class GameActor : IGameActor
             await Alignment.HandleCommand(command);
         }
 
-        await ActionCounter.HandleCommand(command);
+        await PointsCounter.HandleCommand(command);
         await HitPoints.HandleCommand(command);
         await Inventory.HandleCommand(command);
-        await SpellMemory.HandleCommand(command);
         await EffectsTable.HandleCommand(command);
 
         foreach (var c in LevelInfo.GetClasses())
         {
             await c.HandleCommand(command);
+
+            var subclass = LevelInfo.GetSubclassForClass(c.ClassModel);
+            if (subclass != null)
+            {
+                await subclass.HandleCommand(command);
+            }
         }
 
         foreach (var level in LevelInfo.GetLevels())

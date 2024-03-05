@@ -1,7 +1,8 @@
-﻿namespace Dnd.System.Entities.Instances;
+﻿namespace Dnd.Predefined.Instances;
 
 using Dnd._5eSRD.Models.Equipment;
 using Dnd.System.CommandSystem.Commands;
+using Dnd.System.Entities.Instances;
 
 public class MagicEquipmentInstance : EquipmentInstance, IMagicEquipmentInstance
 {

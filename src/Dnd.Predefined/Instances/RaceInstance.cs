@@ -1,4 +1,4 @@
-﻿namespace Dnd.System.Entities.Instances;
+﻿namespace Dnd.Predefined.Instances;
 
 using Dnd._5eSRD.Models.Language;
 using Dnd._5eSRD.Models.Proficiency;
@@ -8,6 +8,7 @@ using Dnd.Predefined.Commands.ListCommands;
 using Dnd.Predefined.Commands.ScoreCommands;
 using Dnd.Predefined.ModelExtensions;
 using Dnd.System.CommandSystem.Commands;
+using Dnd.System.Entities.Instances;
 
 public class RaceInstance : IRaceInstance
 {
@@ -34,21 +35,6 @@ public class RaceInstance : IRaceInstance
     public List<ProficiencyModel> StartingProficiencyOptions { get; }
 
     public List<ITraitInstance> Traits { get; }
-
-    public override bool Equals(object? obj)
-    {
-        return obj is RaceInstance raceInstance
-            && raceInstance.RaceModel == RaceModel
-            && raceInstance.AbilityBonusOptions.Equals(AbilityBonusOptions)
-            && raceInstance.LanguageOptions.Equals(LanguageOptions)
-            && raceInstance.StartingProficiencyOptions.Equals(StartingProficiencyOptions)
-            && raceInstance.Traits.Equals(Traits);
-    }
-
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(RaceModel, AbilityBonusOptions, LanguageOptions, StartingProficiencyOptions, Traits);
-    }
 
     public async Task HandleCommand(ICommand command)
     {

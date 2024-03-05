@@ -9,8 +9,8 @@ using Dnd.System.GameManagers.Dice;
 
 public class AttackAction : DamageAction, IAttackAction
 {
-    public AttackAction(IGameActor actionOwner, string name, ActionDurationType actionDurationType, ActionRange range, TargetingType targetingType, DamageTypeModel damageType, DicePool damageDicePool) 
-        : base(actionOwner, name, actionDurationType, range, targetingType, damageType, damageDicePool)
+    public AttackAction(IGameActor actionOwner, string name, ActionDurationType actionDurationType, ActionRange range, TargetingType targetingType, DamageTypeModel damageType, DicePool damageDicePool, IEnumerable<IActionUsageLimit> usageLimits) 
+        : base(actionOwner, name, actionDurationType, range, targetingType, damageType, damageDicePool, usageLimits)
     {
     }
 

@@ -7,7 +7,8 @@ using Dnd.System.Entities.GameActor;
 
 public class EffectAction : TargetingAction, IEffectAction
 {
-    public EffectAction(IGameActor actionOwner, string name, ActionDurationType actionDurationType, ActionRange range, TargetingType targetingType) : base(actionOwner, name, actionDurationType, range, targetingType)
+    public EffectAction(IGameActor actionOwner, string name, ActionDurationType actionDurationType, ActionRange range, TargetingType targetingType, IEnumerable<IActionUsageLimit> usageLimits) 
+        : base(actionOwner, name, actionDurationType, range, targetingType, usageLimits)
     {
     }
 

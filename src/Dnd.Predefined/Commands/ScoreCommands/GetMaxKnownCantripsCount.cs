@@ -1,35 +1,28 @@
 ﻿namespace Dnd.Predefined.Commands.ScoreCommands;
 
-using Dnd._5eSRD.Models.Class;
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.GameActor;
+using Dnd.System.Entities.Instances;
 
 public class GetMaxKnownCantripsCount : ScoreCommand
 {
-    public GetMaxKnownCantripsCount(IGameActor character, ClassModel classModel) : base(character)
+    public GetMaxKnownCantripsCount(IGameActor character, ISpellcastingAbility spellcastingAbility) : base(character)
     {
-        ClassModel = classModel;
+        SpellcastingAbility = spellcastingAbility;
     }
 
-    public ClassModel ClassModel { get; }
+    public ISpellcastingAbility SpellcastingAbility { get; }
 
-    protected override Task InitializeResult()
+    protected override async Task InitializeResult()
     {
-        SetBaseValue(0, "Default");
-
-        var level = Actor.LevelInfo.GetLevelForClass(ClassModel);
-
-        if (level is null)
+        try
         {
-            return Task.CompletedTask;
+            int maxSpells = await SpellcastingAbility.GetMaxCantripsKnown(Actor);
+            SetBaseValue(maxSpells, "Spellcasting Ability");
         }
-
-        int? cantripsKnown = level?.LevelModel?.Spellcasting?.CantripsKnown;
-        if (cantripsKnown is not null)
+        catch (Exception ex)
         {
-            SetBaseValue(cantripsKnown.Value, level!.LevelModel.Name ?? "Spellcaster Level");
+            SetError(ex.Message);
         }
-
-        return Task.CompletedTask;
     }
 }

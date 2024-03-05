@@ -8,12 +8,12 @@ using Dnd.System.Entities.GameActor;
 
 public class Action : IAction
 {
-    public Action(IGameActor actionOwner, string name, ActionDurationType actionDurationType)
+    public Action(IGameActor actionOwner, string name, ActionDurationType actionDurationType, IEnumerable<IActionUsageLimit> usageLimits)
     {
         ActionOwner = actionOwner;
         Name = name;
         ActionDuration = actionDurationType;
-        ReactionType = EReactionType.None;
+        UsageLimits = usageLimits.ToList();
     }
 
     public IGameActor ActionOwner { get; }
@@ -22,7 +22,7 @@ public class Action : IAction
 
     public ActionDurationType ActionDuration { get; }
 
-    public EReactionType ReactionType { get; set; }
+    public List<IActionUsageLimit> UsageLimits { get; }
 
     public virtual Task HandleCommand(ICommand command)
     {
@@ -31,12 +31,20 @@ public class Action : IAction
 
     public virtual Task HandleUsageCommand(ICommand command)
     {
+        if (command is IsActionAvailable isActionAvailable)
+        {
+            if (UsageLimits.Any(x => x.IsExhausted))
+            {
+                isActionAvailable.SetValue(false, "No uses left");
+            }
+        }
+
         return Task.CompletedTask;
     }
 
     public virtual async Task<bool> IsAvailable()
     {
-         var isAvailable = await new IsActionAvailable(ActionOwner, this, null).Execute();
+        var isAvailable = await new IsActionAvailable(ActionOwner, this, null).Execute();
 
         if (!isAvailable.IsSuccess)
         {

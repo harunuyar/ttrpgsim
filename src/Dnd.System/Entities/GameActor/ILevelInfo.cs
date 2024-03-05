@@ -14,4 +14,5 @@ public interface ILevelInfo
     List<ILevelInstance> GetLastLevels();
     ILevelInstance? GetLevelForClass(ClassModel dndClass);
     List<IClassInstance> GetClasses();
+    ISubclassInstance? GetSubclassForClass(ClassModel dndClass);
 }

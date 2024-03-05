@@ -1,5 +1,6 @@
 ﻿namespace Dnd.Predefined.Commands.ScoreCommands;
 
+using Dnd.Predefined.ModelExtensions;
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.GameActor;
 
@@ -36,7 +37,6 @@ public class GetMaxSpellSlotsCount : ScoreCommand
 
     public int SpellLevel { get; }
 
-
     protected override Task InitializeResult()
     {
         SetBaseValue(0, "Default");
@@ -46,36 +46,7 @@ public class GetMaxSpellSlotsCount : ScoreCommand
             return Task.CompletedTask;
         }
 
-        var spellcastingClasses = Actor.LevelInfo.GetClasses()
-            .Where(c => c.ClassModel.Spellcasting?.Level is not null)
-            .ToList();
-
-        if (spellcastingClasses.Count == 0)
-        {
-            return Task.CompletedTask;
-        }
-
-        if (spellcastingClasses.Count == 1)
-        {
-            var level = Actor.LevelInfo.GetLevelForClass(spellcastingClasses[0].ClassModel);
-
-            int spellSlot = SpellLevel switch
-            {
-                1 => level?.LevelModel?.Spellcasting?.SpellSlotsLevel1 ?? 0,
-                2 => level?.LevelModel?.Spellcasting?.SpellSlotsLevel2 ?? 0,
-                3 => level?.LevelModel?.Spellcasting?.SpellSlotsLevel3 ?? 0,
-                4 => level?.LevelModel?.Spellcasting?.SpellSlotsLevel4 ?? 0,
-                5 => level?.LevelModel?.Spellcasting?.SpellSlotsLevel5 ?? 0,
-                6 => level?.LevelModel?.Spellcasting?.SpellSlotsLevel6 ?? 0,
-                7 => level?.LevelModel?.Spellcasting?.SpellSlotsLevel7 ?? 0,
-                8 => level?.LevelModel?.Spellcasting?.SpellSlotsLevel8 ?? 0,
-                9 => level?.LevelModel?.Spellcasting?.SpellSlotsLevel9 ?? 0,
-                _ => 0
-            };
-
-            SetBaseValue(spellSlot, level?.LevelModel?.Name ?? "Spellcasting Level");
-        }
-        else
+        if (Actor.IsMulticlassSpellcaster())
         {
             int spellcastingLevel = Actor.LevelInfo.GetClasses()
             .Select(c => c.ClassModel.Spellcasting?.Level is null

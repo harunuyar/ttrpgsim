@@ -1,4 +1,4 @@
-﻿namespace Dnd.System.Entities.Instances;
+﻿namespace Dnd.Predefined.Instances;
 
 using Dnd._5eSRD.Constants;
 using Dnd._5eSRD.Models.AbilityScore;
@@ -8,6 +8,7 @@ using Dnd.Predefined.Commands.RollBonusCommands;
 using Dnd.Predefined.Commands.ScoreCommands;
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.Action.ActionTypes;
+using Dnd.System.Entities.Instances;
 using Dnd.System.GameManagers.Dice;
 
 public class EquipmentInstance : IEquipmentInstance

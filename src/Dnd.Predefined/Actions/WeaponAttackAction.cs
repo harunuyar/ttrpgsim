@@ -15,56 +15,33 @@ using Dnd.System.Entities.GameActor;
 using Dnd.System.Entities.Instances;
 using Dnd.System.GameManagers.Dice;
 
-public class WeaponAttackAction : AttackAction, IWeaponAttackAction
+public class WeaponAttackAction : AttackRollAction, IWeaponAttackAction
 {
     public static async Task<WeaponAttackAction> Create(IGameActor actionOwner, ActionDurationType actionDurationType, IEquipmentInstance weapon, EAttackHandType attackHandType)
     {
         var damageType = await DndContext.Instance.GetObject<DamageTypeModel>(weapon.EquipmentModel.Damage?.DamageType?.Url);
         return damageType == null
-            ? throw new InvalidOperationException("Bludgeoning damage type model is not found")
+            ? throw new InvalidOperationException($"Weapon damage type model {weapon.EquipmentModel.Damage?.DamageType?.Url} is not found")
             : new WeaponAttackAction(actionOwner, actionDurationType, damageType, weapon, attackHandType);
     }
 
     public WeaponAttackAction(IGameActor actionOwner, ActionDurationType actionDurationType, DamageTypeModel damageType, IEquipmentInstance weapon, EAttackHandType attackHandType)
         : base(actionOwner, "Weapon Attack", actionDurationType, ActionRange.FromString(weapon.EquipmentModel.WeaponRange) ?? ActionRange.Touch, TargetingType.SingleTarget, damageType, 
-            DicePool.Parse(attackHandType == EAttackHandType.Versatile ? weapon.EquipmentModel.TwoHandedDamage?.DamageDice : weapon.EquipmentModel.Damage?.DamageDice))
+            DicePool.Parse(attackHandType == EAttackHandType.Versatile ? weapon.EquipmentModel.TwoHandedDamage?.DamageDice : weapon.EquipmentModel.Damage?.DamageDice), [])
     {
-        SuccessRollAction = new SuccessRollAction(actionOwner, Name, actionDurationType, ERollType.Attack);
         Weapon = weapon;
         HandType = attackHandType;
     }
-
-    private SuccessRollAction SuccessRollAction { get; }
-
-    public ERollType RollType => SuccessRollAction.RollType;
 
     public IEquipmentInstance Weapon { get; }
 
     public EAttackHandType HandType { get; }
 
-    public Task<ERollResult> GetPredeterminedResult()
-    {
-        return SuccessRollAction.GetPredeterminedResult();
-    }
-
-    public Task<ERollResult> GetResult(ERollResult defaultResult)
-    {
-        return SuccessRollAction.GetResult(defaultResult);
-    }
-
-    public Task<EAdvantage> GetRollAdvantage()
-    {
-        return SuccessRollAction.GetRollAdvantage();
-    }
-
-    public Task<DicePool> GetRollBonus()
-    {
-        return SuccessRollAction.GetRollBonus();
-    }
-
     public override async Task HandleUsageCommand(ICommand command)
     {
         await base.HandleUsageCommand(command);
+
+        await Weapon.HandleUsageCommand(command);
 
         if (command is GetModifiers modifiers)
         {

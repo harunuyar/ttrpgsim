@@ -1,6 +1,6 @@
 ﻿namespace Dnd.System.Entities.GameActor;
 
-public interface IActionCounter : ICommandHandler
+public interface IPointsCounter : ICommandHandler
 {
     int ActionPoints { get; }
     int BonusActionPoints { get; }
@@ -10,4 +10,7 @@ public interface IActionCounter : ICommandHandler
     void UseActionPoint();
     void UseBonusActionPoint();
     void UseReactionPoint();
+    int GetUsedSpellCounts(int spellLevel);
+    void UseSpellSlot(int spellLevel);
+    void ResetSpellSlots();
 }

@@ -1,39 +1,25 @@
 ﻿namespace Dnd.Predefined.Commands.BoolCommands;
 
-using Dnd._5eSRD.Models.Class;
 using Dnd._5eSRD.Models.Spell;
 using Dnd.Predefined.Commands.ScoreCommands;
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.GameActor;
+using Dnd.System.Entities.Instances;
 
 public class CanLearnSpell : ValueCommand<bool>
 {
-    public CanLearnSpell(IGameActor character, ClassModel classModel, SpellModel spell) : base(character)
+    public CanLearnSpell(IGameActor character, ISpellcastingAbility spellcastingAbility, SpellModel spell) : base(character)
     {
         Spell = spell;
-        ClassModel = classModel;
+        SpellcastingAbility = spellcastingAbility;
     }
 
     public SpellModel Spell { get; }
 
-    public ClassModel ClassModel { get; }
+    public ISpellcastingAbility SpellcastingAbility { get; }
 
     protected override async Task InitializeResult()
     {
-        if (ClassModel.Spellcasting is null)
-        {
-            SetValue(false, $"{Actor.Name} can't learn {Spell} because {ClassModel.Name} can't cast spells.");
-            return;
-        }
-
-        int levelsInClass = Actor.LevelInfo.GetLevelsInClass(ClassModel);
-
-        if (levelsInClass == 0)
-        {
-            SetValue(false, $"{Actor.Name} can't learn {Spell} because they don't have any levels in {ClassModel.Name}.");
-            return;
-        }
-
         var canTakeAnyAction = await new CanTakeAnyAction(Actor).Execute();
 
         if (!canTakeAnyAction.IsSuccess)
@@ -57,7 +43,7 @@ public class CanLearnSpell : ValueCommand<bool>
 
         if (Spell.Level == 0)
         {
-            var maxCantrips = await new GetMaxKnownCantripsCount(Actor, ClassModel).Execute();
+            var maxCantrips = await new GetMaxKnownCantripsCount(Actor, SpellcastingAbility).Execute();
 
             if (!maxCantrips.IsSuccess)
             {
@@ -65,18 +51,18 @@ public class CanLearnSpell : ValueCommand<bool>
                 return;
             }
 
-            if (Actor.SpellMemory.GetCantrips(ClassModel).Count >= maxCantrips.Value)
+            if (SpellcastingAbility.GetCantripActions().Count >= maxCantrips.Value)
             {
-                SetValue(false, $"{Actor.Name} can't learn cantrip {Spell} because they already know the maximum number of cantrips.");
+                SetValue(false, $"{Actor.Name} can't learn cantrip {Spell.Name} because they already know the maximum number of cantrips.");
                 return;
             }
 
-            SetValue(true, $"{Actor.Name} can learn cantrip {Spell}.");
+            SetValue(true, $"{Actor.Name} can learn cantrip {Spell.Name}.");
             return;
         }
         else
         {
-            var maxSpells = await new GetMaxKnownSpellsCount(Actor, ClassModel).Execute();
+            var maxSpells = await new GetMaxKnownSpellsCount(Actor, SpellcastingAbility).Execute();
 
             if (!maxSpells.IsSuccess)
             {
@@ -84,13 +70,27 @@ public class CanLearnSpell : ValueCommand<bool>
                 return;
             }
 
-            if (Actor.SpellMemory.GetPreparedSpells(ClassModel).Count >= maxSpells.Value)
+            if (SpellcastingAbility.GetSpellActions().Count >= maxSpells.Value)
             {
-                SetValue(false, $"{Actor.Name} can't learn spell {Spell} because they already know the maximum number of spells.");
+                SetValue(false, $"{Actor.Name} can't learn {Spell.Name} because they already know the maximum number of spells.");
                 return;
             }
 
-            SetValue(true, $"{Actor.Name} can learn spell {Spell}.");
+            var maxSpellSlots = await new GetMaxSpellSlotsCount(Actor, Spell.Level.Value).Execute();
+
+            if (!maxSpellSlots.IsSuccess)
+            {
+                SetError("GetMaxSpellSlotsCount: " + maxSpellSlots.ErrorMessage);
+                return;
+            }
+
+            if (maxSpellSlots.Value == 0)
+            {
+                SetValue(false, $"{Actor.Name} can't learn {Spell.Name} because they don't have any spell slots for that level.");
+                return;
+            }
+
+            SetValue(true, $"{Actor.Name} can learn {Spell.Name}.");
             return;
         }
     }

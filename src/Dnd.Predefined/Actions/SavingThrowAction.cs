@@ -13,12 +13,12 @@ using Dnd.System.GameManagers.Dice;
 
 public class SavingThrowAction : SuccessRollAction, ISavingThrowAction
 {
-    public SavingThrowAction(IGameActor actionOwner, AbilityScoreModel ability, double saveDamageMultiplier, DamageTypeModel damageType, DicePool damageDicePool)
-        : base(actionOwner, $"{ability.FullName} Saving Throw", ActionDurationType.FreeAction, ERollType.Save)
+    public SavingThrowAction(IGameActor actionOwner, AbilityScoreModel ability, double saveDamageMultiplier, DamageTypeModel damageType, DicePool damageDicePool, IEnumerable<IActionUsageLimit> usageLimits)
+        : base(actionOwner, $"{ability.FullName} Saving Throw", ActionDurationType.FreeAction, ERollType.Save, usageLimits)
     {
         Ability = ability;
         SaveDamageMultiplier = saveDamageMultiplier;
-        DamageAction = new DamageAction(actionOwner, "DamageBonusCommands", ActionDurationType.FreeAction, ActionRange.Self, TargetingType.SingleTarget, damageType, damageDicePool);
+        DamageAction = new DamageAction(actionOwner, "DamageBonusCommands", ActionDurationType.FreeAction, ActionRange.Self, TargetingType.SingleTarget, damageType, damageDicePool, []);
     }
 
     public DamageAction DamageAction { get; }

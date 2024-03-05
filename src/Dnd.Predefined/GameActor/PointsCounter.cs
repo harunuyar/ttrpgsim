@@ -4,8 +4,10 @@ using Dnd.Predefined.Commands.VoidCommands;
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.GameActor;
 
-public class ActionCounter : IActionCounter
+public class PointsCounter : IPointsCounter
 {
+    private readonly int[] usedSpellSlots = new int[9];
+
     public int ActionPoints { get; private set; }
 
     public int BonusActionPoints { get; private set; }
@@ -45,7 +47,29 @@ public class ActionCounter : IActionCounter
         {
             Reset();
         }
+        else if (command is LongRest)
+        {
+            ResetSpellSlots();
+        }
 
         return Task.CompletedTask;
+    }
+
+    public void ResetSpellSlots()
+    {
+        for (int i = 0; i < 9; i++)
+        {
+            usedSpellSlots[i] = 0;
+        }
+    }
+
+    public void UseSpellSlot(int spellLevel)
+    {
+        usedSpellSlots[spellLevel - 1]++;
+    }
+
+    public int GetUsedSpellCounts(int spellLevel)
+    {
+        return usedSpellSlots[spellLevel - 1];
     }
 }

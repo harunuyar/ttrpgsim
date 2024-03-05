@@ -1,5 +1,6 @@
 ﻿namespace Dnd._5eSRD.Models.Subclass;
 
+using Dnd._5eSRD.Models.Class;
 using Dnd._5eSRD.Models.Common;
 using System.Text.Json.Serialization;
 
@@ -25,4 +26,7 @@ public class SubclassModel : APIReference
     public List<Spell>? Spells { get; set; }
     public string? SubclassFlavor { get; set; }
     public string? SubclassLevels { get; set; }
+
+    // This is not in the original model
+    public Spellcasting? Spellcasting { get; set; }
 }

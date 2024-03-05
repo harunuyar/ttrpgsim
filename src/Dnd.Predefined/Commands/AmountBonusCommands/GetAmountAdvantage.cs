@@ -19,6 +19,8 @@ public class GetAmountAdvantage : ListCommand<EAdvantage>
 
     protected override async Task InitializeResult()
     {
+        await AmountAction.HandleUsageCommand(this);
+
         if (Opponent is not null)
         {
             var fromOpponent = await new GetAmountAdvantageFromOpponent(Opponent, AmountAction, Actor).Execute();

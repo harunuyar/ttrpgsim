@@ -18,6 +18,8 @@ public class IsActionAvailable : ValueCommand<bool>
 
     protected override async Task InitializeResult()
     {
+        await Action.HandleUsageCommand(this);
+
         if (Opponent is not null)
         {
             var fromOpponent = await new IsActionAvailableFromOpponent(Opponent, Action, Actor).Execute();
@@ -30,7 +32,5 @@ public class IsActionAvailable : ValueCommand<bool>
 
             Set(fromOpponent);
         }
-
-        await Action.HandleUsageCommand(this);
     }
 }
