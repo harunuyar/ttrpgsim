@@ -8,5 +8,5 @@ public interface IEffect : ICommandHandler
     EffectDurationInstance Duration { get; }
     IGameActor Source { get; }
     bool IsExpired { get; }
-    Task ActivateEffect();
+    void ActivateEffect();
 }

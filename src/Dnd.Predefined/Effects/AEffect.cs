@@ -22,7 +22,7 @@ public abstract class AEffect : IEffect
 
     public EffectDurationInstance Duration { get; }
 
-    public virtual Task ActivateEffect()
+    public void ActivateEffect()
     {
         Duration.Trigger();
 
@@ -30,29 +30,15 @@ public abstract class AEffect : IEffect
         {
             Source.EffectsTable.RemoveCausedEffect(this);
         }
-
-        return Task.CompletedTask;
     }
 
-    public virtual async Task HandleCommand(ICommand command)
+    public virtual Task HandleCommand(ICommand command)
     {
         if (command is TakeTurn)
         {
-            if (EffectDefinition is IActiveEffectDefinition activeEffect && activeEffect.ActivationTime.HasFlag(EEffectActivationTime.SourceTurnStart) && command.Actor == Source)
-            {
-                await ActivateEffect();
-            }
-
             if (command.Actor == Source)
             {
                 Duration.PassTurn();
-            }
-        }
-        else if (command is EndTurn)
-        {
-            if (EffectDefinition is IActiveEffectDefinition activeEffect && activeEffect.ActivationTime.HasFlag(EEffectActivationTime.SourceTurnEnd) && command.Actor == Source)
-            {
-                await ActivateEffect();
             }
         }
         else if (command is PassTime passTime)
@@ -62,5 +48,12 @@ public abstract class AEffect : IEffect
                 Duration.PassTime(passTime.TimeSpan);
             }
         }
+
+        if (IsExpired)
+        {
+            Source.EffectsTable.RemoveCausedEffect(this);
+        }
+
+        return Task.CompletedTask;
     }
 }

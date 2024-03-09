@@ -24,6 +24,21 @@ public partial class DicePool
         return (Rolls.Count != 0 ? Rolls.Sum(r => r.MinRoll()) : 0) + Bonus;
     }
 
+    public static DicePool OfConstant(int constant)
+    {
+        return new DicePool([], constant);
+    }
+
+    public static DicePool OfDiceRoll(int count, EDiceType diceType)
+    {
+        return new DicePool([new DiceRoll(count, diceType)], 0);
+    }
+
+    public static DicePool OfDiceRollAndConstant(int count, EDiceType diceType, int constant)
+    {
+        return new DicePool([new DiceRoll(count, diceType)], constant);
+    }
+
     public static DicePool Parse(string? input)
     {
         if (string.IsNullOrWhiteSpace(input))

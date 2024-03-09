@@ -35,7 +35,7 @@ public class Exhaustion : AConditionEffect
     {
         if (command is GetAdvantage advantage)
         {
-            if (Level >= 1 && (advantage.Action is IAbilityCheckAction || advantage.Action is ISkillCheckAction))
+            if (Level >= 1 && (advantage.Action is ISkillCheckAction))
             {
                 advantage.AddValue(EAdvantage.Disadvantage, Name + " Level " + Level);
             }

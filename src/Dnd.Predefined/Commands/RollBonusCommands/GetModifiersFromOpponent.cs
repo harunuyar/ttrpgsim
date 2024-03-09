@@ -3,8 +3,9 @@
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.Entities.GameActor;
+using Dnd.System.GameManagers.Dice;
 
-public class GetModifiersFromOpponent : ListCommand<int>
+public class GetModifiersFromOpponent : ListCommand<DicePool>
 {
     internal GetModifiersFromOpponent(IGameActor actor, IRollAction action, IGameActor opponent) : base(actor)
     {

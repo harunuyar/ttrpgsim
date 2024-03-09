@@ -55,6 +55,12 @@ public enum EArmorCategory
     Shield
 }
 
+public enum EWeaponRange
+{
+    Melee,
+    Ranged
+}
+
 public class EquipmentModel : APIReference
 {
     public EArmorCategory? ArmorCategory { get; set; }
@@ -79,6 +85,6 @@ public class EquipmentModel : APIReference
     public TwoHandedDamage? TwoHandedDamage { get; set; }
     public string? VehicleCategory { get; set; }
     public string? WeaponCategory { get; set; }
-    public string? WeaponRange { get; set; }
+    public EWeaponRange? WeaponRange { get; set; }
     public double? Weight { get; set; }
 }

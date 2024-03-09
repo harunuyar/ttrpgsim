@@ -3,6 +3,7 @@
 using Dnd._5eSRD.Constants;
 using Dnd._5eSRD.Models.AbilityScore;
 using Dnd._5eSRD.Models.DamageType;
+using Dnd._5eSRD.Models.Equipment;
 using Dnd.Context;
 using Dnd.Predefined.Commands.BoolCommands;
 using Dnd.Predefined.Commands.DamageBonusCommands;
@@ -12,6 +13,7 @@ using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.Action;
 using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.Entities.Instances;
+using Dnd.System.Entities.Units;
 using Dnd.System.GameManagers.Dice;
 
 public class WeaponAttackAction : AttackRollAction, IWeaponAttackAction
@@ -29,8 +31,11 @@ public class WeaponAttackAction : AttackRollAction, IWeaponAttackAction
     }
 
     public WeaponAttackAction(ActionDurationType actionDurationType, DamageTypeModel damageType, IEquipmentInstance weapon, EAttackHandType attackHandType)
-        : base("Weapon Attack", actionDurationType, ActionRange.FromString(weapon.EquipmentModel.WeaponRange) ?? ActionRange.Touch, TargetingType.SingleTarget, damageType, 
-            DicePool.Parse(attackHandType == EAttackHandType.Versatile ? weapon.EquipmentModel.TwoHandedDamage?.DamageDice : weapon.EquipmentModel.Damage?.DamageDice), [])
+        : base("Weapon Attack", actionDurationType, 
+            weapon.EquipmentModel.WeaponRange == EWeaponRange.Melee 
+                ? ActionRange.Melee(Distance.OfFeet(weapon.EquipmentModel.Range?.Normal ?? 0), weapon.EquipmentModel.Range?.Long is not null ? Distance.OfFeet(weapon.EquipmentModel.Range.Long.Value) : null)
+                : ActionRange.Ranged(Distance.OfFeet(weapon.EquipmentModel.Range?.Normal ?? 0), weapon.EquipmentModel.Range?.Long is not null ? Distance.OfFeet(weapon.EquipmentModel.Range.Long.Value) : null),
+            TargetingType.SingleTarget, damageType, DicePool.Parse(attackHandType == EAttackHandType.Versatile ? weapon.EquipmentModel.TwoHandedDamage?.DamageDice : weapon.EquipmentModel.Damage?.DamageDice), [])
     {
         Weapon = weapon;
         HandType = attackHandType;
@@ -144,23 +149,7 @@ public class WeaponAttackAction : AttackRollAction, IWeaponAttackAction
         {
             if (HandType != EAttackHandType.OffHand)
             {
-                var str = await DndContext.Instance.GetObject<AbilityScoreModel>(AbilityScores.Str);
-
-                if (str == null)
-                {
-                    amountModifiers.SetError("Strength score model is not found.");
-                    return;
-                }
-
-                var strengthModifier = await new GetAbilityModifier(command.Actor, str).Execute();
-
-                if (!strengthModifier.IsSuccess)
-                {
-                    amountModifiers.SetError("GetAbilityModifier: " + strengthModifier.ErrorMessage);
-                    return;
-                }
-
-                if (Weapon.EquipmentModel.Properties?.Any(p => p.Url == WeaponProperties.Finesse) ?? false)
+                if (Range.RangeType == ERangeType.Ranged)
                 {
                     var dex = await DndContext.Instance.GetObject<AbilityScoreModel>(AbilityScores.Dex);
 
@@ -178,18 +167,57 @@ public class WeaponAttackAction : AttackRollAction, IWeaponAttackAction
                         return;
                     }
 
-                    if (dexModifier.Value > strengthModifier.Value)
+                    amountModifiers.AddValue(dexModifier.Value, "Dexterity");
+                }
+                else
+                {
+                    var str = await DndContext.Instance.GetObject<AbilityScoreModel>(AbilityScores.Str);
+
+                    if (str == null)
                     {
-                        amountModifiers.AddValue(dexModifier.Value, "Dexterity");
+                        amountModifiers.SetError("Strength score model is not found.");
+                        return;
+                    }
+
+                    var strengthModifier = await new GetAbilityModifier(command.Actor, str).Execute();
+
+                    if (!strengthModifier.IsSuccess)
+                    {
+                        amountModifiers.SetError("GetAbilityModifier: " + strengthModifier.ErrorMessage);
+                        return;
+                    }
+
+                    if (Weapon.EquipmentModel.Properties?.Any(p => p.Url == WeaponProperties.Finesse) ?? false)
+                    {
+                        var dex = await DndContext.Instance.GetObject<AbilityScoreModel>(AbilityScores.Dex);
+
+                        if (dex == null)
+                        {
+                            amountModifiers.SetError("Dexterity score model is not found.");
+                            return;
+                        }
+
+                        var dexModifier = await new GetAbilityModifier(command.Actor, dex).Execute();
+
+                        if (!dexModifier.IsSuccess)
+                        {
+                            amountModifiers.SetError("GetAbilityModifier: " + dexModifier.ErrorMessage);
+                            return;
+                        }
+
+                        if (dexModifier.Value > strengthModifier.Value)
+                        {
+                            amountModifiers.AddValue(dexModifier.Value, "Dexterity");
+                        }
+                        else
+                        {
+                            amountModifiers.AddValue(strengthModifier.Value, "Strength");
+                        }
                     }
                     else
                     {
                         amountModifiers.AddValue(strengthModifier.Value, "Strength");
                     }
-                }
-                else
-                {
-                    amountModifiers.AddValue(strengthModifier.Value, "Strength");
                 }
             }
         }

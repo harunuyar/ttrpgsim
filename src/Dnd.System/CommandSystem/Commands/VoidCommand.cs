@@ -10,7 +10,7 @@ public class VoidCommand : ACommand<VoidResult>
         Result = VoidResult.Empty();
     }
 
-    protected override VoidResult Result { get; }
+    public override VoidResult Result { get; }
 
     public void SetMessage(string message)
     {

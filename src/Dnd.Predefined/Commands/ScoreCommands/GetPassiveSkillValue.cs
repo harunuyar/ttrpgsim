@@ -27,6 +27,6 @@ public class GetPassiveSkillValue : ScoreCommand
             return;
         }
 
-        AddBonus(skillModifierResult);
+        AddBonus(skillModifierResult.Values.Select(x => x.Item2.Bonus).DefaultIfEmpty(0).Sum(), "Modifiers");
     }
 }

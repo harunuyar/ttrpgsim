@@ -11,13 +11,15 @@ public class CallbackLogger : ILogger
         ErrorCallbacks = [Console.Error.WriteLine];
     }
 
-    public void Log(string message)
+    public Task Log(string message)
     {
         MessageCallbacks.ForEach(callback => callback(message));
+        return Task.CompletedTask;
     }
 
-    public void LogError(string message)
+    public Task LogError(string message)
     {
         ErrorCallbacks.ForEach(callback => callback(message));
+        return Task.CompletedTask;
     }
 }

@@ -1,9 +1,12 @@
 ﻿namespace Dnd.Predefined.Actions;
 
-using Dnd.Predefined.Commands.BoolCommands;
+using Dnd.Context;
+using Dnd.Predefined.Events;
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.Action;
 using Dnd.System.Entities.Action.ActionTypes;
+using Dnd.System.Entities.Events;
+using Dnd.System.Entities.GameActor;
 
 public class Action : IAction
 {
@@ -20,24 +23,34 @@ public class Action : IAction
 
     public List<IActionUsageLimit> UsageLimits { get; }
 
-    public virtual Task HandleCommand(ICommand command)
+    public virtual Task<bool> IsActionAvailable(IGameActor gameActor)
     {
-        return Task.CompletedTask;
+        return Task.FromResult(UsageLimits.All(x => !x.IsExhausted));
     }
 
-    public virtual async Task HandleUsageCommand(ICommand command)
+    public void MarkUse()
     {
-        if (command is IsActionAvailable isActionAvailable)
+        foreach (var usageLimit in UsageLimits)
         {
-            if (UsageLimits.Any(x => x.IsExhausted))
-            {
-                isActionAvailable.SetValue(false, "No uses left");
-            }
+            usageLimit.Use();
         }
+    }
 
+    public virtual IActionEvent CreateEvent(IGameActor actor)
+    {
+        return new BasicActionEvent(actor, this, DndContext.Instance.Logger.Log($"{actor.Name} used action: {Name}"));
+    }
+
+    public virtual async Task HandleCommand(ICommand command)
+    {
         foreach (var usageLimit in UsageLimits)
         {
             await usageLimit.HandleCommand(command);
         }
+    }
+
+    public virtual Task HandleUsageCommand(ICommand command)
+    {
+        return Task.CompletedTask;
     }
 }

@@ -3,7 +3,6 @@
 using Dnd._5eSRD.Models.Class;
 using Dnd._5eSRD.Models.Spell;
 using Dnd._5eSRD.Models.Subclass;
-using Dnd.Predefined.Commands.BoolCommands;
 using Dnd.Predefined.Commands.ListCommands;
 using Dnd.Predefined.Commands.ScoreCommands;
 using Dnd.Predefined.ModelExtensions;

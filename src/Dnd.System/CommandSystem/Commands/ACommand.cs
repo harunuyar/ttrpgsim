@@ -13,7 +13,7 @@ public abstract class ACommand<T> : ICommand where T : ICommandResult
         finalActions = [];
     }
 
-    protected abstract T Result { get; }
+    public abstract T Result { get; }
 
     public IGameActor Actor { get; }
 

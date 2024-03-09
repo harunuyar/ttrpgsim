@@ -6,15 +6,18 @@ using Dnd.System.Entities.Instances;
 
 public class LevelInstance : ILevelInstance
 {
-    public LevelInstance(LevelModel levelModel, IClassInstance classInstance, ISubclassInstance? subclassInstance, IEnumerable<IFeatureInstance> features)
+    public LevelInstance(LevelModel levelModel, LevelModel? subclassLevelModel, IClassInstance classInstance, ISubclassInstance? subclassInstance, IEnumerable<IFeatureInstance> features)
     {
         LevelModel = levelModel;
+        SubclassLevelModel = subclassLevelModel;
         ClassInstance = classInstance;
         SubclassInstance = subclassInstance;
         Features = features.ToList();
     }
 
     public LevelModel LevelModel { get; }
+
+    public LevelModel? SubclassLevelModel { get; }
 
     public IClassInstance ClassInstance { get; }
 

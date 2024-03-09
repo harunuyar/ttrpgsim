@@ -7,6 +7,4 @@ public interface IAreaEffect : IEffect
 {
     AreaOfEffectModel AreaOfEffect { get; }
     HashSet<IGameActor> GameActorsInArea { get; }
-    Task EnteredArea(IGameActor actor);
-    Task LeftArea(IGameActor actor);
 }

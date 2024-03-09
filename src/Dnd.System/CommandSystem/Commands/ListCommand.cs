@@ -10,7 +10,7 @@ public class ListCommand<T> : ACommand<ListResult<T>>
         Result = ListResult<T>.Empty();
     }
 
-    protected override ListResult<T> Result { get; }
+    public override ListResult<T> Result { get; }
 
     public void AddValues(IEnumerable<T> values, string message)
     {

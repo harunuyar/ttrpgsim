@@ -9,10 +9,8 @@ public interface IEffectsTable : ICommandHandler
     public HashSet<IPersonalEffect> ActivePersonalEffects { get; }
     public HashSet<IPersonalEffect> CausedPersonalEffects { get; }
     public void AddCausedPersonalEffect(IPersonalEffect effect);
-    public void RemoveCausedPersonalEffect(IPersonalEffect effect);
     public void AddActiveAreaEffect(IAreaEffect effect);
-    public void RemoveCausedAreaEffect(IAreaEffect effect);
+    public void RemoveCausedEffect(IEffect effect);
     public void AddAffectedAreaEffect(IAreaEffect effect);
     public void RemoveAffectedAreaEffect(IAreaEffect effect);
-    public void RemoveCausedEffect(IEffect effect);
 }

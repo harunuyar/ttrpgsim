@@ -3,8 +3,9 @@
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.Entities.GameActor;
+using Dnd.System.GameManagers.Dice;
 
-public class GetModifiers : ListCommand<int>
+public class GetModifiers : ListCommand<DicePool>
 {
     public GetModifiers(IGameActor actor, IRollAction action, IGameActor? opponent) : base(actor)
     {
@@ -32,5 +33,10 @@ public class GetModifiers : ListCommand<int>
 
             Set(against);
         }
+    }
+
+    public void AddValue(int value, string message)
+    {
+        AddValue(DicePool.OfConstant(value), message);
     }
 }

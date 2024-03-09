@@ -9,7 +9,7 @@ using Dnd.System.Entities.GameActor;
 public interface ISpellcastingAbility  : ICommandHandler, IUsageBonusProvider
 {
     ClassModel ClassModel { get; }
-    SubclassModel SubclassModel { get; }
+    SubclassModel? SubclassModel { get; }
     Task<int> GetMaxCantripsKnown(IGameActor gameActor);
     Task<int> GetMaxSpellsKnown(IGameActor gameActor);
     Task<int> GetMaxSpellSlots(IGameActor gameActor, int spellLevel);

@@ -10,7 +10,7 @@ public class ValueCommand<T> : ACommand<ValueResult<T>>
         Result = ValueResult<T>.Empty();
     }
 
-    protected override ValueResult<T> Result { get; }
+    public override ValueResult<T> Result { get; }
 
     public void SetValue(T value, string message)
     {

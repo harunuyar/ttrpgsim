@@ -15,15 +15,7 @@ internal class RemoveEffect : VoidCommand
 
     protected override Task FinalizeResult()
     {
-        if (Effect is IAreaEffect areaEffect)
-        {
-            areaEffect.Source.EffectsTable.RemoveCausedAreaEffect(areaEffect);
-        }
-        else if (Effect is IPersonalEffect personalEffect)
-        {
-            personalEffect.Source.EffectsTable.RemoveCausedPersonalEffect(personalEffect);
-        }
-
+        Effect.Source.EffectsTable.RemoveCausedEffect(Effect);
         return Task.CompletedTask;
     }
 }

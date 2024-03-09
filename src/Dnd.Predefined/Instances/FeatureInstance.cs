@@ -16,6 +16,14 @@ public class FeatureInstance : IFeatureInstance
         Invocations = invocations.ToList();
     }
 
+    public FeatureInstance(FeatureModel featureModel)
+    {
+        FeatureModel = featureModel;
+        SubfeatureOptions = [];
+        ExpertiseOptions = [];
+        Invocations = [];
+    }
+
     public FeatureModel FeatureModel { get; }
 
     public List<IFeatureInstance> SubfeatureOptions { get; }

@@ -18,9 +18,24 @@ public class IsActionAvailable : ValueCommand<bool>
 
     protected override async Task InitializeResult()
     {
-        await Action.HandleUsageCommand(this);
+        var canTakeAnyAction = await new CanTakeAnyAction(Actor).Execute();
+        if (!canTakeAnyAction.IsSuccess)
+        {
+            SetError("CanTakeAnyAction: " + canTakeAnyAction.ErrorMessage);
+            return;
+        }
 
-        if (Opponent is not null)
+        if (!canTakeAnyAction.Value)
+        {
+            Set(canTakeAnyAction);
+            ForceComplete();
+            return;
+        }
+
+        bool fromAction = await Action.IsActionAvailable(Actor);
+        SetValue(fromAction, "Default");
+
+        if (fromAction && Opponent is not null)
         {
             var fromOpponent = await new IsActionAvailableFromOpponent(Opponent, Action, Actor).Execute();
 
@@ -30,7 +45,10 @@ public class IsActionAvailable : ValueCommand<bool>
                 return;
             }
 
-            Set(fromOpponent);
+            if (!fromOpponent.Value)
+            {
+                Set(fromOpponent);
+            }
         }
     }
 }

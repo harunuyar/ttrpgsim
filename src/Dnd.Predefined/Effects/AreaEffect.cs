@@ -1,7 +1,6 @@
 ﻿namespace Dnd.Predefined.Effects;
 
 using Dnd._5eSRD.Models.Common;
-using Dnd.Predefined.Commands.VoidCommands;
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.Effect;
 using Dnd.System.Entities.GameActor;
@@ -22,81 +21,13 @@ public abstract class AreaEffect : AEffect, IAreaEffect
 
     public HashSet<IGameActor> GameActorsInArea { get; }
 
-    public async Task EnteredArea(IGameActor actor)
-    {
-        GameActorsInArea.Add(actor);
-        actor.EffectsTable.AddAffectedAreaEffect(this);
-
-        if (ActiveEffectDefinition.ActivationTime.HasFlag(EEffectActivationTime.EntersArea))
-        {
-            await ActivateForOneTarget(actor);
-        }
-    }
-
-    public async Task LeftArea(IGameActor actor)
-    {
-        GameActorsInArea.Remove(actor);
-        actor.EffectsTable.RemoveAffectedAreaEffect(this);
-
-        if (ActiveEffectDefinition.ActivationTime.HasFlag(EEffectActivationTime.ExitsArea))
-        {
-            await ActivateForOneTarget(actor);
-        }
-    }
-
-    public override async Task ActivateEffect()
-    {
-        foreach (var target in GameActorsInArea)
-        {
-            await ActiveEffectDefinition.Activate(Source, target);
-        }
-
-        await base.ActivateEffect();
-    }
-
-    public async Task ActivateForOneTarget(IGameActor target)
-    {
-        await ActiveEffectDefinition.Activate(Source, target);
-        await base.ActivateEffect();
-    }
-
     public override async Task HandleCommand(ICommand command)
     {
         await base.HandleCommand(command);
 
-        if (command is TakeTurn)
+        foreach (var actor in GameActorsInArea)
         {
-            if (ActiveEffectDefinition.ActivationTime.HasFlag(EEffectActivationTime.TargetTurnStart) && GameActorsInArea.Contains(command.Actor))
-            {
-                await ActivateForOneTarget(command.Actor);
-            }
-        }
-        else if (command is EndTurn)
-        {
-            if (ActiveEffectDefinition.ActivationTime.HasFlag(EEffectActivationTime.TargetTurnEnd) && GameActorsInArea.Contains(command.Actor))
-            {
-                await ActivateForOneTarget(command.Actor);
-            }
-        }
-        else
-        if (command is LongRest)
-        {
-            if (command.Actor == Source)
-            {
-                Duration.LongRest();
-            }
-        }
-        else if (command is ShortRest)
-        {
-            if (command.Actor == Source)
-            {
-                Duration.ShortRest();
-            }
-        }
-
-        if (IsExpired)
-        {
-            Source.EffectsTable.RemoveCausedAreaEffect(this);
+            await ActiveEffectDefinition.HandleCommand(command, Source, actor);
         }
     }
 }

@@ -49,7 +49,7 @@ public class ListResult<T> : ICommandResult
         Values.Clear();
     }
 
-    internal void AddValue(string message, T value)
+    public void AddValue(string message, T value)
     {
         Values.Add((message, value));
     }

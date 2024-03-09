@@ -2,13 +2,13 @@
 
 using Dnd._5eSRD.Models.AbilityScore;
 using Dnd._5eSRD.Models.Spell;
-using Dnd.Predefined.Commands.BoolCommands;
 using Dnd.Predefined.Commands.RollBonusCommands;
 using Dnd.Predefined.Commands.ScoreCommands;
 using Dnd.Predefined.ModelExtensions;
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.Action;
 using Dnd.System.Entities.Action.ActionTypes;
+using Dnd.System.Entities.GameActor;
 using Dnd.System.Entities.Instances;
 
 public class SpellAction : Action, ISpellAction
@@ -27,35 +27,36 @@ public class SpellAction : Action, ISpellAction
 
     public ISpellcastingAbility SpellcastingAbility { get; }
 
+    public override async Task<bool> IsActionAvailable(IGameActor gameActor)
+    {
+        if (!await base.IsActionAvailable(gameActor))
+        {
+            return false;
+        }
+
+        if (SpellcastingAbility.HasSpell(Spell, SpellSlot))
+        {
+            var maxSpellSlots = await new GetMaxSpellSlotsCount(gameActor, SpellSlot).Execute();
+
+            if (!maxSpellSlots.IsSuccess)
+            {
+                throw new InvalidOperationException("GetMaxSpellSlotsCount: " + maxSpellSlots.ErrorMessage);
+            }
+
+            int usedSlots = gameActor.PointsCounter.GetUsedSpellCounts(SpellSlot);
+
+            return usedSlots < maxSpellSlots.Value;
+        }
+
+        return false;
+    }
+
     public override async Task HandleUsageCommand(ICommand command)
     {
         await base.HandleUsageCommand(command);
         await SpellcastingAbility.HandleUsageCommand(command);
 
-        if (command is IsActionAvailable isActionAvailable)
-        {
-            if (isActionAvailable.Action == this && SpellcastingAbility.HasSpell(Spell, SpellSlot))
-            {
-                var maxSpellSlots = await new GetMaxSpellSlotsCount(command.Actor, SpellSlot).Execute();
-
-                if (!maxSpellSlots.IsSuccess)
-                {
-                    isActionAvailable.SetError("GetMaxSpellSlotsCount: " + maxSpellSlots.ErrorMessage);
-                    return;
-                }
-
-                int usedSlots = command.Actor.PointsCounter.GetUsedSpellCounts(SpellSlot);
-
-                if (usedSlots >= maxSpellSlots.Value)
-                {
-                    isActionAvailable.SetValue(false, $"{command.Actor.Name} can't cast {Spell.Name} at level {SpellSlot} because they don't have any spell slots for that level.");
-                    return;
-                }
-
-                isActionAvailable.SetValue(true, $"{command.Actor.Name} can cast {Spell.Name} at level {SpellSlot}.");
-            }
-        }
-        else if (command is GetSavingDC savingDC)
+        if (command is GetSavingDC savingDC)
         {
             if (savingDC.SavingThrowAction == this)
             {

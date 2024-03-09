@@ -3,8 +3,9 @@
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.Entities.GameActor;
+using Dnd.System.GameManagers.Dice;
 
-public class GetAmountModifiersFromOpponent : ListCommand<int>
+public class GetAmountModifiersFromOpponent : ListCommand<DicePool>
 {
     public GetAmountModifiersFromOpponent(IGameActor actor, IAmountAction amountAction, IGameActor opponent) : base(actor)
     {

@@ -2,6 +2,6 @@
 
 public interface ILogger
 {
-    void Log(string message);
-    void LogError(string message);
+    Task Log(string message);
+    Task LogError(string message);
 }

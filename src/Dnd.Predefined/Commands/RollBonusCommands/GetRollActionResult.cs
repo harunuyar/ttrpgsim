@@ -7,16 +7,19 @@ using Dnd.System.GameManagers.Dice;
 
 public class GetRollActionResult : ListCommand<ERollResult>
 {
-    public GetRollActionResult(IGameActor actor, ISuccessRollAction action, IGameActor? opponent, ERollResult defaultRollResult) : base(actor)
+    public GetRollActionResult(IGameActor actor, ISuccessRollAction action, IGameActor? opponent, int rawDiceResult, ERollResult defaultRollResult) : base(actor)
     {
         Action = action;
         Opponent = opponent;
+        RawDiceResult = rawDiceResult;
         DefaultRollResult = defaultRollResult;
     }
 
     public ISuccessRollAction Action { get; }
 
     public IGameActor? Opponent { get; }
+
+    public int RawDiceResult { get; }
 
     public ERollResult DefaultRollResult { get; }
 

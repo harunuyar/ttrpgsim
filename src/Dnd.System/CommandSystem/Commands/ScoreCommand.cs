@@ -10,7 +10,7 @@ public class ScoreCommand : ACommand<ScoreResult>
         Result = ScoreResult.Empty();
     }
 
-    protected override ScoreResult Result { get; }
+    public override ScoreResult Result { get; }
 
     public int GetCurrentValue()
     {

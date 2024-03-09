@@ -28,6 +28,7 @@ public class SecondWind : FeatureInstance
     public override async Task HandleCommand(ICommand command)
     {
         await base.HandleCommand(command);
+        await SecondWindAction.HandleCommand(command);
 
         if (command is GetActions actions)
         {
