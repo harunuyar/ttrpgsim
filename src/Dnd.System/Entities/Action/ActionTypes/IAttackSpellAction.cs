@@ -1,5 +1,5 @@
 ﻿namespace Dnd.System.Entities.Action.ActionTypes;
 
-public interface IAttackSpellAction : ISpellAction, IDamageAction
+public interface IAttackSpellAction : ISpellAction, IAttackAction
 {
 }

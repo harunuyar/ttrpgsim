@@ -1,19 +1,25 @@
 ﻿namespace Dnd.System.Entities.Events;
 
 using Dnd.System.CommandSystem.Results;
+using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.GameManagers.Dice;
 
-public interface ISuccessRollEvent : IActionEvent
+public interface ISuccessRollEvent : IEvent
 {
-    ListResult<DicePool> RollModifiers { get; }
-    ListResult<EAdvantage> RollAdvantages { get; }
-    ListResult<ERollResult> PredeterminedRollResults { get; }
-    int? RawRollResult { get; set; }
-    ERollResult? RollResult { get; set; }
+    // Initialized with constructor
+    ISuccessRollAction SuccessRollAction { get; }
+    int? TargetResult { get; }
 
-    void ResetSuccessRoll()
-    {
-        RawRollResult = null;
-        RollResult = null;
-    }
+    // Initialized with InitializeEvent method
+    ListResult<DicePool>? RollModifiers { get; }
+    ListResult<EAdvantage>? RollAdvantages { get; }
+    ListResult<ERollResult>? PredeterminedRollResults { get; }
+
+    // Initialized with RunEvent method
+    ListResult<ERollResult>? RollResultModifiers { get; }
+    DiceRollResult? RawRollResult { get; }
+    IEnumerable<DiceRollResult>? ModifierRollResults { get; }
+    int? ConstantModifier { get; }
+    int? TotalResult { get; }
+    ERollResult? RollResult { get; set; }
 }

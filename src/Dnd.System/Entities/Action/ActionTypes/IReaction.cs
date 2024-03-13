@@ -5,8 +5,7 @@ using Dnd.System.Entities.GameActor;
 
 public interface IReaction : IAction
 {
-    EReactionType ReactionType { get; }
     bool MandatoryReaction { get; }
-    Task<bool> IsReactionAvailable(IGameActor gameActor, IActionEvent eventToReactTo, EReactionType reactionType);
-    IActionEvent CreateReactionEvent(IGameActor gameActor, IActionEvent eventToReactTo);
+    Task<bool> IsReactionAvailable(IGameActor gameActor, IEvent eventToReactTo);
+    Task<IEvent> CreateReactionEvent(IGameActor gameActor, IEvent eventToReactTo);
 }

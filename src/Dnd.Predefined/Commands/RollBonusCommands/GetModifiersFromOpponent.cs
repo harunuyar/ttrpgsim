@@ -7,13 +7,13 @@ using Dnd.System.GameManagers.Dice;
 
 public class GetModifiersFromOpponent : ListCommand<DicePool>
 {
-    internal GetModifiersFromOpponent(IGameActor actor, IRollAction action, IGameActor opponent) : base(actor)
+    internal GetModifiersFromOpponent(IGameActor actor, ISuccessRollAction action, IGameActor? opponent) : base(actor)
     {
         Action = action;
         Opponent = opponent;
     }
 
-    public IRollAction Action { get; }
+    public ISuccessRollAction Action { get; }
 
-    public IGameActor Opponent { get; }
+    public IGameActor? Opponent { get; }
 }

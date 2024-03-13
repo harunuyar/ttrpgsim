@@ -2,7 +2,7 @@
 
 using Dnd.System.Entities.Action.ActionTypes;
 
-public interface IActionEvent : IEvent
+public interface IApplyEffectEvent : IEvent
 {
-    IAction Action { get; }
+    IEffectAction EffectAction { get; }
 }

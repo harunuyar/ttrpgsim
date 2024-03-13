@@ -11,7 +11,7 @@ public class DamageAction : TargetingAction, IDamageAction
         : base(name, actionDurationType, range, targetingType, usageLimits)
     {
         DamageType = damageType;
-        AmountAction = new AmountAction(name, actionDurationType, damageDicePool, []);
+        AmountAction = new AmountAction(name, actionDurationType, damageDicePool, EAmountRollType.Damage, []);
     }
 
     public AmountAction AmountAction { get; }
@@ -19,4 +19,6 @@ public class DamageAction : TargetingAction, IDamageAction
     public DamageTypeModel DamageType { get; }
 
     public DicePool AmountDicePool => AmountAction.AmountDicePool;
+
+    public EAmountRollType AmountRollType => AmountAction.AmountRollType;
 }

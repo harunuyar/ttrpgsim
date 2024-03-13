@@ -1,19 +1,24 @@
 ﻿namespace Dnd.System.Entities.Events;
 
 using Dnd.System.CommandSystem.Results;
+using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.GameManagers.Dice;
 
-public interface IAmountRollEvent : IActionEvent
+public interface IAmountRollEvent : IEvent
 {
-    ListResult<DicePool> AmountModifiers { get; }
-    ListResult<EAdvantage> AmountAdvantages { get; }
-    ValueResult<int?> PredeterminedAmountResult { get; }
-    int? RawAmountResult { get; set; }
-    int? AmountResult { get; set; }
+    // Initialized with constructor
+    IAmountAction AmountAction { get; }
+    bool Critical { get; }
 
-    void ResetAmountRoll()
-    {
-        RawAmountResult = null;
-        AmountResult = null;
-    }
+    // Initialized with InitializeEvent method
+    ListResult<DicePool>? AmountModifiers { get; }
+    ListResult<EAdvantage>? AmountAdvantages { get; }
+    ValueResult<int?>? PredeterminedAmountResult { get; }
+    int? RawConstantResult { get; }
+    int? ConstantModifier { get; }
+
+    // Initialized with RunEvent method
+    IEnumerable<DiceRollResult>? RawRollResult { get; }
+    IEnumerable<DiceRollResult>? ModifierRollResults { get; }
+    int? AmountResult { get; }
 }

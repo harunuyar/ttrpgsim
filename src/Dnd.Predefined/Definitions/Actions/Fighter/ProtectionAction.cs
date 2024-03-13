@@ -3,7 +3,6 @@
 using Dnd.Predefined.Actions;
 using Dnd.Predefined.Events;
 using Dnd.System.Entities.Action;
-using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.Entities.Events;
 using Dnd.System.Entities.GameActor;
 using Dnd.System.GameManagers.Dice;
@@ -11,27 +10,33 @@ using Dnd.System.GameManagers.Dice;
 public class ProtectionAction : Reaction
 {
     public ProtectionAction()
-        : base("Protection", ActionDurationType.Reaction, [], EReactionType.Before | EReactionType.AttackRoll | EReactionType.ToAlly | EReactionType.Nearby, false)
+        : base("Protection", ActionDurationType.Reaction, [], false)
     {
     }
 
-    public override async Task<bool> IsReactionAvailable(IGameActor gameActor, IActionEvent eventToReactTo, EReactionType reactionType)
+    public override Task<bool> IsReactionAvailable(IGameActor gameActor, IEvent eventToReactTo)
     {
-        return await base.IsReactionAvailable(gameActor, eventToReactTo, reactionType)
+        return Task.FromResult(gameActor != eventToReactTo.EventOwner
             && eventToReactTo is ISuccessRollEvent rollEvent
-            && rollEvent.Action is IAttackRollAction;
+            && rollEvent.SuccessRollAction.SuccessRollType is ESuccessRollType.Attack
+            && rollEvent.EventPhase == EEventPhase.DoneRunning);
     }
 
-    public override IActionEvent CreateReactionEvent(IGameActor actor, IActionEvent eventToReactTo)
+    public override async Task<IEvent> CreateReactionEvent(IGameActor actor, IEvent eventToReactTo)
     {
+        if (!await IsReactionAvailable(actor, eventToReactTo))
+        {
+            throw new InvalidOperationException("ProtectionAction.CreateReactionEvent: eventToReactTo is not attack roll");
+        }
+
         Task task = new(() =>
         {
-            if (eventToReactTo is ISuccessRollEvent rollEvent)
+            if (eventToReactTo is ISuccessRollEvent rollEvent && rollEvent.RollAdvantages is not null)
             {
                 rollEvent.RollAdvantages.AddValue(Name, EAdvantage.Disadvantage);
             }
         });
 
-        return new BasicReactionEvent(actor, eventToReactTo, this, task);
+        return new BasicEvent(Name, actor, task);
     }
 }

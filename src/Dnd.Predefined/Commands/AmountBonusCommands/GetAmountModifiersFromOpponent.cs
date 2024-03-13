@@ -7,7 +7,7 @@ using Dnd.System.GameManagers.Dice;
 
 public class GetAmountModifiersFromOpponent : ListCommand<DicePool>
 {
-    public GetAmountModifiersFromOpponent(IGameActor actor, IAmountAction amountAction, IGameActor opponent) : base(actor)
+    public GetAmountModifiersFromOpponent(IGameActor actor, IAmountAction amountAction, IGameActor? opponent) : base(actor)
     {
         AmountAction = amountAction;
         Opponent = opponent;
@@ -15,5 +15,5 @@ public class GetAmountModifiersFromOpponent : ListCommand<DicePool>
 
     public IAmountAction AmountAction { get; }
 
-    public IGameActor Opponent { get; }
+    public IGameActor? Opponent { get; }
 }

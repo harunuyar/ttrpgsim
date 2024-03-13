@@ -2,8 +2,7 @@
 
 using Dnd._5eSRD.Models.AbilityScore;
 
-public interface ISavingThrowAction : ISuccessRollAction, IDamageAction
+public interface ISavingThrowAction : ISuccessRollAction
 {
     AbilityScoreModel Ability { get; }
-    double SaveDamageMultiplier { get; }
 }

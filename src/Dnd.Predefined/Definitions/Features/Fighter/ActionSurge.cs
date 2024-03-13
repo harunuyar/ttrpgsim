@@ -32,6 +32,7 @@ public class ActionSurge : FeatureInstance
     public override async Task HandleCommand(ICommand command)
     {
         await base.HandleCommand(command);
+
         await OneUseAction.HandleCommand(command);
         await TwoUseAction.HandleCommand(command);
 

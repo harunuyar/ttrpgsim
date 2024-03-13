@@ -7,13 +7,13 @@ using Dnd.System.GameManagers.Dice;
 
 public class GetAdvantage : ListCommand<EAdvantage>
 {
-    public GetAdvantage(IGameActor actor, IRollAction action, IGameActor? opponent) : base(actor)
+    public GetAdvantage(IGameActor actor, ISuccessRollAction action, IGameActor? opponent) : base(actor)
     {
         Action = action;
         Opponent = opponent;
     }
 
-    public IRollAction Action { get; }
+    public ISuccessRollAction Action { get; }
 
     public IGameActor? Opponent { get; }
 

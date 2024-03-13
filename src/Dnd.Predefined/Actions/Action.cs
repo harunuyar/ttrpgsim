@@ -36,9 +36,9 @@ public class Action : IAction
         }
     }
 
-    public virtual IActionEvent CreateEvent(IGameActor actor)
+    public virtual Task<IEvent> CreateEvent(IGameActor actor)
     {
-        return new BasicActionEvent(actor, this, DndContext.Instance.Logger.Log($"{actor.Name} used action: {Name}"));
+        return Task.FromResult<IEvent>(new BasicEvent(Name, actor, DndContext.Instance.Logger.Log($"{actor.Name} used action: {Name}")));
     }
 
     public virtual async Task HandleCommand(ICommand command)

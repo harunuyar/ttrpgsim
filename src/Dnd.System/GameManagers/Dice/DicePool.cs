@@ -24,6 +24,21 @@ public partial class DicePool
         return (Rolls.Count != 0 ? Rolls.Sum(r => r.MinRoll()) : 0) + Bonus;
     }
 
+    public static DicePool Copy(DicePool dicePool)
+    {
+        return new DicePool(dicePool.Rolls.ToList(), dicePool.Bonus);
+    }
+
+    public DicePool Concat(DicePool dicePool2)
+    {
+        return new DicePool(this.Rolls.Concat(dicePool2.Rolls), this.Bonus + dicePool2.Bonus);
+    }
+
+    public DicePool Critical()
+    {
+        return new DicePool(Rolls.Select(r => new DiceRoll(r.NumberOfDice * 2, r.DiceType, r.Negative)), Bonus);
+    }
+
     public static DicePool OfConstant(int constant)
     {
         return new DicePool([], constant);

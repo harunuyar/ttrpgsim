@@ -5,24 +5,23 @@ using Dnd._5eSRD.Models.AbilityScore;
 using Dnd._5eSRD.Models.Feature;
 using Dnd.Context;
 using Dnd.Predefined.Commands.ScoreCommands;
-using Dnd.Predefined.Commands.VoidCommands;
 using Dnd.Predefined.Events;
-using Dnd.System.Entities.Effect;
 using Dnd.System.Entities.Events;
 using Dnd.System.Entities.GameActor;
 
 public class SurvivorEffect : ActiveEffectDefinition
 {
-    public SurvivorEffect(FeatureModel survivorFeatureModel) : base(survivorFeatureModel.Name ?? "Survivor", string.Join(" ", survivorFeatureModel.Desc ?? []), EEffectActivationTime.TurnStart | EEffectActivationTime.Target)
+    public SurvivorEffect(FeatureModel survivorFeatureModel) 
+        : base(survivorFeatureModel.Name ?? "Survivor", string.Join(" ", survivorFeatureModel.Desc ?? []))
     {
         SurvivorFeatureModel = survivorFeatureModel;
     }
 
     public FeatureModel SurvivorFeatureModel { get; }
 
-    public override IEffectEvent CreateEvent(IGameActor source, IGameActor target)
+    public override async Task<bool> ShouldActivate(IGameActor source, IGameActor target, IEvent eventToReactTo)
     {
-        return new BasicEffectEvent(this, source, target, new Task(async () =>
+        if (eventToReactTo is TurnBeginEvent && eventToReactTo.EventPhase == EEventPhase.DoneRunning)
         {
             var maxHp = await new GetMaxHP(target).Execute();
 
@@ -33,30 +32,29 @@ public class SurvivorEffect : ActiveEffectDefinition
 
             var currentHp = target.HitPoints.CurrentHitPoints;
 
-            if (currentHp <= maxHp.Value / 2)
-            {
-                var constitution = await DndContext.Instance.GetObject<AbilityScoreModel>(AbilityScores.Con);
-                if (constitution == null)
-                {
-                    throw new InvalidOperationException("Ability score model for " + AbilityScores.Con + " is not found");
-                }
+            return currentHp <= maxHp.Value / 2;
+        }
+        
+        return false;
+    }
 
-                var constitutionModifier = await new GetAbilityModifier(target, constitution).Execute();
+    public override async Task<IEvent> CreateEvent(IGameActor source, IGameActor target, IEvent eventToReactTo)
+    {
+        var constitution = await DndContext.Instance.GetObject<AbilityScoreModel>(AbilityScores.Con);
+        if (constitution == null)
+        {
+            throw new InvalidOperationException("Ability score model for " + AbilityScores.Con + " is not found");
+        }
 
-                if (!constitutionModifier.IsSuccess)
-                {
-                    throw new InvalidOperationException("GetAbilityModifier: " + constitutionModifier.ErrorMessage);
-                }
+        var constitutionModifier = await new GetAbilityModifier(target, constitution).Execute();
 
-                int healAmount = constitutionModifier.Value + 5;
+        if (!constitutionModifier.IsSuccess)
+        {
+            throw new InvalidOperationException("GetAbilityModifier: " + constitutionModifier.ErrorMessage);
+        }
 
-                var heal = await new ApplyHeal(target, healAmount).Execute();
+        int healAmount = constitutionModifier.Value + 5;
 
-                if (!heal.IsSuccess)
-                {
-                    throw new InvalidOperationException("ApplyHeal: " + heal.ErrorMessage);
-                }
-            }
-        }));
+        return new HealEvent(Name, target, null, healAmount);
     }
 }

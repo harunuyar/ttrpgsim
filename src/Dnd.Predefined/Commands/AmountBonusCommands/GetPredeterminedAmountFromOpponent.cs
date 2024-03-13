@@ -4,9 +4,9 @@ using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.Entities.GameActor;
 
-public class GetPredefinedAmountFromOpponent : ValueCommand<int?>
+public class GetPredeterminedAmountFromOpponent : ValueCommand<int?>
 {
-    public GetPredefinedAmountFromOpponent(IGameActor actor, IAmountAction amountAction, IGameActor opponent) : base(actor)
+    public GetPredeterminedAmountFromOpponent(IGameActor actor, IAmountAction amountAction, IGameActor? opponent) : base(actor)
     {
         AmountAction = amountAction;
         Opponent = opponent;

@@ -10,10 +10,10 @@ using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.Action;
 using Dnd.System.Entities.Action.ActionTypes;
 
-public class SkillCheckAction : RollAction, ISkillCheckAction
+public class SkillCheckAction : SuccessRollAction, ISkillCheckAction
 {
     public SkillCheckAction(SkillModel skill)
-        : base($"{skill.Name} Check", ActionDurationType.Action, ERollType.Skill, [])
+        : base($"{skill.Name} Check", ActionDurationType.Action, ESuccessRollType.Skill, [])
     {
         Skill = skill;
     }

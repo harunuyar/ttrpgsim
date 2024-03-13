@@ -22,7 +22,7 @@ public class AttackSpellAction : SpellAction, IAttackSpellAction
     public AttackSpellAction(ILevelInfo levelInfo, ISpellcastingAbility spellcastingAbility, SpellModel spellModel, TargetingType targetingType, DamageTypeModel damageTypeModel, int spellSlot, IEnumerable<IActionUsageLimit> usageLimits) 
         : base(spellcastingAbility, spellModel, spellSlot, usageLimits)
     {
-        DamageAction = new DamageAction(
+        AttackAction = new AttackAction(
             Name, 
             ActionDuration, 
             ActionRange.FromString(spellModel.Range) ?? ActionRange.Self, 
@@ -35,13 +35,17 @@ public class AttackSpellAction : SpellAction, IAttackSpellAction
 
     private ILevelInfo LevelInfo { get; }
 
-    private DamageAction DamageAction { get; }
+    private AttackAction AttackAction { get; }
 
-    public DamageTypeModel DamageType => DamageAction.DamageType;
+    public DamageTypeModel DamageType => AttackAction.DamageType;
 
-    public ActionRange Range => DamageAction.Range;
+    public ActionRange Range => AttackAction.Range;
 
-    public TargetingType TargetingType => DamageAction.TargetingType;
+    public TargetingType TargetingType => AttackAction.TargetingType;
 
     public DicePool AmountDicePool => Spell.GetDamage(LevelInfo.Level, SpellSlot);
+
+    public EAmountRollType AmountRollType => AttackAction.AmountRollType;
+
+    public EAttackType AttackType => AttackAction.AttackType;
 }

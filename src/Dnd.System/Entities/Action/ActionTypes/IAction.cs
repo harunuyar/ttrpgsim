@@ -9,6 +9,6 @@ public interface IAction : ICommandHandler, IUsageBonusProvider
     ActionDurationType ActionDuration { get; }
     List<IActionUsageLimit> UsageLimits { get; }
     Task<bool> IsActionAvailable(IGameActor gameActor);
-    IActionEvent CreateEvent(IGameActor gameActor);
+    Task<IEvent> CreateEvent(IGameActor gameActor);
     void MarkUse();
 }

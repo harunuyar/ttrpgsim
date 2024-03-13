@@ -7,37 +7,50 @@ using Dnd.System.Entities.Action;
 using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.Entities.Events;
 using Dnd.System.Entities.GameActor;
+using Dnd.System.GameManagers.Dice;
 
-public class GreatWeaponFightingRerollDamageAction : Reaction, IRerollAction
+public class GreatWeaponFightingRerollDamageAction : Reaction
 {
     public GreatWeaponFightingRerollDamageAction() 
-        : base("Great Weapon Fighting: Reroll Damage", ActionDurationType.FreeAction, [], EReactionType.After | EReactionType.Self | EReactionType.DamageRoll, false)
+        : base("Great Weapon Fighting: Reroll Damage", ActionDurationType.FreeAction, [], false)
     {
     }
 
-    public ERollType RollType => ERollType.Damage;
+    private static readonly int[] RerollResults = [1, 2];
 
-    public override async Task<bool> IsReactionAvailable(IGameActor gameActor, IActionEvent eventToReactTo, EReactionType reactionType)
+    public override Task<bool> IsReactionAvailable(IGameActor gameActor, IEvent eventToReactTo)
     {
-        return await base.IsReactionAvailable(gameActor, eventToReactTo, reactionType)
+        return Task.FromResult(
+            gameActor == eventToReactTo.EventOwner
             && eventToReactTo is IAmountRollEvent damageRoll
-            && (damageRoll.RawAmountResult == 1 || damageRoll.RawAmountResult == 2)
-            && damageRoll.Action is IWeaponAttackAction weaponAttack
+            && damageRoll.RawRollResult is not null
+            && RerollResults.Contains(damageRoll.RawRollResult.Select(x => x.Result).DefaultIfEmpty(0).Sum())
+            && damageRoll.AmountAction is IWeaponAttackAction weaponAttack
             && (weaponAttack.HandType == EAttackHandType.Versatile
                 || (weaponAttack.HandType == EAttackHandType.MainHand
-                    && (weaponAttack.Weapon.EquipmentModel.Properties?.Any(x => x.Url == WeaponProperties.TwoHanded) ?? false)));
+                    && (weaponAttack.Weapon.EquipmentModel.Properties?.Any(x => x.Url == WeaponProperties.TwoHanded) ?? false))));
     }
 
-    public override IActionEvent CreateReactionEvent(IGameActor actor, IActionEvent eventToReactTo)
+    public override async Task<IEvent> CreateReactionEvent(IGameActor actor, IEvent eventToReactTo)
     {
-        Task task = new(() =>
+        if (await IsReactionAvailable(actor, eventToReactTo))
         {
-            if (eventToReactTo is IAmountRollEvent amountEvent)
-            {
-                amountEvent.ResetAmountRoll();
-            }
-        });
+            throw new InvalidOperationException("Reaction is not available");
+        }
 
-        return new BasicReactionEvent(actor, eventToReactTo, this, task);
+        if (eventToReactTo is not IAmountRollEvent amountRollEvent)
+        {
+            throw new InvalidOperationException("GreatWeaponFightingRerollDamageAction can only react to amount roll events");
+        }
+
+        if (amountRollEvent.RawRollResult is null || amountRollEvent.ModifierRollResults is null)
+        {
+            throw new InvalidOperationException("There is no roll dice to reroll");
+        }
+
+        var advantage = amountRollEvent.AmountAdvantages?.Values?.Select(x => x.Item2)?.DefaultIfEmpty(EAdvantage.None)?.Aggregate((a, b) => a | b) ?? EAdvantage.None;
+        var reroll = new ReRollEvent(Name, actor, amountRollEvent.RawRollResult, amountRollEvent.ModifierRollResults, advantage);
+
+        return reroll;
     }
 }

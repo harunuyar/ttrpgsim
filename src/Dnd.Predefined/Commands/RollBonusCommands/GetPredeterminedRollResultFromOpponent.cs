@@ -7,7 +7,7 @@ using Dnd.System.GameManagers.Dice;
 
 public class GetPredeterminedRollResultFromOpponent : ListCommand<ERollResult>
 {
-    internal GetPredeterminedRollResultFromOpponent(IGameActor actor, ISuccessRollAction action, IGameActor opponent) : base(actor)
+    internal GetPredeterminedRollResultFromOpponent(IGameActor actor, ISuccessRollAction action, IGameActor? opponent) : base(actor)
     {
         Action = action;
         Opponent = opponent;
@@ -15,5 +15,5 @@ public class GetPredeterminedRollResultFromOpponent : ListCommand<ERollResult>
 
     public ISuccessRollAction Action { get; }
 
-    public IGameActor Opponent { get; }
+    public IGameActor? Opponent { get; }
 }

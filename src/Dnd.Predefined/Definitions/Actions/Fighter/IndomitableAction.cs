@@ -3,39 +3,41 @@
 using Dnd.Predefined.Actions;
 using Dnd.Predefined.Events;
 using Dnd.System.Entities.Action;
-using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.Entities.Events;
 using Dnd.System.Entities.GameActor;
 using Dnd.System.GameManagers.Dice;
 
-public class IndomitableAction : Reaction, IRerollAction
+public class IndomitableAction : Reaction
 {
     public IndomitableAction(ActionUsageLimit usageLimit)
-        : base("Indomitable: Reroll Saving Throw", ActionDurationType.FreeAction, [usageLimit], EReactionType.After | EReactionType.Self | EReactionType.SavingThrow, false)
+        : base("Indomitable: Reroll Saving Throw", ActionDurationType.FreeAction, [usageLimit], false)
     {
     }
 
-    public ERollType RollType => ERollType.Damage;
-
-    public override async Task<bool> IsReactionAvailable(IGameActor gameActor, IActionEvent eventToReactTo, EReactionType reactionType)
+    public override Task<bool> IsReactionAvailable(IGameActor gameActor, IEvent eventToReactTo)
     {
-        return await base.IsReactionAvailable(gameActor, eventToReactTo, reactionType)
-            && eventToReactTo is ISuccessRollEvent savingThrowEvent
-            && eventToReactTo.Action is ISavingThrowAction
-            && savingThrowEvent.RollResult.HasValue
-            && savingThrowEvent.RollResult.Value.IsFailure();
+        return Task.FromResult(gameActor == eventToReactTo.EventOwner
+            && eventToReactTo is ISuccessRollEvent successRollEvent
+            && successRollEvent.SuccessRollAction.SuccessRollType == ESuccessRollType.Save
+            && successRollEvent.RollResult.HasValue
+            && successRollEvent.RollResult.Value.IsFailure());
     }
 
-    public override IActionEvent CreateReactionEvent(IGameActor actor, IActionEvent eventToReactTo)
+    public override Task<IEvent> CreateReactionEvent(IGameActor actor, IEvent eventToReactTo)
     {
-        Task task = new(() =>
+        if (eventToReactTo is not ISuccessRollEvent successRollEvent || successRollEvent.SuccessRollAction.SuccessRollType != ESuccessRollType.Save)
         {
-            if (eventToReactTo is ISuccessRollEvent savingThrowEvent)
-            {
-                savingThrowEvent.ResetSuccessRoll();
-            }
-        });
+            throw new InvalidOperationException("IndomitableAction can only react to saving throw events");
+        }
 
-        return new BasicReactionEvent(actor, eventToReactTo, this, task);
+        if (successRollEvent.RawRollResult is null || successRollEvent.ModifierRollResults is null)
+        {
+            throw new InvalidOperationException("There is no roll dice to reroll");
+        }
+
+        var advantage = successRollEvent.RollAdvantages?.Values?.Select(x => x.Item2)?.DefaultIfEmpty(EAdvantage.None)?.Aggregate((a, b) => a | b) ?? EAdvantage.None;
+        var reroll = new ReRollEvent(Name, actor, [successRollEvent.RawRollResult], successRollEvent.ModifierRollResults, advantage);
+
+        return Task.FromResult<IEvent>(reroll);
     }
 }

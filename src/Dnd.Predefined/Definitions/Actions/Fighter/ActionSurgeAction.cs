@@ -12,13 +12,13 @@ public class ActionSurgeAction : Action
     {
     }
 
-    public override IActionEvent CreateEvent(IGameActor actor)
+    public override Task<IEvent> CreateEvent(IGameActor actor)
     {
         var task = new Task(() => 
         {
             actor.PointsCounter.AddExtraActionPoint();
         });
 
-        return new BasicActionEvent(actor, this, task);
+        return Task.FromResult<IEvent>(new BasicEvent(Name, actor, task));
     }
 }

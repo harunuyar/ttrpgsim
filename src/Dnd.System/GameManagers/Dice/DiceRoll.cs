@@ -1,7 +1,5 @@
 ﻿namespace Dnd.System.GameManagers.Dice;
 
-using global::System.Text.RegularExpressions;
-
 public class DiceRoll
 {
     public DiceRoll(int numberOfDice, EDiceType diceType, bool negative = false)

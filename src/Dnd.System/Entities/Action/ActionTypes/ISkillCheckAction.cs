@@ -2,7 +2,7 @@
 
 using Dnd._5eSRD.Models.Skill;
 
-public interface ISkillCheckAction : IRollAction
+public interface ISkillCheckAction : ISuccessRollAction
 {
     SkillModel Skill { get; }
 }

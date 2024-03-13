@@ -28,4 +28,9 @@ public static class ERollSuccessExtensions
     {
         return rollSuccess == 0;
     }
+
+    public static bool IsMeaningful(this ERollResult rollSuccess)
+    {
+        return rollSuccess.IsSuccess() != rollSuccess.IsFailure();
+    }
 }

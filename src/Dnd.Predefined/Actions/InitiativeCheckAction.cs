@@ -8,11 +8,12 @@ using Dnd.Predefined.Commands.ScoreCommands;
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.Action;
 using Dnd.System.Entities.Action.ActionTypes;
+using Dnd.System.GameManagers.Dice;
 
-public class InitiativeCheckAction : RollAction, IInitiativeCheckAction
+public class InitiativeCheckAction : AmountAction, IInitiativeCheckAction
 {
     public InitiativeCheckAction() 
-        : base("Initiative Check", ActionDurationType.FreeAction, ERollType.Initiative, [new ActionUsageLimit(EActionUsageLimitType.PerCombat, 1)])
+        : base("Initiative Check", ActionDurationType.FreeAction, new DicePool([new DiceRoll(1, EDiceType.d20)], 0), EAmountRollType.Initiative, [new ActionUsageLimit(EActionUsageLimitType.PerCombat, 1)])
     {
     }
 

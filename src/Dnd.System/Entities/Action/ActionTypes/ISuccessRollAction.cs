@@ -1,5 +1,6 @@
 ﻿namespace Dnd.System.Entities.Action.ActionTypes;
 
-public interface ISuccessRollAction : IRollAction
+public interface ISuccessRollAction : IAction
 {
+    ESuccessRollType SuccessRollType { get; }
 }

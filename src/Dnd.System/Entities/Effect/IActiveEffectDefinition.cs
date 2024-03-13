@@ -5,6 +5,6 @@ using Dnd.System.Entities.GameActor;
 
 public interface IActiveEffectDefinition : IEffectDefinition
 {
-    EEffectActivationTime ActivationTime { get; }
-    IEffectEvent CreateEvent(IGameActor source, IGameActor target);
+    Task<bool> ShouldActivate(IGameActor source, IGameActor target, IEvent eventToReactTo);
+    Task<IEvent> CreateEvent(IGameActor source, IGameActor target, IEvent eventToReactTo);
 }

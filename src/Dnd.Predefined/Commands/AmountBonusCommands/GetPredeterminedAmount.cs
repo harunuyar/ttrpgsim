@@ -4,9 +4,9 @@ using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.Entities.GameActor;
 
-public class GetPredefinedAmount : ValueCommand<int?>
+public class GetPredeterminedAmount : ValueCommand<int?>
 {
-    public GetPredefinedAmount(IGameActor actor, IAmountAction amountAction, IGameActor? opponent) : base(actor)
+    public GetPredeterminedAmount(IGameActor actor, IAmountAction amountAction, IGameActor? opponent) : base(actor)
     {
         AmountAction = amountAction;
         Opponent = opponent;
@@ -22,11 +22,11 @@ public class GetPredefinedAmount : ValueCommand<int?>
 
         if (Opponent is not null)
         {
-            var fromOpponent = await new GetPredefinedAmountFromOpponent(Opponent, AmountAction, Actor).Execute();
+            var fromOpponent = await new GetPredeterminedAmountFromOpponent(Opponent, AmountAction, Actor).Execute();
 
             if (!fromOpponent.IsSuccess)
             {
-                SetError("GetPredefinedAmountFromOpponent: " + fromOpponent.ErrorMessage);
+                SetError("GetPredeterminedAmountFromOpponent: " + fromOpponent.ErrorMessage);
                 return;
             }
 

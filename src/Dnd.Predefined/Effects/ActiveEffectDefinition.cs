@@ -8,46 +8,33 @@ using Dnd.System.Entities.Effect;
 using Dnd.System.Entities.Events;
 using Dnd.System.Entities.GameActor;
 
-public class ActiveEffectDefinition : IActiveEffectDefinition
+public abstract class ActiveEffectDefinition : IActiveEffectDefinition
 {
-    public ActiveEffectDefinition(string name, string description, EEffectActivationTime activationTime)
+    public ActiveEffectDefinition(string name, string description)
     {
         Name = name;
         Description = description;
-        ActivationTime = activationTime;
     }
-
-    public EEffectActivationTime ActivationTime { get; }
 
     public string Name { get; }
 
     public string Description { get; }
 
-    public virtual IEffectEvent CreateEvent(IGameActor source, IGameActor target)
+    public abstract Task<bool> ShouldActivate(IGameActor source, IGameActor target, IEvent eventToReactTo);
+
+    public virtual Task<IEvent> CreateEvent(IGameActor source, IGameActor target, IEvent eventToReactTo)
     {
-        return new BasicEffectEvent(this, source, target, DndContext.Instance.Logger.Log($"{Name} effect is activated."));
+        return Task.FromResult<IEvent>(new BasicEvent(Name, source, DndContext.Instance.Logger.Log($"{Name} effect is activated.")));
     }
 
-    public Task HandleCommand(ICommand command, IGameActor effectSource, IGameActor effectOwner)
+    public async Task HandleCommand(ICommand command, IGameActor effectSource, IGameActor effectOwner)
     {
-        if (command is GetEffectEvents effectEvents)
+        if (command is GetReactionEvents getReactionEvents)
         {
-            var activationTime = effectEvents.EffectActivationTime;
-            if (effectEvents.Actor == effectSource)
+            if (await ShouldActivate(effectSource, effectOwner, getReactionEvents.Event))
             {
-                activationTime |= EEffectActivationTime.Caster;
-            }
-            else if (effectEvents.Actor == effectOwner)
-            {
-                activationTime |= EEffectActivationTime.Target;
-            }
-
-            if (activationTime.HasFlag(ActivationTime))
-            {
-                effectEvents.AddValue(CreateEvent(effectSource, effectOwner), Name);
+                getReactionEvents.AddValue(await CreateEvent(effectSource, effectOwner, getReactionEvents.Event), Name);
             }
         }
-
-        return Task.CompletedTask;
     }
 }

@@ -1,5 +1,5 @@
 ﻿namespace Dnd.System.Entities.Action.ActionTypes;
 
-public interface IInitiativeCheckAction : IRollAction
+public interface IInitiativeCheckAction : IAmountAction
 {
 }

@@ -7,7 +7,7 @@ using Dnd.System.GameManagers.Dice;
 
 public class GetRollActionResultFromOpponent : ListCommand<ERollResult>
 {
-    public GetRollActionResultFromOpponent(IGameActor actor, ISuccessRollAction action, IGameActor opponent, ERollResult defaultRollResult) : base(actor)
+    public GetRollActionResultFromOpponent(IGameActor actor, ISuccessRollAction action, IGameActor? opponent, ERollResult defaultRollResult) : base(actor)
     {
         Action = action;
         Opponent = opponent;

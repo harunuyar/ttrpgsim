@@ -1,38 +1,22 @@
 ﻿namespace Dnd.Predefined.Actions;
 
 using Dnd._5eSRD.Models.AbilityScore;
-using Dnd._5eSRD.Models.DamageType;
 using Dnd.Predefined.Commands.BoolCommands;
 using Dnd.Predefined.Commands.RollBonusCommands;
 using Dnd.Predefined.Commands.ScoreCommands;
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.Action;
 using Dnd.System.Entities.Action.ActionTypes;
-using Dnd.System.GameManagers.Dice;
 
 public class SavingThrowAction : SuccessRollAction, ISavingThrowAction
 {
-    public SavingThrowAction(AbilityScoreModel ability, double saveDamageMultiplier, DamageTypeModel damageType, DicePool damageDicePool, IEnumerable<IActionUsageLimit> usageLimits)
-        : base($"{ability.FullName} Saving Throw", ActionDurationType.FreeAction, ERollType.Save, usageLimits)
+    public SavingThrowAction(string name, AbilityScoreModel ability, ActionDurationType actionDurationType, IEnumerable<IActionUsageLimit> usageLimits)
+        : base(name, actionDurationType, ESuccessRollType.Save, usageLimits)
     {
         Ability = ability;
-        SaveDamageMultiplier = saveDamageMultiplier;
-        DamageAction = new DamageAction("DamageBonusCommands", ActionDurationType.FreeAction, ActionRange.Self, TargetingType.SingleTarget, damageType, damageDicePool, []);
     }
 
-    public DamageAction DamageAction { get; }
-
     public AbilityScoreModel Ability { get; }
-
-    public double SaveDamageMultiplier { get; }
-
-    public DamageTypeModel DamageType => DamageAction.DamageType;
-
-    public DicePool AmountDicePool => DamageAction.AmountDicePool;
-
-    public ActionRange Range => DamageAction.Range;
-
-    public TargetingType TargetingType => DamageAction.TargetingType;
 
     public override async Task HandleUsageCommand(ICommand command)
     {
