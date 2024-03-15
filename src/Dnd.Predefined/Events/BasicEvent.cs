@@ -12,7 +12,7 @@ public class BasicEvent : AEvent
 
     public Task Task { get; }
 
-    public override async Task<IEnumerable<IEvent>> RunEvent()
+    public override async Task<IEnumerable<IEvent>> RunEventImpl()
     {
         await Task;
         return await base.RunEvent();

@@ -2,7 +2,7 @@
 
 using Dnd._5eSRD.Models.DamageType;
 
-public interface IDamageAction : ITargetingAction, IAmountAction
+public interface IDamageAction : IAmountAction
 {
     DamageTypeModel DamageType { get; }
 }

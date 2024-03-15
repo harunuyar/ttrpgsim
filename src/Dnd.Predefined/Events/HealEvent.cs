@@ -1,24 +1,38 @@
 ﻿namespace Dnd.Predefined.Events;
 
+using Dnd.Predefined.Commands.ScoreCommands;
+using Dnd.System.CommandSystem.Results;
 using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.Entities.Events;
 using Dnd.System.Entities.GameActor;
 
-public class HealEvent : AEvent, IHealEvent
+public class HealEvent : AEvent
 {
-    public HealEvent(string name, IGameActor eventOwner, IHealAction? healAction, int amount) : base(name, eventOwner)
+    public HealEvent(string name, IGameActor eventOwner, IHealAction healAction, int? amount) 
+        : base(name, eventOwner)
     {
         Amount = amount;
         HealAction = healAction;
     }
 
-    public int Amount { get; }
+    public override bool IsWaitingForUserInput => Amount is null;
 
-    public IHealAction? HealAction { get; }
+    public int? Amount { get; }
 
-    public override async Task<IEnumerable<IEvent>> RunEvent()
+    public ScoreResult? CalculatedHealing { get; set; }
+
+    public IHealAction HealAction { get; }
+
+    public override async Task<IEnumerable<IEvent>> RunEventImpl()
     {
-        EventOwner.HitPoints.Heal(Amount);
+        CalculatedHealing = await new CalculateHeal(EventOwner, Amount!.Value).Execute();
+
+        if (!CalculatedHealing.IsSuccess)
+        {
+            throw new InvalidOperationException($"Failed to calculate damage for {EventOwner.Name}");
+        }
+
+        EventOwner.HitPoints.Heal(CalculatedHealing.Value);
         SetEventPhase(EEventPhase.DoneRunning);
         return await Task.FromResult(Enumerable.Empty<IEvent>());
     }

@@ -1,95 +1,70 @@
 ﻿namespace Dnd.Predefined.Events;
 
-using Dnd.Predefined.Commands.AmountBonusCommands;
-using Dnd.Predefined.Commands.DamageBonusCommands;
-using Dnd.System.CommandSystem.Results;
+using Dnd.Predefined.Commands.ValueCommands;
 using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.Entities.Events;
 using Dnd.System.Entities.GameActor;
 using Dnd.System.GameManagers.Dice;
 
-public class SavingThrowDamageEvent : DamageEvent, ISavingThrowDamageEvent
+public class SavingThrowDamageEvent : SavingThrowEvent
 {
-    public SavingThrowDamageEvent(string name, IGameActor eventOwner, ISavingThrowAttackAction damageAction, int amount, bool saved, IGameActor? attacker) 
-        : base(name, eventOwner, damageAction, amount)
+    public SavingThrowDamageEvent(string name, IGameActor eventOwner, ISavingThrowDamageAction savingThrowDamageAction, int damage, IGameActor? target)
+        : base(name, eventOwner, savingThrowDamageAction, target)
     {
-        Saved = saved;
-        Attacker = attacker;
+        SavingThrowDamageAction = savingThrowDamageAction;
+        Damage = damage;
     }
 
-    public bool Saved { get; }
+    public ISavingThrowDamageAction SavingThrowDamageAction { get; }
 
-    public ISavingThrowAttackAction SavingThrowAttackAction { get => (ISavingThrowAttackAction)DamageAction; }
+    public int Damage { get; }
 
-    public IGameActor? Attacker { get; }
+    public double? SaveSuccessDamageMultiplier { get; private set; }
 
-    public ListResult<DicePool>? ModifiersFromTarget { get; private set; }
+    public double? SaveFailureDamageMultiplier { get; private set; }
 
-    public ValueResult<int?>? PredeterminedDamageFromTarget { get; private set; }
-
-    public override async Task InitializeEvent()
+    public override async Task<IEnumerable<IEvent>> RunEvent()
     {
-        ModifiersFromTarget = await new GetAmountModifiersFromOpponent(EventOwner, SavingThrowAttackAction, Attacker).Execute();
-        
-        if (!ModifiersFromTarget.IsSuccess)
+        if (Target is null)
         {
-            throw new InvalidOperationException($"Failed to get modifiers from {EventOwner.Name}. " + ModifiersFromTarget.ErrorMessage);
+            throw new InvalidOperationException("Target is not set");
         }
 
-        PredeterminedDamageFromTarget = await new GetPredeterminedAmountFromOpponent(EventOwner, SavingThrowAttackAction, Attacker).Execute();
-
-        if (!PredeterminedDamageFromTarget.IsSuccess)
+        if (SaveSuccessDamageMultiplier is null || SaveFailureDamageMultiplier is null)
         {
-            throw new InvalidOperationException($"Failed to get predetermined damage from {EventOwner.Name}. " + PredeterminedDamageFromTarget.ErrorMessage);
+            var successMultiplier = await new GetSaveSuccessDamageMultiplier(Target!, SavingThrowDamageAction).Execute();
+
+            if (!successMultiplier.IsSuccess)
+            {
+                throw new InvalidOperationException("Failed to get save success damage multiplier");
+            }
+
+            SaveSuccessDamageMultiplier = successMultiplier.Value;
+
+            var failureMultiplier = await new GetSaveFailureDamageMultiplier(Target!, SavingThrowDamageAction).Execute();
+
+            if (!failureMultiplier.IsSuccess)
+            {
+                throw new InvalidOperationException("Failed to get save failure damage multiplier");
+            }
+
+            SaveFailureDamageMultiplier = failureMultiplier.Value;
         }
 
-        SetEventPhase(EEventPhase.Initialized);
+        return await base.RunEvent();
     }
 
-    public override Task<IEnumerable<IEvent>> RunEvent()
+    public override Task<IEvent?> GetAttackEvent(ERollResult rollResult, IGameActor target)
     {
-        if (ModifiersFromTarget is null || PredeterminedDamageFromTarget is null)
+        if (rollResult.IsSuccess())
         {
-            throw new InvalidOperationException("Event is not initialized");
+            double multiplier = SaveSuccessDamageMultiplier ?? throw new InvalidOperationException("SaveSuccessDamageMultiplier is not set");
+            return Task.FromResult<IEvent?>(new DamageEvent($"{EventName}: Damage", target, SavingThrowDamageAction, (int)(Damage * multiplier)));
         }
-
-        if (EventPhase == EEventPhase.WaitingOtherEvent)
+        else
         {
-            throw new InvalidOperationException("Waiting for other events to finish before continuing on this event");
+            double multiplier = SaveFailureDamageMultiplier ?? throw new InvalidOperationException("SaveFailureDamageMultiplier is not set");
+            return Task.FromResult<IEvent?>(new DamageEvent($"{EventName}: Damage", target, SavingThrowDamageAction, (int)(Damage * multiplier)));
         }
-
-        if (PredeterminedDamageFromTarget.Value.HasValue)
-        {
-            Amount = PredeterminedDamageFromTarget.Value.Value;
-
-            EventOwner.HitPoints.Damage(Amount);
-
-            SetEventPhase(EEventPhase.DoneRunning);
-            return Task.FromResult(Enumerable.Empty<IEvent>());
-        }
-        else if (ModifiersFromTarget.Values.Any(x => x.Item2.Rolls.Count != 0))
-        {
-            var dicePool = ModifiersFromTarget.Values.Select(x => x.Item2).DefaultIfEmpty(new DicePool([], 0)).Aggregate((a, b) => a.Concat(b));
-            ModifierRollEvent = new RollEvent(EventName, EventOwner, new DicePool([], 0), dicePool, EAdvantage.None);
-            ModifierRollEvent.AddFinalAction(new Task(() => SetEventPhase(EEventPhase.Initialized)));
-
-            SetEventPhase(EEventPhase.WaitingOtherEvent);
-            return Task.FromResult<IEnumerable<IEvent>>([ModifierRollEvent]);
-        }
-
-        Amount += ModifierRollEvent?.ModifierRollResults?.Select(x => x.Result).DefaultIfEmpty(0).Sum() ?? 0;
-        Amount += ModifiersFromTarget?.Values.Select(x => x.Item2.Bonus).DefaultIfEmpty(0).Sum() ?? 0;
-
-        EventOwner.HitPoints.Damage(Amount);
-
-        SetEventPhase(EEventPhase.DoneRunning);
-        return Task.FromResult(Enumerable.Empty<IEvent>());
-    }
-
-    public RollEvent? ModifierRollEvent { get; private set; }
-
-    public void SetAmount(int amount)
-    {
-        Amount = amount;
     }
 }

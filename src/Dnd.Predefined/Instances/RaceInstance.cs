@@ -3,7 +3,7 @@
 using Dnd._5eSRD.Models.Language;
 using Dnd._5eSRD.Models.Proficiency;
 using Dnd._5eSRD.Models.Race;
-using Dnd.Predefined.Actions;
+using Dnd.Predefined.Actions.ActionTypes;
 using Dnd.Predefined.Commands.BoolCommands;
 using Dnd.Predefined.Commands.ListCommands;
 using Dnd.Predefined.Commands.ScoreCommands;

@@ -32,6 +32,26 @@ public class AEvent : IEvent
 
     public virtual Task<IEnumerable<IEvent>> RunEvent()
     {
+        if (EventPhase >= EEventPhase.DoneRunning)
+        {
+            throw new InvalidOperationException("Event is already done running");
+        }
+
+        if (EventPhase == EEventPhase.WaitingOtherEvent)
+        {
+            throw new InvalidOperationException("Event is waiting for other event");
+        }
+
+        if (IsWaitingForUserInput)
+        {
+            throw new InvalidOperationException("Event is waiting for user input");
+        }
+
+        return RunEventImpl();
+    }
+
+    public virtual Task<IEnumerable<IEvent>> RunEventImpl()
+    {
         SetEventPhase(EEventPhase.DoneRunning);
         return Task.FromResult(Enumerable.Empty<IEvent>());
     }

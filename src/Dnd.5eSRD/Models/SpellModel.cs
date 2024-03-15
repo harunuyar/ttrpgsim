@@ -9,9 +9,17 @@ public class Damage
     public APIReference? DamageType { get; set; }
 }
 
+public enum EDcSuccess
+{
+    None,
+    Half,
+    Full,
+    Other
+}
+
 public class DC
 {
-    public string? DcSuccess { get; set; }
+    public EDcSuccess? DcSuccess { get; set; }
     public APIReference? DcType { get; set; }
     public string? Desc { get; set; }
 }

@@ -6,8 +6,7 @@ using Dnd.System.GameManagers.Dice;
 
 public class ReRollEvent : AEvent, IRollEvent
 {
-    public ReRollEvent(string name, IGameActor eventOwner, 
-        IEnumerable<DiceRollResult> prevRollResults, IEnumerable<DiceRollResult> prevModifierRollResults, EAdvantage advantage) 
+    public ReRollEvent(string name, IGameActor eventOwner, IEnumerable<DiceRollResult> prevRollResults, IEnumerable<DiceRollResult> prevModifierRollResults, EAdvantage advantage) 
         : base(name, eventOwner)
     {
         PreviousRollResults = prevRollResults;
@@ -32,7 +31,7 @@ public class ReRollEvent : AEvent, IRollEvent
 
     public DicePool ModifierDicePool { get; }
 
-    public override Task<IEnumerable<IEvent>> RunEvent()
+    public override Task<IEnumerable<IEvent>> RunEventImpl()
     {
         foreach (var roll in PreviousRollResults)
         {

@@ -7,7 +7,7 @@ using Dnd.System.Entities.Events;
 using Dnd.System.Entities.GameActor;
 using Dnd.System.GameManagers.Dice;
 
-public class IndomitableAction : Reaction
+public class IndomitableAction : EventReaction
 {
     public IndomitableAction(ActionUsageLimit usageLimit)
         : base("Indomitable: Reroll Saving Throw", ActionDurationType.FreeAction, [usageLimit], false)

@@ -1,14 +1,10 @@
 ﻿namespace Dnd.Predefined.Actions;
 
-using Dnd.Context;
-using Dnd.Predefined.Events;
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.Action;
-using Dnd.System.Entities.Action.ActionTypes;
-using Dnd.System.Entities.Events;
 using Dnd.System.Entities.GameActor;
 
-public class Action : IAction
+public abstract class Action : IAction
 {
     public Action(string name, ActionDurationType actionDurationType, IEnumerable<IActionUsageLimit> usageLimits)
     {
@@ -34,11 +30,6 @@ public class Action : IAction
         {
             usageLimit.Use();
         }
-    }
-
-    public virtual Task<IEvent> CreateEvent(IGameActor actor)
-    {
-        return Task.FromResult<IEvent>(new BasicEvent(Name, actor, DndContext.Instance.Logger.Log($"{actor.Name} used action: {Name}")));
     }
 
     public virtual async Task HandleCommand(ICommand command)

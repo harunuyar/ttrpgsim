@@ -24,7 +24,7 @@ public class RollEvent : AEvent, IRollEvent
 
     public IEnumerable<DiceRollResult>? ModifierRollResults { get; private set; }
 
-    public override Task<IEnumerable<IEvent>> RunEvent()
+    public override Task<IEnumerable<IEvent>> RunEventImpl()
     {
         RollResults = DicePool.Rolls.SelectMany(r => Enumerable.Repeat(new DiceRollResult(r.DiceType, Advantage, r.Negative), r.NumberOfDice));
         ModifierRollResults = ModifierDicePool.Rolls.SelectMany(r => Enumerable.Repeat(new DiceRollResult(r.DiceType, EAdvantage.None, r.Negative), r.NumberOfDice));

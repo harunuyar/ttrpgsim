@@ -26,11 +26,11 @@ public class SuperiorCritical : FeatureInstance, ISubFightingStyle
     {
         await base.HandleCommand(command);
 
-        if (command is GetRollActionResult rollResult)
+        if (command is GetCriticalSuccessThreshold criticalSuccessThreshold)
         {
-            if (rollResult.Action is IWeaponAttackAction && rollResult.RawDiceResult >= 18)
+            if (criticalSuccessThreshold.Action is IWeaponAttackAction)
             {
-                rollResult.AddValue(System.GameManagers.Dice.ERollResult.CriticalSuccess, FeatureModel.Name ?? "Superior Critical");
+                criticalSuccessThreshold.AddBonus(-1, FeatureModel.Name ?? "Improved Critical");
             }
         }
     }

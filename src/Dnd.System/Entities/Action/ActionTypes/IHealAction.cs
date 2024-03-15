@@ -1,5 +1,5 @@
 ﻿namespace Dnd.System.Entities.Action.ActionTypes;
 
-public interface IHealAction : ITargetingAction, IAmountAction
+public interface IHealAction : IAmountAction, ITargetingAction
 {
 }

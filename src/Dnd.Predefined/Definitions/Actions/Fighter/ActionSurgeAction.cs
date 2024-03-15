@@ -6,7 +6,7 @@ using Dnd.System.Entities.Action;
 using Dnd.System.Entities.Events;
 using Dnd.System.Entities.GameActor;
 
-public class ActionSurgeAction : Action
+public class ActionSurgeAction : EventAction
 {
     public ActionSurgeAction(IActionUsageLimit usageLimit) : base("Action Surge", ActionDurationType.FreeAction, [usageLimit])
     {

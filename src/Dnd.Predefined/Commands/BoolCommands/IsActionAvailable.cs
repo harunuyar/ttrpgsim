@@ -1,18 +1,18 @@
 ﻿namespace Dnd.Predefined.Commands.BoolCommands;
 
 using Dnd.System.CommandSystem.Commands;
-using Dnd.System.Entities.Action.ActionTypes;
+using Dnd.System.Entities.Action;
 using Dnd.System.Entities.GameActor;
 
 public class IsActionAvailable : ValueCommand<bool>
 {
-    public IsActionAvailable(IGameActor actor, IAction action, IGameActor? opponent) : base(actor)
+    public IsActionAvailable(IGameActor actor, IEventAction action, IGameActor? opponent) : base(actor)
     {
         Action = action;
         Opponent = opponent;
     }
 
-    public IAction Action { get; }
+    public IEventAction Action { get; }
 
     public IGameActor? Opponent { get; }
 

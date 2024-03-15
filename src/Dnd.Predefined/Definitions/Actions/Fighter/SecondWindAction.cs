@@ -4,6 +4,7 @@ using Dnd._5eSRD.Constants;
 using Dnd._5eSRD.Models.Class;
 using Dnd.Context;
 using Dnd.Predefined.Actions;
+using Dnd.Predefined.Actions.ActionTypes;
 using Dnd.Predefined.Commands.DamageBonusCommands;
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.Action;
@@ -12,8 +13,8 @@ using Dnd.System.GameManagers.Dice;
 public class SecondWindAction : HealAction
 {
     public SecondWindAction() 
-        : base("Second Wind", ActionDurationType.BonusAction, ActionRange.Self, TargetingType.SingleTarget, new DicePool([new DiceRoll(1, EDiceType.d10)], 0), 
-            [new ActionUsageLimit(EActionUsageLimitType.PerShortRest, 1)])
+        : base("Second Wind", ActionDurationType.BonusAction, [new ActionUsageLimit(EActionUsageLimitType.PerShortRest, 1)], 
+            ActionRange.Self, TargetingType.SingleTarget, new DicePool([new DiceRoll(1, EDiceType.d10)], 0))
     {
     }
 

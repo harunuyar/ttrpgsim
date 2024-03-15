@@ -1,6 +1,7 @@
 ﻿namespace Dnd.System.Entities.Action;
 
 using Dnd._5eSRD.Models.Common;
+using Dnd.System.Entities.GameActor;
 
 public enum ETargetingType
 {
@@ -26,6 +27,28 @@ public class TargetingType
     public AreaOfEffectModel? AreaOfEffectModel { get; }
 
     public bool UniqueTargets { get; }
+
+    public bool IsSuitable(IEnumerable<IGameActor> targets)
+    {
+        if (Type == ETargetingType.SingleTarget)
+        {
+            return targets.Count() == 1;
+        }
+
+        if (Type == ETargetingType.MultiTarget)
+        {
+            if (UniqueTargets)
+            {
+                return targets.Distinct().Count() == TargetCount;
+            }
+            else
+            {
+                return targets.Count() == TargetCount;
+            }
+        }
+
+        return true;
+    }
 
     public static TargetingType SingleTarget => new(ETargetingType.SingleTarget, 1, true, null);
 

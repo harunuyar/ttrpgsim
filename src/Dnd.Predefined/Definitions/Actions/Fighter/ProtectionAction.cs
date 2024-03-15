@@ -7,7 +7,7 @@ using Dnd.System.Entities.Events;
 using Dnd.System.Entities.GameActor;
 using Dnd.System.GameManagers.Dice;
 
-public class ProtectionAction : Reaction
+public class ProtectionAction : EventReaction
 {
     public ProtectionAction()
         : base("Protection", ActionDurationType.Reaction, [], false)

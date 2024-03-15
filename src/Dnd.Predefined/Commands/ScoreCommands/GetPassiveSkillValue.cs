@@ -1,7 +1,7 @@
 ﻿namespace Dnd.Predefined.Commands.ScoreCommands;
 
 using Dnd._5eSRD.Models.Skill;
-using Dnd.Predefined.Actions;
+using Dnd.Predefined.Actions.ActionTypes;
 using Dnd.Predefined.Commands.RollBonusCommands;
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.GameActor;

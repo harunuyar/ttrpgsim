@@ -9,7 +9,7 @@ using Dnd.System.Entities.Events;
 using Dnd.System.Entities.GameActor;
 using Dnd.System.GameManagers.Dice;
 
-public class GreatWeaponFightingRerollDamageAction : Reaction
+public class GreatWeaponFightingRerollDamageAction : EventReaction
 {
     public GreatWeaponFightingRerollDamageAction() 
         : base("Great Weapon Fighting: Reroll Damage", ActionDurationType.FreeAction, [], false)
