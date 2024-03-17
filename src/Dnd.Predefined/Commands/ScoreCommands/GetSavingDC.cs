@@ -16,7 +16,6 @@ public class GetSavingDC : ScoreCommand
     protected override Task InitializeResult()
     {
         SetBaseValue(8, "Base");
-
-        return Task.CompletedTask;
+        return SavingThrowAction.HandleUsageCommand(this); ;
     }
 }
