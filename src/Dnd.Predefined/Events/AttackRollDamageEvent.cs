@@ -20,5 +20,4 @@ public class AttackRollDamageEvent : ASequenceTargettingEvent
         var @event = new SingleAttackRollDamageEvent($"{EventName} {no}", EventOwner, AttackRollDamageAction, target);
         return Task.FromResult<IEnumerable<IEvent>>([@event]);
     }
-
 }

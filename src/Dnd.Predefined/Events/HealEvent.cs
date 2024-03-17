@@ -2,17 +2,15 @@
 
 using Dnd.Predefined.Commands.ScoreCommands;
 using Dnd.System.CommandSystem.Results;
-using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.Entities.Events;
 using Dnd.System.Entities.GameActor;
 
 public class HealEvent : AEvent
 {
-    public HealEvent(string name, IGameActor eventOwner, IHealAction healAction, int? amount) 
+    public HealEvent(string name, IGameActor eventOwner, int? amount) 
         : base(name, eventOwner)
     {
         Amount = amount;
-        HealAction = healAction;
     }
 
     public override bool IsWaitingForUserInput => Amount is null;
@@ -20,8 +18,6 @@ public class HealEvent : AEvent
     public int? Amount { get; }
 
     public ScoreResult? CalculatedHealing { get; set; }
-
-    public IHealAction HealAction { get; }
 
     public override async Task<IEnumerable<IEvent>> RunEventImpl()
     {

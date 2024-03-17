@@ -8,28 +8,25 @@ using Dnd.System.GameManagers.Dice;
 
 public class SavingThrowDamageEvent : SavingThrowEvent
 {
-    public SavingThrowDamageEvent(string name, IGameActor eventOwner, ISavingThrowDamageAction savingThrowDamageAction, int damage, IGameActor? target)
+    public SavingThrowDamageEvent(string name, IGameActor eventOwner, ISavingThrowDamageAction savingThrowDamageAction, int? damage, IGameActor? target)
         : base(name, eventOwner, savingThrowDamageAction, target)
     {
         SavingThrowDamageAction = savingThrowDamageAction;
         Damage = damage;
     }
 
+    public override bool IsWaitingForUserInput => base.IsWaitingForUserInput || Damage is null;
+
     public ISavingThrowDamageAction SavingThrowDamageAction { get; }
 
-    public int Damage { get; }
+    public int? Damage { get; }
 
     public double? SaveSuccessDamageMultiplier { get; private set; }
 
     public double? SaveFailureDamageMultiplier { get; private set; }
 
-    public override async Task<IEnumerable<IEvent>> RunEvent()
+    public override async Task<IEnumerable<IEvent>> RunEventImpl()
     {
-        if (Target is null)
-        {
-            throw new InvalidOperationException("Target is not set");
-        }
-
         if (SaveSuccessDamageMultiplier is null || SaveFailureDamageMultiplier is null)
         {
             var successMultiplier = await new GetSaveSuccessDamageMultiplier(Target!, SavingThrowDamageAction).Execute();
@@ -51,7 +48,7 @@ public class SavingThrowDamageEvent : SavingThrowEvent
             SaveFailureDamageMultiplier = failureMultiplier.Value;
         }
 
-        return await base.RunEvent();
+        return await base.RunEventImpl();
     }
 
     public override Task<IEvent?> GetAttackEvent(ERollResult rollResult, IGameActor target)
@@ -59,12 +56,12 @@ public class SavingThrowDamageEvent : SavingThrowEvent
         if (rollResult.IsSuccess())
         {
             double multiplier = SaveSuccessDamageMultiplier ?? throw new InvalidOperationException("SaveSuccessDamageMultiplier is not set");
-            return Task.FromResult<IEvent?>(new DamageEvent($"{EventName}: Damage", target, SavingThrowDamageAction, (int)(Damage * multiplier)));
+            return Task.FromResult<IEvent?>(new DamageEvent($"{EventName}: Damage", target, SavingThrowDamageAction.DamageType, (int)(Damage! * multiplier)));
         }
         else
         {
             double multiplier = SaveFailureDamageMultiplier ?? throw new InvalidOperationException("SaveFailureDamageMultiplier is not set");
-            return Task.FromResult<IEvent?>(new DamageEvent($"{EventName}: Damage", target, SavingThrowDamageAction, (int)(Damage * multiplier)));
+            return Task.FromResult<IEvent?>(new DamageEvent($"{EventName}: Damage", target, SavingThrowDamageAction.DamageType, (int)(Damage! * multiplier)));
         }
     }
 }

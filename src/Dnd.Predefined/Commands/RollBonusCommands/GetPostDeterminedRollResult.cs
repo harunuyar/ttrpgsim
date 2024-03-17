@@ -5,9 +5,9 @@ using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.Entities.GameActor;
 using Dnd.System.GameManagers.Dice;
 
-public class GetRollActionResult : ListCommand<ERollResult>
+public class GetPostDeterminedRollResult : ListCommand<ERollResult>
 {
-    public GetRollActionResult(IGameActor actor, ISuccessRollAction action, IGameActor? opponent, int rawDiceResult, ERollResult defaultRollResult) : base(actor)
+    public GetPostDeterminedRollResult(IGameActor actor, ISuccessRollAction action, IGameActor? opponent, int? rawDiceResult, ERollResult defaultRollResult) : base(actor)
     {
         Action = action;
         Opponent = opponent;
@@ -19,7 +19,7 @@ public class GetRollActionResult : ListCommand<ERollResult>
 
     public IGameActor? Opponent { get; }
 
-    public int RawDiceResult { get; }
+    public int? RawDiceResult { get; }
 
     public ERollResult DefaultRollResult { get; }
 
@@ -29,7 +29,7 @@ public class GetRollActionResult : ListCommand<ERollResult>
 
         if (Opponent is not null)
         {
-            var against = await new GetRollActionResultFromOpponent(Opponent, Action, Actor, DefaultRollResult).Execute();
+            var against = await new GetPostDeterminedResultFromOpponent(Opponent, Action, Actor, DefaultRollResult).Execute();
 
             if (!against.IsSuccess)
             {

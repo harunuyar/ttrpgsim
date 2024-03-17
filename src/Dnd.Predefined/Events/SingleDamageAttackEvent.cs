@@ -24,14 +24,9 @@ public class SingleDamageAttackEvent : AEvent
 
     public override Task<IEnumerable<IEvent>> RunEventImpl()
     {
-        if (Target is null)
-        {
-            throw new InvalidOperationException("Target is not initialized");
-        }
-
         if (DamageRollEvent is null)
         {
-            DamageRollEvent = new RollAmountEvent($"{EventName}: Damage To {Target.Name}", EventOwner, AttackAction, Target, Critical);
+            DamageRollEvent = new RollAmountEvent($"{EventName}: Damage To {Target!.Name}", EventOwner, AttackAction, Target, Critical);
             DamageRollEvent.AddFinalAction(new Task(() => { SetEventPhase(EEventPhase.Initialized); }));
 
             SetEventPhase(EEventPhase.WaitingOtherEvent);
@@ -41,9 +36,10 @@ public class SingleDamageAttackEvent : AEvent
         {
             int amount = DamageRollEvent.AmountResult ?? throw new InvalidOperationException("Damage roll event doesn't have an amount result");
 
-            var damageEvent = new DamageEvent(EventName, Target, AttackAction, amount);
+            var damageEvent = new DamageEvent(EventName, Target!, AttackAction.DamageType, amount);
+            damageEvent.AddFinalAction(new Task(() => { SetEventPhase(EEventPhase.DoneRunning); }));
 
-            SetEventPhase(EEventPhase.DoneRunning);
+            SetEventPhase(EEventPhase.WaitingOtherEvent);
             return Task.FromResult<IEnumerable<IEvent>>([damageEvent]);
         }
     }

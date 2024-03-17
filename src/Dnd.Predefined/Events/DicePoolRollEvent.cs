@@ -4,9 +4,9 @@ using Dnd.System.Entities.Events;
 using Dnd.System.Entities.GameActor;
 using Dnd.System.GameManagers.Dice;
 
-public class RollEvent : AEvent, IRollEvent
+public class DicePoolRollEvent : AEvent, IDicePoolRollEvent
 {
-    public RollEvent(string name, IGameActor eventOwner, DicePool dicePool, DicePool modifierDicePool, EAdvantage advantage) 
+    public DicePoolRollEvent(string name, IGameActor eventOwner, DicePool dicePool, DicePool modifierDicePool, EAdvantage advantage) 
         : base(name, eventOwner)
     {
         DicePool = dicePool;
@@ -28,6 +28,7 @@ public class RollEvent : AEvent, IRollEvent
     {
         RollResults = DicePool.Rolls.SelectMany(r => Enumerable.Repeat(new DiceRollResult(r.DiceType, Advantage, r.Negative), r.NumberOfDice));
         ModifierRollResults = ModifierDicePool.Rolls.SelectMany(r => Enumerable.Repeat(new DiceRollResult(r.DiceType, EAdvantage.None, r.Negative), r.NumberOfDice));
-        return base.RunEvent();
+        SetEventPhase(EEventPhase.DoneRunning);
+        return Task.FromResult<IEnumerable<IEvent>>([]);
     }
 }

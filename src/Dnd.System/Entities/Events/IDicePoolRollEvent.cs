@@ -2,7 +2,7 @@
 
 using Dnd.System.GameManagers.Dice;
 
-public interface IRollEvent : IEvent
+public interface IDicePoolRollEvent : IEvent
 {
     // Initialized with constructor
     DicePool DicePool { get; }

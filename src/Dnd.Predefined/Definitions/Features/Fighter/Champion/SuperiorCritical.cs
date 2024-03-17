@@ -3,7 +3,7 @@
 using Dnd._5eSRD.Constants;
 using Dnd._5eSRD.Models.Feature;
 using Dnd.Context;
-using Dnd.Predefined.Commands.RollBonusCommands;
+using Dnd.Predefined.Commands.ScoreCommands;
 using Dnd.Predefined.Instances;
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.Action.ActionTypes;

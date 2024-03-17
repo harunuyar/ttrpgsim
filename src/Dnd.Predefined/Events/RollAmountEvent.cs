@@ -10,8 +10,8 @@ using Dnd.System.GameManagers.Dice;
 
 public class RollAmountEvent : AEvent, IAmountRollEvent
 {
-    public RollAmountEvent(string name, IGameActor eventOwner, IAmountAction amountAction, IGameActor? opponent, bool critical = false) 
-        : base(name ,eventOwner)
+    public RollAmountEvent(string name, IGameActor eventOwner, IAmountAction amountAction, IGameActor? opponent, bool critical = false)
+        : base(name, eventOwner)
     {
         AmountAction = amountAction;
         Opponent = opponent;
@@ -24,97 +24,108 @@ public class RollAmountEvent : AEvent, IAmountRollEvent
 
     public IGameActor? Opponent { get; }
 
-    public ListResult<DicePool>? AmountModifiers { get; private set; }
+    public ListResult<DicePool>? Modifiers { get; private set; }
 
-    public ListResult<EAdvantage>? AmountAdvantages { get; private set; }
+    public ListResult<EAdvantage>? Advantages { get; private set; }
 
     public ValueResult<int?>? PredeterminedAmountResult { get; private set; }
 
-    public IRollEvent? RollEvent { get; private set; }
-
-    private int? manualAmountResult;
-
-    public override async Task<IEnumerable<IEvent>> RunEventImpl()
+    public override async Task InitializeEvent()
     {
-        if (PredeterminedAmountResult is null)
+        PredeterminedAmountResult = await new GetPredeterminedAmount(EventOwner, AmountAction, Opponent).Execute();
+
+        if (!PredeterminedAmountResult.IsSuccess)
         {
-            PredeterminedAmountResult = await new GetPredeterminedAmount(EventOwner, AmountAction, Opponent).Execute();
+            throw new InvalidOperationException($"Failed to get predetermined amount result from {EventOwner.Name}");
+        }
 
-            if (!PredeterminedAmountResult.IsSuccess)
+        var predAmountResult = PredeterminedAmountResult.Value;
+        if (predAmountResult.HasValue)
+        {
+            AmountResult = predAmountResult.Value;
+        }
+        else
+        {
+            Modifiers = await new GetAmountModifiers(EventOwner, AmountAction, Opponent).Execute();
+
+            if (!Modifiers.IsSuccess)
             {
-                throw new InvalidOperationException($"Failed to get predetermined amount result from {EventOwner.Name}");
+                throw new InvalidOperationException($"Failed to get amount modifiers from {EventOwner.Name}");
             }
 
-            var predAmountResult = PredeterminedAmountResult.Value;
-            if (predAmountResult.HasValue)
+            Advantages = await new GetAmountAdvantage(EventOwner, AmountAction, Opponent).Execute();
+
+            if (!Advantages.IsSuccess)
             {
-                manualAmountResult = predAmountResult.Value;
-            }
-            else
-            {
-                AmountModifiers = await new GetAmountModifiers(EventOwner, AmountAction, Opponent).Execute();
-
-                if (!AmountModifiers.IsSuccess)
-                {
-                    throw new InvalidOperationException($"Failed to get amount modifiers from {EventOwner.Name}");
-                }
-
-                AmountAdvantages = await new GetAmountAdvantage(EventOwner, AmountAction, Opponent).Execute();
-
-                if (!AmountAdvantages.IsSuccess)
-                {
-                    throw new InvalidOperationException($"Failed to get amount advantages from {EventOwner.Name}");
-                }
+                throw new InvalidOperationException($"Failed to get amount advantages from {EventOwner.Name}");
             }
         }
 
-        if (manualAmountResult.HasValue)
+        SetEventPhase(EEventPhase.Initialized);
+    }
+
+    public override async Task<IEnumerable<IEvent>> RunEventImpl()
+    {
+        if (AmountResult is not null)
         {
             SetEventPhase(EEventPhase.DoneRunning);
             return [];
         }
-        
-        if (AmountModifiers is null || AmountAdvantages is null)
+
+        if (Modifiers is null || Advantages is null)
         {
             throw new InvalidOperationException("Amount modifiers or advantages are not initialized");
         }
 
-        var modifierDicePool = AmountModifiers.Values.Select(x => x.Item2).DefaultIfEmpty(new DicePool([], 0)).Aggregate((a, b) => a.Concat(b));
-
-        if (modifierDicePool.Rolls.Count == 0 || AmountAction.AmountDicePool.Rolls.Count == 0)
+        if (RawRollResults is null || ModifierRollResults is null)
         {
-            SetEventPhase(EEventPhase.DoneRunning);
-            return[];
+            var modifierDicePool = Modifiers.Values.Select(x => x.Item2).DefaultIfEmpty(new DicePool([], 0)).Aggregate((a, b) => a.Concat(b));
+            var advantage = Advantages.Values.Select(x => x.Item2).DefaultIfEmpty(EAdvantage.None).Aggregate((a, b) => a | b);
+
+            var dicePool = AmountAction.AmountDicePool;
+            if (Critical)
+            {
+                dicePool = dicePool.Critical();
+            }
+
+            RawRollResults = dicePool.Rolls.SelectMany(r => Enumerable.Repeat(new DiceRollResult(r.DiceType, advantage, r.Negative), r.NumberOfDice));
+            ModifierRollResults = modifierDicePool.Rolls.SelectMany(r => Enumerable.Repeat(new DiceRollResult(r.DiceType, EAdvantage.None, r.Negative), r.NumberOfDice));
+
+            await CalculateRollResult();
         }
 
-        var advantage = AmountAdvantages.Values.Select(x => x.Item2).DefaultIfEmpty(EAdvantage.None).Aggregate((a, b) => a | b);
-
-        var dicePool = AmountAction.AmountDicePool;
-        if (Critical)
-        {
-            dicePool = dicePool.Critical();
-        }
-
-        RollEvent = new RollEvent(EventName, EventOwner, dicePool, modifierDicePool, advantage);
-        RollEvent.AddFinalAction(new Task(() => { SetEventPhase(EEventPhase.DoneRunning); }));
-
-        SetEventPhase(EEventPhase.WaitingOtherEvent);
-        return [RollEvent];
+        SetEventPhase(EEventPhase.DoneRunning);
+        return [];
     }
 
-    public IEnumerable<DiceRollResult>? RawRollResult => RollEvent?.RollResults;
+    public Task CalculateRollResult()
+    {
+        if (RawRollResults is null || ModifierRollResults is null || ModifierConstantResult is null)
+        {
+            throw new InvalidOperationException("Roll result is not initialized");
+        }
+
+        AmountResult = RawRollResults.Select(x => x.Result).DefaultIfEmpty(0).Sum()
+                + ModifierRollResults.Select(x => x.Result).DefaultIfEmpty(0).Sum()
+                + ModifierConstantResult
+                + RawConstantResult;
+
+        return Task.CompletedTask;
+    }
+
+    public IEvent CreateReRollEvent(IEnumerable<DiceRollResult> prevRolls, IEnumerable<DiceRollResult> prevModifierRolls)
+    {
+        var advantage = (Advantages?.Values ?? []).Select(x => x.Item2).DefaultIfEmpty(EAdvantage.None).Aggregate((a, b) => a | b);
+        return new ReRollEvent(EventName + ": Reroll", EventOwner, prevRolls, prevModifierRolls, advantage);
+    }
+
+    public IEnumerable<DiceRollResult>? RawRollResults { get; private set; }
 
     public int? RawConstantResult => AmountAction.AmountDicePool.Bonus;
 
-    public IEnumerable<DiceRollResult>? ModifierRollResults => RollEvent?.ModifierRollResults;
+    public IEnumerable<DiceRollResult>? ModifierRollResults { get; private set; }
 
-    public int? ConstantModifier => AmountModifiers?.Values?.Select(x => x.Item2.Bonus)?.DefaultIfEmpty(0)?.Sum();
+    public int? ModifierConstantResult => Modifiers?.Values?.Select(x => x.Item2.Bonus)?.DefaultIfEmpty(0)?.Sum();
 
-    public int? AmountResult => manualAmountResult ??
-        (EventPhase != EEventPhase.Finalized 
-            ? null
-            : ((RawRollResult ?? []).Select(x => x.Result).DefaultIfEmpty(0).Sum() 
-                + (ModifierRollResults ?? []).Select(x => x.Result).DefaultIfEmpty(0).Sum()
-                + (ConstantModifier ?? 0) 
-                + (RawConstantResult ?? 0)));
+    public int? AmountResult { get; set; }
 }

@@ -25,8 +25,14 @@ public class HealRollEvent : ATargetingEvent
             return Task.FromResult<IEnumerable<IEvent>>([amountEvent]);
         }
 
-        SetEventPhase(EEventPhase.DoneRunning);
-        return Task.FromResult<IEnumerable<IEvent>>(Targets.Select(t => new HealEvent(EventName, t, HealAction, HealAmount ?? 0)));
+        var subEvents = Targets.Select(t => new HealEvent(EventName, t, HealAmount ?? 0));
+        foreach (var item in subEvents)
+        {
+            item.AddFinalAction(new Task(() => SetEventPhase(EEventPhase.DoneRunning)));
+        }
+
+        SetEventPhase(EEventPhase.WaitingOtherEvent);
+        return Task.FromResult<IEnumerable<IEvent>>(subEvents);
     }
 
     public RollAmountEvent? AmountRollEvent { get; private set; }

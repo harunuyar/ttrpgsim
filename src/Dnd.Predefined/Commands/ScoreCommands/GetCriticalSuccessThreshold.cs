@@ -1,4 +1,4 @@
-﻿namespace Dnd.Predefined.Commands.RollBonusCommands;
+﻿namespace Dnd.Predefined.Commands.ScoreCommands;
 
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.Action.ActionTypes;

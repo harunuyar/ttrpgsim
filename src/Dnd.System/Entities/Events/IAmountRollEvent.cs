@@ -10,15 +10,15 @@ public interface IAmountRollEvent : IEvent
     IAmountAction AmountAction { get; }
     bool Critical { get; }
 
-    // Initialized with InitializeEvent method
-    ListResult<DicePool>? AmountModifiers { get; }
-    ListResult<EAdvantage>? AmountAdvantages { get; }
-    ValueResult<int?>? PredeterminedAmountResult { get; }
-    int? RawConstantResult { get; }
-    int? ConstantModifier { get; }
-
     // Initialized with RunEvent method
-    IEnumerable<DiceRollResult>? RawRollResult { get; }
+    ListResult<DicePool>? Modifiers { get; }
+    ListResult<EAdvantage>? Advantages { get; }
+    IEnumerable<DiceRollResult>? RawRollResults { get; }
     IEnumerable<DiceRollResult>? ModifierRollResults { get; }
+    int? ModifierConstantResult { get; }
+    int? RawConstantResult { get; }
+    ValueResult<int?>? PredeterminedAmountResult { get; }
     int? AmountResult { get; }
+
+    IEvent CreateReRollEvent(IEnumerable<DiceRollResult> prevRolls, IEnumerable<DiceRollResult> prevModifierRolls);
 }

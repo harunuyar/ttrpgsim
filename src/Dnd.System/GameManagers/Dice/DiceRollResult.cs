@@ -2,7 +2,7 @@
 
 public class DiceRollResult
 {
-    public DiceRollResult(EDiceType diceType, EAdvantage advantage, bool negative)
+    public DiceRollResult(EDiceType diceType, EAdvantage advantage, bool negative = false)
     {
         DiceType = diceType;
         Advantage = advantage;

@@ -4,7 +4,7 @@ using Dnd.System.Entities.Events;
 using Dnd.System.Entities.GameActor;
 using Dnd.System.GameManagers.Dice;
 
-public class ReRollEvent : AEvent, IRollEvent
+public class ReRollEvent : AEvent, IDicePoolRollEvent
 {
     public ReRollEvent(string name, IGameActor eventOwner, IEnumerable<DiceRollResult> prevRollResults, IEnumerable<DiceRollResult> prevModifierRollResults, EAdvantage advantage) 
         : base(name, eventOwner)
@@ -46,6 +46,6 @@ public class ReRollEvent : AEvent, IRollEvent
         RollResults = PreviousRollResults;
         ModifierRollResults = PreviousModifierRollResults;
 
-        return base.RunEvent();
+        return base.RunEventImpl();
     }
 }

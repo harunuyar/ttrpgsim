@@ -1,7 +1,6 @@
 ﻿namespace Dnd.Predefined.Definitions.Actions.Fighter;
 
 using Dnd.Predefined.Actions;
-using Dnd.Predefined.Events;
 using Dnd.System.Entities.Action;
 using Dnd.System.Entities.Events;
 using Dnd.System.Entities.GameActor;
@@ -35,8 +34,7 @@ public class IndomitableAction : EventReaction
             throw new InvalidOperationException("There is no roll dice to reroll");
         }
 
-        var advantage = successRollEvent.RollAdvantages?.Values?.Select(x => x.Item2)?.DefaultIfEmpty(EAdvantage.None)?.Aggregate((a, b) => a | b) ?? EAdvantage.None;
-        var reroll = new ReRollEvent(Name, actor, [successRollEvent.RawRollResult], successRollEvent.ModifierRollResults, advantage);
+        var reroll = successRollEvent.CreateReRollEvent([successRollEvent.RawRollResult], successRollEvent.ModifierRollResults);
 
         return Task.FromResult<IEvent>(reroll);
     }

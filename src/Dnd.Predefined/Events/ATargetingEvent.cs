@@ -22,12 +22,15 @@ public class ATargetingEvent : AEvent
 
     public override Task<IEnumerable<IEvent>> RunEvent()
     {
-        if (!isDistinctDone && TargetingAction.TargetingType.UniqueTargets)
+        if (!isDistinctDone)
         {
-            Targets = Targets.Distinct().ToList();
-        }
+            if (TargetingAction.TargetingType.UniqueTargets)
+            {
+                Targets = Targets.Distinct().ToList();
+            }
 
-        isDistinctDone = true;
+            isDistinctDone = true;
+        }
 
         return base.RunEvent();
     }

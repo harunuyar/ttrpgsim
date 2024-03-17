@@ -10,16 +10,16 @@ public interface ISuccessRollEvent : IEvent
     ISuccessRollAction SuccessRollAction { get; }
     int? TargetResult { get; }
 
-    // Initialized with InitializeEvent method
-    ListResult<DicePool>? RollModifiers { get; }
-    ListResult<EAdvantage>? RollAdvantages { get; }
-    ListResult<ERollResult>? PredeterminedRollResults { get; }
-
     // Initialized with RunEvent method
-    ListResult<ERollResult>? RollResultModifiers { get; }
+    ListResult<DicePool>? Modifiers { get; }
+    ListResult<EAdvantage>? Advantages { get; }
     DiceRollResult? RawRollResult { get; }
     IEnumerable<DiceRollResult>? ModifierRollResults { get; }
-    int? ConstantModifier { get; }
+    int? ModifierConstantResult { get; }
+    ListResult<ERollResult>? PredeterminedSuccessResults { get; }
     int? TotalResult { get; }
-    ERollResult? RollResult { get; set; }
+    ERollResult? RollResult { get; }
+    ListResult<ERollResult>? PostDeterminedSuccessResults { get; }
+
+    IEvent CreateReRollEvent(IEnumerable<DiceRollResult> prevRolls, IEnumerable<DiceRollResult> prevModifierRolls);
 }

@@ -10,6 +10,7 @@ public class DamageAttackEvent : ASequenceTargettingEvent
         : base(name, eventOwner, damageAttackAction, targets)
     {
         DamageAttackAction = damageAttackAction;
+        Critical = critical;
     }
 
     public IDamageAttackAction DamageAttackAction { get; }

@@ -1,6 +1,7 @@
 ﻿namespace Dnd.Predefined.Events;
 
 using Dnd.Predefined.Commands.RollBonusCommands;
+using Dnd.Predefined.Commands.ScoreCommands;
 using Dnd.System.CommandSystem.Results;
 using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.Entities.Events;
@@ -25,43 +26,40 @@ public class RollSuccessEvent : AEvent, ISuccessRollEvent
 
     public int? TargetResult { get; }
 
-    public ListResult<DicePool>? RollModifiers { get; private set; }
+    public ListResult<DicePool>? Modifiers { get; private set; }
 
-    public ListResult<EAdvantage>? RollAdvantages { get; private set; }
+    public ListResult<EAdvantage>? Advantages { get; private set; }
 
-    public ListResult<ERollResult>? PredeterminedRollResults { get; private set; }
-
-    public IRollEvent? RollEvent { get; private set; }
-
-    private ERollResult? manualRollResult;
+    public ListResult<ERollResult>? PredeterminedSuccessResults { get; private set; }
 
     public override async Task InitializeEvent()
     {
-        PredeterminedRollResults = await new GetPredeterminedRollResult(EventOwner, SuccessRollAction, Opponent).Execute();
+        PredeterminedSuccessResults = await new GetPredeterminedRollResult(EventOwner, SuccessRollAction, Opponent).Execute();
 
-        if (!PredeterminedRollResults.IsSuccess)
+        if (!PredeterminedSuccessResults.IsSuccess)
         {
             throw new InvalidOperationException($"Failed to get predetermined roll results from {EventOwner.Name}");
         }
 
-        var predRollResult = PredeterminedRollResults.Values.Select(x => x.Item2).DefaultIfEmpty(ERollResult.None).Aggregate((a, b) => a | b);
+        var predRollResult = PredeterminedSuccessResults.Values.Select(x => x.Item2).DefaultIfEmpty(ERollResult.None).Aggregate((a, b) => a | b);
 
         if (predRollResult.IsMeaningful())
         {
-            manualRollResult = predRollResult;
+            RollResult = predRollResult;
+            await CalculateModifiedRollResult();
         }
         else
         {
-            RollModifiers = await new GetModifiers(EventOwner, SuccessRollAction, Opponent).Execute();
+            Modifiers = await new GetModifiers(EventOwner, SuccessRollAction, Opponent).Execute();
 
-            if (!RollModifiers.IsSuccess)
+            if (!Modifiers.IsSuccess)
             {
                 throw new InvalidOperationException($"Failed to get roll modifiers from {EventOwner.Name}");
             }
 
-            RollAdvantages = await new GetAdvantage(EventOwner, SuccessRollAction, Opponent).Execute();
+            Advantages = await new GetAdvantage(EventOwner, SuccessRollAction, Opponent).Execute();
 
-            if (!RollAdvantages.IsSuccess)
+            if (!Advantages.IsSuccess)
             {
                 throw new InvalidOperationException($"Failed to get roll advantages from {EventOwner.Name}");
             }
@@ -70,70 +68,101 @@ public class RollSuccessEvent : AEvent, ISuccessRollEvent
         SetEventPhase(EEventPhase.Initialized);
     }
 
-    public override Task<IEnumerable<IEvent>> RunEventImpl()
+    public override async Task<IEnumerable<IEvent>> RunEventImpl()
     {
-        if (RollModifiers is null || RollAdvantages is null)
+        if (RollResult is not null)
         {
             SetEventPhase(EEventPhase.DoneRunning);
-            return Task.FromResult<IEnumerable<IEvent>>([]);
+            return [];
         }
 
-        var advantage = RollAdvantages.Values.Select(x => x.Item2).DefaultIfEmpty(EAdvantage.None).Aggregate((a, b) => a | b);
-        var modifierDicePool = RollModifiers.Values.Select(x => x.Item2).DefaultIfEmpty(new DicePool([], 0)).Aggregate((a, b) => a.Concat(b));
-
-        RollEvent = new RollEvent(EventName, EventOwner, new DicePool([new DiceRoll(1, EDiceType.d20)], 0), modifierDicePool, advantage);
-        RollEvent.AddFinalAction(new Task(() => { SetEventPhase(EEventPhase.DoneRunning); }));
-
-        SetEventPhase(EEventPhase.WaitingOtherEvent);
-        return Task.FromResult<IEnumerable<IEvent>>([RollEvent]);
-    }
-
-    public override async Task<IEnumerable<IEvent>> FinalizeEvent()
-    {
-        if (RollResultModifiers is null && TotalResult.HasValue && RollResult.HasValue)
+        if (Advantages is null || Modifiers is null)
         {
-            RollResultModifiers = await new GetRollActionResult(EventOwner, SuccessRollAction, Opponent, TotalResult.Value, RollResult.Value).Execute();
-
-            if (!RollResultModifiers.IsSuccess)
-            {
-                throw new InvalidOperationException("Failed to get roll result modifiers. " + RollResultModifiers.ErrorMessage);
-            }
+            throw new InvalidOperationException("Roll advantages or modifiers are not initialized");
         }
-        
-        return await base.FinalizeEvent();
+
+        if (RawRollResult is null || ModifierRollResults is null)
+        {
+            var advantage = Advantages.Values.Select(x => x.Item2).DefaultIfEmpty(EAdvantage.None).Aggregate((a, b) => a | b);
+            var modifierDicePool = Modifiers.Values.Select(x => x.Item2).DefaultIfEmpty(new DicePool([], 0)).Aggregate((a, b) => a.Concat(b));
+
+            RawRollResult = new DiceRollResult(EDiceType.d20, advantage);
+            ModifierRollResults = modifierDicePool.Rolls.SelectMany(r => Enumerable.Repeat(new DiceRollResult(r.DiceType, EAdvantage.None, r.Negative), r.NumberOfDice));
+
+            await CalculateRollResult();
+        }
+
+        SetEventPhase(EEventPhase.DoneRunning);
+        return [];
     }
 
-    public DiceRollResult? RawRollResult => RollEvent?.RollResults?.First();
+    public async Task CalculateRollResult()
+    {
+        if (RawRollResult is null || ModifierRollResults is null || ModifierConstantResult is null || TargetResult is null)
+        {
+            throw new InvalidOperationException("Roll result is not initialized");
+        }
 
-    public IEnumerable<DiceRollResult>? ModifierRollResults => RollEvent?.RollResults?.Skip(1);
+        var criticalSuccessThreshold = await new GetCriticalSuccessThreshold(EventOwner, SuccessRollAction).Execute();
 
-    public int? ConstantModifier => RollModifiers?.Values?.Select(x => x.Item2.Bonus)?.DefaultIfEmpty(0)?.Sum();
+        if (!criticalSuccessThreshold.IsSuccess)
+        {
+            throw new InvalidOperationException("Failed to get critical success threshold. " + criticalSuccessThreshold.ErrorMessage);
+        }
 
-    public int? TotalResult => (RawRollResult is null || ModifierRollResults is null || ConstantModifier is null) 
+        var criticalFailureThreshold = await new GetCriticalFailureThreshold(EventOwner, SuccessRollAction).Execute();
+
+        if (!criticalFailureThreshold.IsSuccess)
+        {
+            throw new InvalidOperationException("Failed to get critical failure threshold. " + criticalFailureThreshold.ErrorMessage);
+        }
+
+        RollResult = RawRollResult.Result >= criticalSuccessThreshold.Value ? ERollResult.CriticalSuccess
+            : RawRollResult.Result <= criticalFailureThreshold.Value ? ERollResult.CriticalFailure 
+            : TotalResult >= TargetResult ? ERollResult.Success 
+            : ERollResult.Failure;
+
+        await CalculateModifiedRollResult();
+    } 
+
+    private async Task CalculateModifiedRollResult()
+    {
+        if (RollResult is null)
+        {
+            throw new InvalidOperationException("Roll result is not initialized");
+        }
+
+        PostDeterminedSuccessResults = await new GetPostDeterminedRollResult(EventOwner, SuccessRollAction, Opponent, TotalResult, RollResult.Value).Execute();
+
+        if (!PostDeterminedSuccessResults.IsSuccess)
+        {
+            throw new InvalidOperationException("Failed to get roll result modifiers. " + PostDeterminedSuccessResults.ErrorMessage);
+        }
+
+        var modifiedRollResult = PostDeterminedSuccessResults.Values.Select(x => x.Item2).DefaultIfEmpty(ERollResult.None).Aggregate((a, b) => a | b);
+        if (modifiedRollResult.IsMeaningful())
+        {
+            RollResult = modifiedRollResult;
+        }
+    }
+
+    public IEvent CreateReRollEvent(IEnumerable<DiceRollResult> prevRolls, IEnumerable<DiceRollResult> prevModifierRolls)
+    {
+        var advantage = (Advantages?.Values ?? []).Select(x => x.Item2).DefaultIfEmpty(EAdvantage.None).Aggregate((a, b) => a | b);
+        return new ReRollEvent(EventName + ": Reroll", EventOwner, prevRolls, prevModifierRolls, advantage);
+    }
+
+    public DiceRollResult? RawRollResult { get; private set; }
+
+    public IEnumerable<DiceRollResult>? ModifierRollResults { get; private set; }
+
+    public int? ModifierConstantResult => Modifiers?.Values?.Select(x => x.Item2.Bonus)?.DefaultIfEmpty(0)?.Sum();
+
+    public int? TotalResult => (RawRollResult is null || ModifierRollResults is null || ModifierConstantResult is null) 
         ? null
-        : RawRollResult.Result + ModifierRollResults.Select(x => x.Result).DefaultIfEmpty(0).Sum() + ConstantModifier;
+        : RawRollResult.Result + ModifierRollResults.Select(x => x.Result).DefaultIfEmpty(0).Sum() + ModifierConstantResult;
 
-    public ERollResult? RollResult 
-    { 
-        set => manualRollResult = value; 
-        get => manualRollResult ?? GetMergedRollResultModifier() ??
-            ((RawRollResult is null || ModifierRollResults is null || ConstantModifier is null || TargetResult is null) ? null
-                : RawRollResult.Result == 20 ? ERollResult.CriticalSuccess
-                : RawRollResult.Result == 1 ? ERollResult.CriticalFailure
-                : TotalResult >= TargetResult ? ERollResult.Success
-                : ERollResult.Failure); }
+    public ListResult<ERollResult>? PostDeterminedSuccessResults { get; private set; }
 
-    public ListResult<ERollResult>? RollResultModifiers { get; private set; }
-
-    private ERollResult? GetMergedRollResultModifier()
-    {
-        if (RollResultModifiers is null || !RollResultModifiers.IsSuccess)
-        {
-            return null;
-        }
-
-        var result = RollResultModifiers.Values.Select(x => x.Item2).DefaultIfEmpty(ERollResult.None).Aggregate((a, b) => a | b);
-
-        return result.IsMeaningful() ? result : null;
-    }
+    public ERollResult? RollResult { get; private set; }
 }

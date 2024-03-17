@@ -5,9 +5,9 @@ using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.Entities.GameActor;
 using Dnd.System.GameManagers.Dice;
 
-public class GetRollActionResultFromOpponent : ListCommand<ERollResult>
+public class GetPostDeterminedResultFromOpponent : ListCommand<ERollResult>
 {
-    public GetRollActionResultFromOpponent(IGameActor actor, ISuccessRollAction action, IGameActor? opponent, ERollResult defaultRollResult) : base(actor)
+    public GetPostDeterminedResultFromOpponent(IGameActor actor, ISuccessRollAction action, IGameActor? opponent, ERollResult defaultRollResult) : base(actor)
     {
         Action = action;
         Opponent = opponent;

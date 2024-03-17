@@ -31,9 +31,9 @@ public class ProtectionAction : EventReaction
 
         Task task = new(() =>
         {
-            if (eventToReactTo is ISuccessRollEvent rollEvent && rollEvent.RollAdvantages is not null)
+            if (eventToReactTo is ISuccessRollEvent rollEvent && rollEvent.Advantages is not null)
             {
-                rollEvent.RollAdvantages.AddValue(Name, EAdvantage.Disadvantage);
+                rollEvent.Advantages.AddValue(Name, EAdvantage.Disadvantage);
             }
         });
 

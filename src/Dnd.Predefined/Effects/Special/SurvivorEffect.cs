@@ -55,6 +55,6 @@ public class SurvivorEffect : ActiveEffectDefinition
 
         int healAmount = constitutionModifier.Value + 5;
 
-        return new HealEvent(Name, target, null, healAmount);
+        return new HealEvent(Name, target, healAmount);
     }
 }

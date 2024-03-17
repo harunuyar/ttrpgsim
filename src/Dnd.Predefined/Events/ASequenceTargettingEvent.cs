@@ -25,6 +25,12 @@ public abstract class ASequenceTargettingEvent : ATargetingEvent
             }
             
             SubEvents.ForEach(x => x.AddFinalAction(new Task(NotifyEventFinalized)));
+
+            if (SubEvents.Count > 0)
+            {
+                SetEventPhase(EEventPhase.WaitingOtherEvent);
+                return SubEvents;
+            }
         }
 
         return await base.RunEventImpl();
@@ -39,7 +45,7 @@ public abstract class ASequenceTargettingEvent : ATargetingEvent
 
         if (SubEvents.All(x => x.EventPhase == EEventPhase.Finalized))
         {
-            SetEventPhase(EEventPhase.Finalized);
+            SetEventPhase(EEventPhase.DoneRunning);
         }
     }
 

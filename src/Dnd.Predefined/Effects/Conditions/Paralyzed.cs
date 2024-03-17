@@ -48,7 +48,7 @@ public class Paralyzed : AConditionEffect
                 advantageFromOpponent.AddValue(EAdvantage.Advantage, Name);
             }
         }
-        else if (command is GetRollActionResultFromOpponent actionResultFromOpponent)
+        else if (command is GetPostDeterminedResultFromOpponent actionResultFromOpponent)
         {
             if (actionResultFromOpponent.Action is IAttackAction && actionResultFromOpponent.DefaultRollResult == ERollResult.Success)
             {
