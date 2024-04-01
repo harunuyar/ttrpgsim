@@ -8,14 +8,14 @@ public class GetTotalAbilityScore : ScoreCommand
 {
     public GetTotalAbilityScore(IGameActor character, AbilityScoreModel abilityScore) : base(character)
     {
-        AbilityScore = abilityScore;
+        Ability = abilityScore;
     }
 
-    public AbilityScoreModel AbilityScore { get; }
+    public AbilityScoreModel Ability { get; }
 
     protected override async Task InitializeResult()
     {
-        var getBaseAttributeScore = await new GetBaseAbilityScore(Actor, AbilityScore).Execute();
+        var getBaseAttributeScore = await new GetBaseAbilityScore(Actor, Ability).Execute();
 
         if (!getBaseAttributeScore.IsSuccess)
         {

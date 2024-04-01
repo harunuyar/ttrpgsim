@@ -16,6 +16,7 @@ public class GameActor : IGameActor
         LevelInfo = new LevelInfo(firstLevel);
         HitPoints = new HitPoints();
         HitPoints.AddHitPointRoll(firstLevel.ClassInstance.ClassModel.HitDie ?? 1);
+        HitPoints.SetCurrentHitPoints(firstLevel.ClassInstance.ClassModel.HitDie ?? 1);
         EffectsTable = new EffectsTable();
         Inventory = new Inventory();
         PointsCounter = new PointsCounter();

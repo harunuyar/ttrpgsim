@@ -84,22 +84,22 @@ public class RaceInstance : IRaceInstance
                 }
             }
         }
-        else if (command is GetTotalAbilityScore totalAbilityScore)
+        else if (command is GetBaseAbilityScore baseAbilityScore)
         {
             foreach (var ability in AbilityBonusOptions)
             {
-                if (ability.AbilityScore?.Url == totalAbilityScore.AbilityScore.Url && ability.Bonus.HasValue)
+                if (ability.AbilityScore?.Url == baseAbilityScore.Ability.Url && ability.Bonus.HasValue)
                 {
-                    totalAbilityScore.AddBonus(ability.Bonus.Value, RaceModel.Name ?? "Ability Bonus");
+                    baseAbilityScore.AddBonus(ability.Bonus.Value, RaceModel.Name ?? "Ability Bonus");
                     return;
                 }
             }
 
             foreach (var ability in RaceModel.AbilityBonuses ?? [])
             {
-                if (ability.AbilityScore?.Url == totalAbilityScore.AbilityScore.Url && ability.Bonus.HasValue)
+                if (ability.AbilityScore?.Url == baseAbilityScore.Ability.Url && ability.Bonus.HasValue)
                 {
-                    totalAbilityScore.AddBonus(ability.Bonus.Value, RaceModel.Name ?? "Ability Bonus");
+                    baseAbilityScore.AddBonus(ability.Bonus.Value, RaceModel.Name ?? "Ability Bonus");
                     return;
                 }
             }

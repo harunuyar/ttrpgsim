@@ -30,7 +30,7 @@ public class FightingStyleProtection : FeatureInstance, ISubFightingStyle
         await base.HandleCommand(command);
         await ProtectionAction.HandleCommand(command);
 
-        if (command is GetActions getActions)
+        if (command is GetReactions getActions)
         {
             getActions.AddValue(ProtectionAction, FeatureModel.Name ?? "Fighting Style: Protection");
         }

@@ -39,7 +39,7 @@ public class SubraceInstance : ISubraceInstance
         {
             foreach (var ability in SubraceModel.AbilityBonuses ?? [])
             {
-                if (ability.AbilityScore?.Url == totalAbilityScore.AbilityScore.Url && ability.Bonus.HasValue)
+                if (ability.AbilityScore?.Url == totalAbilityScore.Ability.Url && ability.Bonus.HasValue)
                 {
                     totalAbilityScore.AddBonus(ability.Bonus.Value, SubraceModel.Name ?? "Ability Bonus");
                     return;

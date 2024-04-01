@@ -6,13 +6,13 @@ using Dnd.System.Entities.GameActor;
 
 public class GetConcentrationSavingDC : ValueCommand<int>
 {
-    public GetConcentrationSavingDC(IGameActor character, IAttackAction attackAction, int damageTaken) : base(character)
+    public GetConcentrationSavingDC(IGameActor character, int damageTaken, IAttackAction? attackAction) : base(character)
     {
         AttackAction = attackAction;
         DamageTaken = damageTaken;
     }
 
-    public IAttackAction AttackAction { get; }
+    public IAttackAction? AttackAction { get; }
 
     public int DamageTaken { get; set; }
 

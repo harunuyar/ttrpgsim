@@ -41,7 +41,7 @@ public class Indomitable : FeatureInstance
         await IndomitableAction2.HandleCommand(command);
         await IndomitableAction3.HandleCommand(command);
 
-        if (command is GetActions actions)
+        if (command is GetReactions actions)
         {
             var fighterClass = await DndContext.Instance.GetObject<ClassModel>(Classes.Fighter);
 

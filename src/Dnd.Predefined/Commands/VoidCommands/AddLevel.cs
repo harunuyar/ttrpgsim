@@ -6,12 +6,15 @@ using Dnd.System.Entities.Instances;
 
 public class AddLevel : VoidCommand
 {
-    public AddLevel(IGameActor character, ILevelInstance level) : base(character)
+    public AddLevel(IGameActor character, ILevelInstance level, int hitDieRoll) : base(character)
     {
         Level = level;
+        HitDieRoll = hitDieRoll;
     }
 
     public ILevelInstance Level { get; }
+
+    public int HitDieRoll { get; }
 
     protected override Task InitializeResult()
     {
@@ -23,13 +26,7 @@ public class AddLevel : VoidCommand
             return Task.CompletedTask;
         }
 
-        if (!Level.ClassInstance.ClassModel.HitDie.HasValue)
-        {
-            SetError($"Class {Level.ClassInstance.ClassModel.Name} doesn't have a hit die.");
-            return Task.CompletedTask;
-        }
-
-        Actor.HitPoints.AddHitPointRoll(Level.ClassInstance.ClassModel.HitDie.Value);
+        Actor.HitPoints.AddHitPointRoll(HitDieRoll);
 
         return Task.CompletedTask;
     }

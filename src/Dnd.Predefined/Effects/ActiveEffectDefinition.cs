@@ -1,8 +1,6 @@
 ﻿namespace Dnd.Predefined.Effects;
 
-using Dnd.Context;
 using Dnd.Predefined.Commands.ListCommands;
-using Dnd.Predefined.Events;
 using Dnd.System.CommandSystem.Commands;
 using Dnd.System.Entities.Effect;
 using Dnd.System.Entities.Events;
@@ -22,10 +20,7 @@ public abstract class ActiveEffectDefinition : IActiveEffectDefinition
 
     public abstract Task<bool> ShouldActivate(IGameActor source, IGameActor target, IEvent eventToReactTo);
 
-    public virtual Task<IEvent> CreateEvent(IGameActor source, IGameActor target, IEvent eventToReactTo)
-    {
-        return Task.FromResult<IEvent>(new BasicEvent(Name, source, DndContext.Instance.Logger.Log($"{Name} effect is activated.")));
-    }
+    public abstract Task<IEvent> CreateEvent(IGameActor source, IGameActor target, IEvent eventToReactTo);
 
     public async Task HandleCommand(ICommand command, IGameActor effectSource, IGameActor effectOwner)
     {

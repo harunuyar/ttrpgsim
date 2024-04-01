@@ -7,6 +7,7 @@ using Dnd.Predefined.Commands.ListCommands;
 using Dnd.Predefined.Commands.ScoreCommands;
 using Dnd.Predefined.ModelExtensions;
 using Dnd.System.CommandSystem.Commands;
+using Dnd.System.Entities.Action;
 using Dnd.System.Entities.Action.ActionTypes;
 using Dnd.System.Entities.GameActor;
 using Dnd.System.Entities.Instances;
@@ -67,8 +68,13 @@ public abstract class ASpellcastingAbility : ISpellcastingAbility
         
         if (command is GetActions getActions)
         {
-            getActions.AddValues(GetCantripActions(), $"{(SubclassModel is not null ? SubclassModel.Name : ClassModel.Name)} Spellcasting");
-            getActions.AddValues(GetSpellActions(), $"{(SubclassModel is not null ? SubclassModel.Name : ClassModel.Name)} Spellcasting");
+            getActions.AddValues(GetCantripActions().Where(x => x is IEventAction).Select(x => (IEventAction)x), $"{(SubclassModel is not null ? SubclassModel.Name : ClassModel.Name)} Spellcasting");
+            getActions.AddValues(GetSpellActions().Where(x => x is IEventAction).Select(x => (IEventAction)x), $"{(SubclassModel is not null ? SubclassModel.Name : ClassModel.Name)} Spellcasting");
+        }
+        else if (command is GetReactions getReactions)
+        {
+            getReactions.AddValues(GetCantripActions().Where(x => x is IEventReaction).Select(x => (IEventReaction)x), $"{(SubclassModel is not null ? SubclassModel.Name : ClassModel.Name)} Spellcasting");
+            getReactions.AddValues(GetSpellActions().Where(x => x is IEventReaction).Select(x => (IEventReaction)x), $"{(SubclassModel is not null ? SubclassModel.Name : ClassModel.Name)} Spellcasting");
         }
         else if (command is GetMaxSpellSlotsCount getMaxSpellSlotsCount)
         {

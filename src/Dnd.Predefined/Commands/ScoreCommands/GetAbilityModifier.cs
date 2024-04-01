@@ -23,6 +23,6 @@ public class GetAbilityModifier : ScoreCommand
             return;
         }
 
-        SetBaseValue((attributeScoreResult.Value - 10) / 2, Ability.FullName ?? string.Empty);
+        SetBaseValue(attributeScoreResult.Value / 2 - 5, Ability.FullName ?? string.Empty);
     }
 }

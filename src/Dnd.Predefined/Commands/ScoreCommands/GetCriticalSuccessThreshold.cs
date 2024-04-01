@@ -6,12 +6,12 @@ using Dnd.System.Entities.GameActor;
 
 public class GetCriticalSuccessThreshold : ScoreCommand
 {
-    public GetCriticalSuccessThreshold(IGameActor actor, ISuccessRollAction action) : base(actor)
+    public GetCriticalSuccessThreshold(IGameActor actor, ISuccessRollAction? action) : base(actor)
     {
         Action = action;
     }
 
-    public ISuccessRollAction Action { get; }
+    public ISuccessRollAction? Action { get; }
 
     protected override Task InitializeResult()
     {

@@ -30,7 +30,7 @@ public class FightingStyleGreatWeaponFighting : FeatureInstance, ISubFightingSty
         await base.HandleCommand(command);
         await RerollDamageAction.HandleCommand(command);
 
-        if (command is GetActions actions)
+        if (command is GetReactions actions)
         {
             actions.AddValue(RerollDamageAction, FeatureModel.Name ?? "Great Weapon Fighting");
         }
